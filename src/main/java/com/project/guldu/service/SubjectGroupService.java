@@ -62,7 +62,7 @@ public class SubjectGroupService {
 	
 	public SubjectGroup add(SubjectGroup subjectGroup){
 		try {
-			String query = "insert into subject_group(Id, SubjectGroupName) "
+			String query = "insert into subject_group(Id, SchoolId, SubjectGroupName) "
 					+ "values (" 
 					+ subjectGroup.getId() + ","
 					+ subjectGroup.getSchoolId() + ",'"
@@ -77,8 +77,8 @@ public class SubjectGroupService {
 	
 	public void update(SubjectGroup subjectGroup) {
 		try {
-			String query = "update subject_group set SubjectGroupName = " + subjectGroup.getSubjectGroupName()  
-			+ " where Id=" + subjectGroup.getId();
+			String query = "update subject_group set SubjectGroupName = '" + subjectGroup.getSubjectGroupName()  
+			+ "' where Id=" + subjectGroup.getId();
 			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {

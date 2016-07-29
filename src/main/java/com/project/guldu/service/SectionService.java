@@ -64,7 +64,7 @@ public class SectionService {
 	
 	public Section add(Section section) {
 		try {
-			String query = "insert into section(SectionId, SectionName, ClassId, TeacherId) "
+			String query = "insert into section(Id, SectionName, ClassId, TeacherId) "
 					+ "values (" 
 					+ section.getId() + ",'" 
 					+ section.getSectionName() + "',"
