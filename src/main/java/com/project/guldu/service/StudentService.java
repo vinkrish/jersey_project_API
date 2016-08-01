@@ -39,8 +39,9 @@ public class StudentService {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()){
 				Student student = new Student();
-				student.setId(rs.getLong("StudentId"));
+				student.setId(rs.getLong("Id"));
 				student.setStudentName(rs.getString("StudentName"));
+				student.setSchoolId(rs.getLong("SchoolId"));
 				student.setSectionId(rs.getLong("SectionId"));
 				student.setAdmissionNo(rs.getString("AdmissionNo"));
 				student.setRollNo(rs.getInt("RollNo"));
@@ -74,7 +75,7 @@ public class StudentService {
 			Gson gson = new Gson();
 			Student student = gson.fromJson(studentJson.toString(), Student.class);
 			try {
-				String query = "insert into student(StudentId, StudentName, SectionId, "
+				String query = "insert into student(Id, StudentName, SectionId, "
 						+ "AdmissionNo, RollNo, Username, Password, Image, FatherName, MotherName, DateOfBirth, "
 						+ "Gender, Email, Mobile1, Mobile2, Street, City, District, State, Pincode) "
 						+ "values (" 
@@ -107,12 +108,13 @@ public class StudentService {
 	
 	public Student add(Student student) {
 		try {
-			String query = "insert into student(StudentId, StudentName, SectionId, "
+			String query = "insert into student(StudentId, StudentName, SchoolId, SectionId, "
 					+ "AdmissionNo, RollNo, Username, Password, Image, FatherName, MotherName, DateOfBirth, "
 					+ "Gender, Email, Mobile1, Mobile2, Street, City, District, State, Pincode) "
 					+ "values (" 
 					+ student.getId() + ",'" 
 					+ student.getStudentName() + "',"
+					+ student.getSchoolId() + ","
 					+ student.getSectionId()  + ",'"
 					+ student.getAdmissionNo() + "',"
 					+ student.getRollNo() + ",'"

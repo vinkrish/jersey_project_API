@@ -55,16 +55,6 @@ public class SubjectGroupSubjectService {
 		return sgs;
 	}
 	
-	public void update(SubjectGroupSubject clas) {
-		try {
-			String query = "update subject_group_subject set  where Id=" + clas.getId();
-			System.out.println(query);
-			stmt.executeUpdate(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void delete(long id){
 		try {
 			String query = "delete from subject_group_subject where Id=" + id;
