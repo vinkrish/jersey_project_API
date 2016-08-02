@@ -33,7 +33,9 @@ public class SubjectTeacherService {
 				subjectTeacher.setId(rs.getLong("Id"));
 				subjectTeacher.setSectionId(rs.getLong("SectionId"));
 				subjectTeacher.setSubjectId(rs.getLong("SubjectId"));
+				subjectTeacher.setSubjectName(rs.getString("SubjectName"));
 				subjectTeacher.setTeacherId(rs.getLong("TeacherId"));
+				subjectTeacher.setTeacherName(rs.getString("TeacherName"));
 				classList.add(subjectTeacher);
 			}
 		} catch (SQLException e) {
@@ -82,8 +84,10 @@ public class SubjectTeacherService {
 		try {
 			String query = "update subject_teacher set SectionId = " + subjectTeacher.getSectionId() 
 			+ ", TeacherId = " + subjectTeacher.getTeacherId() 
-			+ ", SubjectId = " + subjectTeacher.getSubjectId() 
-			+ " where Id=" + subjectTeacher.getId();
+			+ ", TeacherName = '" + subjectTeacher.getTeacherName()
+			+ "', SubjectId = " + subjectTeacher.getSubjectId() 
+			+ ", SubjectName = '" + subjectTeacher.getSubjectName()
+			+ "' where Id=" + subjectTeacher.getId();
 			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
