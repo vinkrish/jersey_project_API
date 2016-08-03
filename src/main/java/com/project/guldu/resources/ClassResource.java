@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import com.project.guldu.model.Clas;
 import com.project.guldu.service.ClassService;
 
+import authentication.Secured;
+
 @Path("/class")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,6 +24,7 @@ public class ClassResource {
 
 	ClassService classService = new ClassService();
 
+	@Secured
 	@GET
 	@Path("school/{schoolId}")
 	public List<Clas> getClassList(@PathParam("schoolId") long schoolId) {
