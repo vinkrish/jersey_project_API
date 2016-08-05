@@ -44,8 +44,7 @@ public class HomeworkService {
 				homework.setTeacherId(rs.getLong("TeacherId"));
 				homework.setSubjectId(rs.getLong("SubjectId"));
 				homework.setHomeworkDate(rs.getString("HomeworkMessage"));
-				homework.setType(rs.getInt("Type"));
-				homework.setSession(rs.getInt("Session"));
+				homework.setPeriod(rs.getInt("Period"));
 				homework.setHomeworkDate(rs.getString("HomeworkDate"));
 				hwList.add(homework);
 			}
@@ -64,15 +63,14 @@ public class HomeworkService {
 			Gson gson = new Gson();
 			Homework homework = gson.fromJson(homeworkJson.toString(), Homework.class);
 			try {
-				String query = "insert into homework(HomeworkId, SectionId, TeacherId, SubjectId, HomeworkMessage, Type, Session, HomeworkDate) "
+				String query = "insert into homework(HomeworkId, SectionId, TeacherId, SubjectId, HomeworkMessage, Period, HomeworkDate) "
 						+ "values (" 
 						+ homework.getId() + "," 
 						+ homework.getSectionId() + "," 
 						+ homework.getTeacherId() + ",'"
 						+ homework.getSubjectId() + "','" 
-						+ homework.getHomeworkMessage() + "'," 
-						+ homework.getType() + "," 
-						+ homework.getSession() + ",'" 
+						+ homework.getHomeworkMessage() + "',"
+						+ homework.getPeriod() + ",'" 
 						+ homework.getHomeworkDate() + "')";
 				stmt.executeUpdate(query);
 			} catch (SQLException e) {

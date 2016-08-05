@@ -34,7 +34,6 @@ public class ClassService {
 				clas.setClassName(rs.getString("ClassName"));
 				clas.setSchoolId(rs.getLong("SchoolId"));
 				clas.setAttendanceType(rs.getString("AttendanceType"));
-				clas.setHomeworkType(rs.getString("HomeworkType"));
 				classList.add(clas);
 			}
 		} catch (SQLException e) {
@@ -50,13 +49,12 @@ public class ClassService {
 			Gson gson = new Gson();
 			Clas clas = gson.fromJson(classJson.toString(), Clas.class);
 			try {
-				String query = "insert into class(Id, ClassName, SchoolId, AttendanceType, HomeworkType) "
+				String query = "insert into class(Id, ClassName, SchoolId, AttendanceType) "
 						+ "values ("
 						+ clas.getId() + ",'" 
 						+ clas.getClassName() + "',"
 						+ clas.getSchoolId() + ",'" 
-						+ clas.getAttendanceType() + "','" 
-						+ clas.getHomeworkType() + "')";
+						+ clas.getAttendanceType() + "')";
 				stmt.executeUpdate(query);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -66,13 +64,12 @@ public class ClassService {
 	
 	public Clas add(Clas clas) {
 		try {
-			String query = "insert into class(Id, ClassName, SchoolId, AttendanceType, HomeworkType) "
+			String query = "insert into class(Id, ClassName, SchoolId, AttendanceType) "
 					+ "values ("
 					+ clas.getId() + ",'" 
 					+ clas.getClassName() + "',"
 					+ clas.getSchoolId() + ",'" 
-					+ clas.getAttendanceType() + "','" 
-					+ clas.getHomeworkType() + "')";
+					+ clas.getAttendanceType() + "')";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			clas.setId(pk);
 		} catch (SQLException e) {
@@ -84,7 +81,7 @@ public class ClassService {
 	public void update(Clas clas) {
 		try {
 			String query = "update class set ClassName='"+clas.getClassName() + "', AttendanceType='" + clas.getAttendanceType() 
-			+ "', HomeworkType='" + clas.getHomeworkType() + "' where Id=" + clas.getId();
+			+ "' where Id=" + clas.getId();
 			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {

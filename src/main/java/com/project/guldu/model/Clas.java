@@ -5,7 +5,6 @@ public class Clas {
 	private String className;
 	private long schoolId;
 	private String attendanceType;
-	private String homeworkType;
 	
 	public long getId() {
 		return id;
@@ -31,11 +30,4 @@ public class Clas {
 	public void setAttendanceType(String attendanceType) {
 		this.attendanceType = attendanceType;
 	}
-	public String getHomeworkType() {
-		return homeworkType;
-	}
-	public void setHomeworkType(String homeworkType) {
-		this.homeworkType = homeworkType;
-	}
-	
 }

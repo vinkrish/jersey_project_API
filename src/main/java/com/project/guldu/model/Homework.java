@@ -6,8 +6,7 @@ public class Homework {
 	private long teacherId;
 	private long subjectId;
 	private String homeworkMessage;
-	private int type;
-	private int session;
+	private int period;
 	private String homeworkDate;
 	
 	public long getId() {
@@ -40,17 +39,11 @@ public class Homework {
 	public void setHomeworkMessage(String homeworkMessage) {
 		this.homeworkMessage = homeworkMessage;
 	}
-	public int getType() {
-		return type;
+	public int getPeriod() {
+		return period;
 	}
-	public void setType(int type) {
-		this.type = type;
-	}
-	public int getSession() {
-		return session;
-	}
-	public void setSession(int session) {
-		this.session = session;
+	public void setPeriod(int period) {
+		this.period = period;
 	}
 	public String getHomeworkDate() {
 		return homeworkDate;
