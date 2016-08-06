@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import com.project.guldu.model.Teacher;
 import com.project.guldu.service.TeacherService;
 
+import authentication.Secured;
+
 @Path("/teacher")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,29 +24,34 @@ public class TeacherResource {
 	
 	TeacherService teacherService = new TeacherService();
 	
+	@Secured
 	@GET
 	@Path("school/{schoolId}")
 	public List<Teacher> getTeacherList(@PathParam("schoolId") long schoolId){
 		return teacherService.getTeacherList(schoolId);
 	}
 	
+	@Secured
 	@POST
 	@Path("/list")
 	public void addTeacher(String teacherStr) {
 		teacherService.addTeacher(teacherStr);
 	}
 	
+	@Secured
 	@POST
 	public Teacher add(Teacher teacher) {
 		return teacherService.add(teacher);
 	}
 	
+	@Secured
 	@PUT
 	@Path("/{teacherId}")
 	public void update(Teacher teacher) {
 		teacherService.update(teacher);
 	}
 	
+	@Secured
 	@DELETE
 	@Path("/{teacherId}")
 	public void delete(@PathParam("teacherId") long teacherId) {

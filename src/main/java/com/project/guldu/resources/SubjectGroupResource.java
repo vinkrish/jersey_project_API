@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import com.project.guldu.model.SubjectGroup;
 import com.project.guldu.service.SubjectGroupService;
 
+import authentication.Secured;
+
 @Path("/subjectgroup")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,29 +24,34 @@ public class SubjectGroupResource {
 	
 	SubjectGroupService subjectGroupService = new SubjectGroupService();
 	
+	@Secured
 	@GET
 	@Path("school/{schoolId}")
 	public List<SubjectGroup> getSubjectGroupList(@PathParam("schoolId") long schoolId) {
 		return subjectGroupService.getSubjectGroupList(schoolId);
 	}
 
+	@Secured
 	@POST
 	@Path("list")
 	public void addSubjectGroup(String subjectGroupStr) {
 		subjectGroupService.addSubjectGroup(subjectGroupStr);
 	}
 	
+	@Secured
 	@POST
 	public SubjectGroup add(SubjectGroup subjectGroup) {
 		return subjectGroupService.add(subjectGroup);
 	}
 	
+	@Secured
 	@PUT
 	@Path("/{subjectGroupId}")
 	public void update(SubjectGroup subjectGroup) {
 		subjectGroupService.update(subjectGroup);
 	}
 	
+	@Secured
 	@DELETE
 	@Path("/{subjectGroupId}")
 	public void delete(@PathParam("subjectGroupId") long subjectGroupId) {

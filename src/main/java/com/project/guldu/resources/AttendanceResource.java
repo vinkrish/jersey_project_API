@@ -13,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import com.project.guldu.model.Attendance;
 import com.project.guldu.service.AttendanceService;
 
+import authentication.Secured;
+
 @Path("/attendance")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,6 +22,7 @@ public class AttendanceResource {
 
 	AttendanceService attendanceService = new AttendanceService();
 
+	@Secured
 	@GET
 	@Path("school/{schoolId}/date/{dateAttendance}")
 	public List<Attendance> getAttendanceToday(@PathParam("schoolId") long schoolId,
@@ -27,12 +30,14 @@ public class AttendanceResource {
 		return attendanceService.getAttendanceToday(schoolId, dateAttendance);
 	}
 
+	@Secured
 	@GET
 	@Path("getallattendance/{attendanceIndex}")
 	public List<Attendance> getAttendanceRange(@PathParam("attendanceIndex") long attendanceIndex) {
 		return attendanceService.getAttendanceRange(attendanceIndex);
 	}
 
+	@Secured
 	@POST
 	public void addAttendance(String attendanceStr) {
 		attendanceService.addAttendance(attendanceStr);

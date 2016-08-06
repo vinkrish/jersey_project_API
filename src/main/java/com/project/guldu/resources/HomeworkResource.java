@@ -13,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import com.project.guldu.model.Homework;
 import com.project.guldu.service.HomeworkService;
 
+import authentication.Secured;
+
 @Path("/homework")
 @Consumes(MediaType.TEXT_PLAIN)
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,6 +22,7 @@ public class HomeworkResource {
 	
 	HomeworkService homeworkService = new HomeworkService();
 	
+	@Secured
 	@GET
 	@Path("school/{schoolId}/date/{homeworkDate}")
 	public List<Homework> getHomeworkToday(@PathParam("schoolId") long schoolId,
@@ -27,12 +30,14 @@ public class HomeworkResource {
 		return homeworkService.getHomeworkToday(schoolId, homeworkDate);
 	}
 	
+	@Secured
 	@GET
 	@Path("getallhomework/{homeworkIndex}")
 	public List<Homework> getHomeworkRange(@PathParam("homeworkIndex") long homeworkIndex){
 		return homeworkService.getHomewokRange(homeworkIndex);
 	}
 	
+	@Secured
 	@POST
 	public void addHomework(String homeworkStr){
 		homeworkService.addHomework(homeworkStr);

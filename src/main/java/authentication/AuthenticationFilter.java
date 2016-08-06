@@ -9,12 +9,16 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
+
+import com.project.guldu.service.AuthorizationService;
+
 import javax.ws.rs.Priorities;
 
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
+	AuthorizationService authorizationService = new AuthorizationService();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -47,5 +51,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void validateToken(String token) throws Exception {
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
+    	if (!authorizationService.isTokenValid(token)) {
+    		System.out.println("Token not valid");
+    		throw new Exception();
+    	}
+    	System.out.println("Token valid");
     }
 }

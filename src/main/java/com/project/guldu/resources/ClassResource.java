@@ -31,23 +31,26 @@ public class ClassResource {
 		return classService.getClassList(schoolId);
 	}
 
+	@Secured
 	@POST
 	@Path("/list")
 	public void addClasses(String classStr) {
 		classService.addClasses(classStr);
 	}
-	
+	@Secured
 	@POST
 	public Clas add(Clas clas) {
 		return classService.add(clas);
 	}
 	
+	@Secured
 	@PUT
 	@Path("/{classId}")
 	public void update(Clas clas) {
 		classService.update(clas);
 	}
 	
+	@Secured
 	@DELETE
 	@Path("/{classId}")
 	public void delete(@PathParam("classId") long classId) {
