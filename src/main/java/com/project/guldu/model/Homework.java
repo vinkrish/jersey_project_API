@@ -3,10 +3,9 @@ package com.project.guldu.model;
 public class Homework {
 	private long id;
 	private long sectionId;
-	private long teacherId;
 	private long subjectId;
+	private String subjectName;
 	private String homeworkMessage;
-	private int period;
 	private String homeworkDate;
 	
 	public long getId() {
@@ -21,29 +20,23 @@ public class Homework {
 	public void setSectionId(long sectionId) {
 		this.sectionId = sectionId;
 	}
-	public long getTeacherId() {
-		return teacherId;
-	}
-	public void setTeacherId(long teacherId) {
-		this.teacherId = teacherId;
-	}
 	public long getSubjectId() {
 		return subjectId;
 	}
 	public void setSubjectId(long subjectId) {
 		this.subjectId = subjectId;
 	}
+	public String getSubjectName() {
+		return subjectName;
+	}
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
 	public String getHomeworkMessage() {
 		return homeworkMessage;
 	}
 	public void setHomeworkMessage(String homeworkMessage) {
 		this.homeworkMessage = homeworkMessage;
-	}
-	public int getPeriod() {
-		return period;
-	}
-	public void setPeriod(int period) {
-		this.period = period;
 	}
 	public String getHomeworkDate() {
 		return homeworkDate;

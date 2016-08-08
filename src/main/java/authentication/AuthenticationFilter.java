@@ -22,8 +22,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-    	
-    	System.out.println("filter called");
 
         // Get the HTTP Authorization header from the request
         String authorizationHeader = 
@@ -52,9 +50,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
     	if (!authorizationService.isTokenValid(token)) {
-    		System.out.println("Token not valid");
     		throw new Exception();
     	}
-    	System.out.println("Token valid");
     }
 }
