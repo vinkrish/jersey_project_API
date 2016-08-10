@@ -39,6 +39,24 @@ public class AttendanceResource {
 			@PathParam("dateAttendance") String dateAttendance) {
 		return attendanceService.dailyAttendanceUnmarked(sectionId, dateAttendance);
 	}
+	
+	@Secured
+	@GET
+	@Path("session/marked/{session}/{sectionId}/{dateAttendance}")
+	public List<Attendance> sessionAttendanceMarked(@PathParam("session") int session, 
+			@PathParam("sectionId") long sectionId,
+			@PathParam("dateAttendance") String dateAttendance) {
+		return attendanceService.sessionAttendanceMarked(session, sectionId, dateAttendance);
+	}
+	
+	@Secured
+	@GET
+	@Path("session/unmarked/{session}/{sectionId}/{dateAttendance}")
+	public List<Attendance> sessionAttendanceUnmarked(@PathParam("session") int session, 
+			@PathParam("sectionId") long sectionId,
+			@PathParam("dateAttendance") String dateAttendance) {
+		return attendanceService.sessionAttendanceUnmarked(session, sectionId, dateAttendance);
+	}
 
 	@Secured
 	@GET
@@ -55,8 +73,8 @@ public class AttendanceResource {
 	
 	@Secured
 	@POST
-	@Path("daily")
-	public void addList(List<Attendance> attendances){
+	@Path("list")
+	public void add(List<Attendance> attendances){
 		attendanceService.addAttendanceList(attendances);
 	}
 	

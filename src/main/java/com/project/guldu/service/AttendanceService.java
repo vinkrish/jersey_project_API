@@ -27,11 +27,6 @@ public class AttendanceService {
 		}
 	}
 	
-	public List<Attendance> getAttendanceToday(long sectionId, String dateAttendance) {
-		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = " + dateAttendance;
-		return getAttendanceList(query);
-	}
-	
 	public List<Attendance> dailyAttendanceMarked(long sectionId, String dateAttendance) {
 		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '" + dateAttendance + "'";
 		return getAttendanceList(query);
@@ -92,6 +87,41 @@ public class AttendanceService {
 			e.printStackTrace();
 		}
 		return attList;
+	}
+	
+	public List<Attendance> sessionAttendanceMarked(int session, long sectionId, String dateAttendance) {
+		String query = "select * from attendance where Session = " + session + " and "
+				+ "SectionId = " + sectionId + " and DateAttendance = '" + dateAttendance + "'";
+		return getAttendanceList(query);
+	}
+	
+	public List<Attendance> sessionAttendanceUnmarked(int session, long sectionId, String dateAttendance){
+		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
+		List<Attendance> attendanceList = sessionAttendanceMarked(session, sectionId, dateAttendance);
+		List<Student> students = studentResource.getStudentSection(sectionId);
+		for(Student student: students) {
+			boolean exist = false;
+			for(Attendance attendance: attendanceList){
+				if(attendance.getStudentId() == student.getId()){
+					exist = true;
+					break;
+				}
+			}
+			if(!exist){
+				Attendance att = new Attendance();
+				att.setId(0);
+				att.setSectionId(sectionId);
+				att.setStudentId(student.getId());
+				att.setStudentName(student.getStudentName());
+				att.setSubjectId(0);
+				att.setType("Daily");
+				att.setSession(session);
+				att.setDateAttendance(dateAttendance);
+				att.setTypeOfLeave("");
+				unMarkedAttendanceList.add(att);
+			}
+		}
+		return unMarkedAttendanceList;
 	}
 
 	public void addAttendance(String attendanceStr) {
