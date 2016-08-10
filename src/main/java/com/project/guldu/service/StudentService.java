@@ -24,7 +24,7 @@ public class StudentService {
 	}
 	
 	public List<Student> getStudentSection(long sectionId) {
-		String query = "select * from student where SectionId = " + sectionId;
+		String query = "select * from student where SectionId = " + sectionId + " order by RollNo";
 		return getStudentList(query);
 	}
 	

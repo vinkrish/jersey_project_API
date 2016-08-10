@@ -51,6 +51,5 @@ public class HomeworkResource {
 	public void delete(@PathParam("homeworkId") long homeworkId){
 		homeworkService.delete(homeworkId);
 	}
-	
 
 }

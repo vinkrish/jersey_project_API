@@ -11,23 +11,60 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.project.guldu.model.Attendance;
+import com.project.guldu.model.Student;
+import com.project.guldu.resources.StudentResource;
 
 public class AttendanceService {
 	Statement stmt = null;
+	StudentResource studentResource;
 
 	public AttendanceService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
+			studentResource = new StudentResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public List<Attendance> getAttendanceToday(long schoolId, String dateAttendance) {
-		String query = "select * from attendance where schoolId = " + schoolId + " and DateAttendance = " + dateAttendance;
+	public List<Attendance> getAttendanceToday(long sectionId, String dateAttendance) {
+		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = " + dateAttendance;
 		return getAttendanceList(query);
 	}
-
+	
+	public List<Attendance> dailyAttendanceMarked(long sectionId, String dateAttendance) {
+		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '" + dateAttendance + "'";
+		return getAttendanceList(query);
+	}
+	
+	public List<Attendance> dailyAttendanceUnmarked(long sectionId, String dateAttendance){
+		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
+		List<Attendance> attendanceList = dailyAttendanceMarked(sectionId, dateAttendance);
+		List<Student> students = studentResource.getStudentSection(sectionId);
+		for(Student student: students) {
+			boolean exist = false;
+			for(Attendance attendance: attendanceList){
+				if(attendance.getStudentId() == student.getId()){
+					exist = true;
+					break;
+				}
+			}
+			if(!exist){
+				Attendance att = new Attendance();
+				att.setId(0);
+				att.setSectionId(sectionId);
+				att.setStudentId(student.getId());
+				att.setStudentName(student.getStudentName());
+				att.setSubjectId(0);
+				att.setType("Daily");
+				att.setSession(0);
+				att.setDateAttendance(dateAttendance);
+				att.setTypeOfLeave("");
+				unMarkedAttendanceList.add(att);
+			}
+		}
+		return unMarkedAttendanceList;
+	}
 
 	public List<Attendance> getAttendanceRange(long attendanceIndex) {
 		String query = "select * from attendance LIMIT 100 OFFSET " + attendanceIndex;
@@ -43,8 +80,9 @@ public class AttendanceService {
 				attendance.setId(rs.getLong("Id"));
 				attendance.setSectionId(rs.getLong("SectionId"));
 				attendance.setStudentId(rs.getLong("StudentId"));
+				attendance.setStudentName(rs.getString("StudentName"));
 				attendance.setSubjectId(rs.getLong("SubjectId"));
-				attendance.setType(rs.getInt("Type"));
+				attendance.setType(rs.getString("Type"));
 				attendance.setSession(rs.getInt("Session"));
 				attendance.setDateAttendance(rs.getString("DateAttendance"));
 				attendance.setTypeOfLeave(rs.getString("TypeOfLeave"));
@@ -53,7 +91,6 @@ public class AttendanceService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return attList;
 	}
 
@@ -64,13 +101,15 @@ public class AttendanceService {
 			Gson gson = new Gson();
 			Attendance attendance = gson.fromJson(attendanceJson.toString(), Attendance.class);
 			try {
-				String query = "insert into attendance(AttendanceId, SectionId, StudentId, SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
+				String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
+						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
 						+ "values (" 
 						+ attendance.getId() + "," 
 						+ attendance.getSectionId() + "," 
-						+ attendance.getStudentId() + "," 
-						+ attendance.getSubjectId() + "," 
-						+ attendance.getType() + "," 
+						+ attendance.getStudentId() + ",'" 
+						+ attendance.getStudentName() + "',"
+						+ attendance.getSubjectId() + ",'" 
+						+ attendance.getType() + "'," 
 						+ attendance.getSession() + ",'" 
 						+ attendance.getDateAttendance() + "','" 
 						+ attendance.getTypeOfLeave() + "')";
@@ -78,6 +117,71 @@ public class AttendanceService {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void addAttendanceList(List<Attendance> attendances){
+		for(Attendance attendance: attendances){
+			try {
+				String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
+						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
+						+ "values (" 
+						+ attendance.getId() + "," 
+						+ attendance.getSectionId() + "," 
+						+ attendance.getStudentId() + ",'" 
+						+ attendance.getStudentName() + "',"
+						+ attendance.getSubjectId() + ",'" 
+						+ attendance.getType() + "'," 
+						+ attendance.getSession() + ",'" 
+						+ attendance.getDateAttendance() + "','" 
+						+ attendance.getTypeOfLeave() + "')";
+				stmt.executeUpdate(query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Attendance add(Attendance attendance) {
+		try {
+			String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
+					+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
+					+ "values (" 
+					+ attendance.getId() + "," 
+					+ attendance.getSectionId() + "," 
+					+ attendance.getStudentId() + ",'"
+					+ attendance.getStudentName() + "',"
+					+ attendance.getSubjectId() + ",'" 
+					+ attendance.getType() + "'," 
+					+ attendance.getSession() + ",'" 
+					+ attendance.getDateAttendance() + "','" 
+					+ attendance.getTypeOfLeave() + "')";
+			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			attendance.setId(pk);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return attendance;
+	}
+	
+	public void update(Attendance attendance) {
+		try {
+			String query = "update attendance set Type= '"+ attendance.getType() +"', Session="+ attendance.getSession()
+			+ ", TypeOfLeave = '"+ attendance.getTypeOfLeave() +"' where Id=" + attendance.getId();
+			System.out.println(query);
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(long attendanceId){
+		try {
+			String query = "delete from attendance where Id=" + attendanceId;
+			System.out.println(query);
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

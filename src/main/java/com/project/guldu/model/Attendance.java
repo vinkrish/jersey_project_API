@@ -4,12 +4,19 @@ public class Attendance {
 	private long id;
 	private long sectionId;
 	private long studentId;
+	private String studentName;
 	private long subjectId;
-	private int type;
+	private String type;
 	private int session;
 	private String dateAttendance;
 	private String typeOfLeave;
 	
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
 	public long getId() {
 		return id;
 	}
@@ -34,10 +41,10 @@ public class Attendance {
 	public void setSubjectId(long subjectId) {
 		this.subjectId = subjectId;
 	}
-	public int getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	public int getSession() {
