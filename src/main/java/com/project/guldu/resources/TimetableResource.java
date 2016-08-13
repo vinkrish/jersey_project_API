@@ -3,8 +3,10 @@ package com.project.guldu.resources;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -30,9 +32,31 @@ public class TimetableResource {
 	}
 	
 	@Secured
-	@POST
-	public void addTimetable(String timetableStr) {
-		timetableService.addTimetable(timetableStr);
+	@GET
+	@Path("section/{sectionId}/day/{day}")
+	public List<Timetable> getTimetable(@PathParam("sectionId") long sectionId, 
+			@PathParam("day") String day) {
+		return timetableService.getTimetableForDay(sectionId, day);
 	}
-
+	
+	@Secured
+	@POST
+	public Timetable add(Timetable timetable) {
+		return timetableService.add(timetable);
+	}
+	
+	@Secured
+	@PUT
+	@Path("{timetableId}")
+	public void update(Timetable timetable){
+		timetableService.update(timetable);
+	}
+	
+	@Secured
+	@DELETE
+	@Path("{timetableId}")
+	public void delete(@PathParam("timetableId") long timetableId){
+		timetableService.delete(timetableId);
+	}
+	
 }

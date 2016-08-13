@@ -59,13 +59,6 @@ public class AttendanceResource {
 	}
 
 	@Secured
-	@GET
-	@Path("getallattendance/{attendanceIndex}")
-	public List<Attendance> getAttendanceRange(@PathParam("attendanceIndex") long attendanceIndex) {
-		return attendanceService.getAttendanceRange(attendanceIndex);
-	}
-
-	@Secured
 	@POST
 	public Attendance add(Attendance attendance){
 		return attendanceService.add(attendance);

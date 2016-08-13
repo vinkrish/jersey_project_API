@@ -61,11 +61,6 @@ public class AttendanceService {
 		return unMarkedAttendanceList;
 	}
 
-	public List<Attendance> getAttendanceRange(long attendanceIndex) {
-		String query = "select * from attendance LIMIT 100 OFFSET " + attendanceIndex;
-		return getAttendanceList(query);
-	}
-	
 	public List<Attendance> getAttendanceList(String query){
 		List<Attendance> attList = new ArrayList<Attendance>();
 		try {

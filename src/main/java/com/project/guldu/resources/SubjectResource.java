@@ -32,6 +32,14 @@ public class SubjectResource {
 	}
 	
 	@Secured
+	@GET
+	@Path("class/{classId}")
+	public List<Subject> getClassSubjects(@PathParam("classId") long classId) {
+		return subjectService.getClassSubjects(classId);
+	}
+	
+	
+	@Secured
 	@POST
 	@Path("list")
 	public void addSubject(String subjectStr) {

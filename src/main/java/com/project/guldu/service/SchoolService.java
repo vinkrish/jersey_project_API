@@ -54,8 +54,8 @@ public class SchoolService {
 	
 	public void addSchool (String schoolStr) {
 		
-		Gson gson1 = new Gson();
-		School[] schools = gson1.fromJson(schoolStr, School [].class);
+		//Gson gson1 = new Gson();
+		//School[] schools = gson1.fromJson(schoolStr, School [].class);
 		
 		JSONArray schoolArray = new JSONArray(schoolStr);
 		for (int i = 0; i < schoolArray.length(); i++) {

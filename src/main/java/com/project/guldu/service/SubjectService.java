@@ -10,14 +10,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.project.guldu.model.ClassSubjectGroup;
 import com.project.guldu.model.Subject;
+import com.project.guldu.model.SubjectGroupSubject;
 
 public class SubjectService {
 	Statement stmt = null;
+	ClassSubjectGroupService csgService;
+	SubjectGroupSubjectService sgsService;
 
 	public SubjectService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
+			csgService = new ClassSubjectGroupService();
+			sgsService = new SubjectGroupSubjectService();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -40,6 +46,21 @@ public class SubjectService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		return subjectList;
+	}
+	
+	public List<Subject> getClassSubjects(long classId) {
+		List<Subject> subjectList = new ArrayList<>();
+		List<ClassSubjectGroup> csgList = csgService.getClassSubjectGroups(classId);
+		for(ClassSubjectGroup csg: csgList) {
+			List<SubjectGroupSubject> sgsList = sgsService.getSubjectGroupSubjects(csg.getSubjectGroupId());
+			for(SubjectGroupSubject sgs: sgsList) {
+				Subject subject = new Subject();
+				subject.setId(sgs.getSubjectId());
+				subject.setSubjectName(sgs.getSubjectName());
+				subjectList.add(subject);
+			}
 		}
 		return subjectList;
 	}

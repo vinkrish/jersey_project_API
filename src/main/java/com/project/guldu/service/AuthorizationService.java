@@ -17,7 +17,6 @@ public class AuthorizationService {
 	
 	public boolean isTokenValid(String token){
 		String query = "select UserId from authorization where Token = '" + token + "'";
-		System.out.println(query);
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()){
