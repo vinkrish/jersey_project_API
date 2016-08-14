@@ -64,4 +64,9 @@ public class StudentResource {
 	public void delete(@PathParam("studentId") long studentId) {
 		studentService.delete(studentId);
 	}
+	
+	public List<Student> getStudents(String query) {
+		return studentService.getStudentList(query);
+	}
+	
 }

@@ -34,29 +34,23 @@ public class AttendanceService {
 	
 	public List<Attendance> dailyAttendanceUnmarked(long sectionId, String dateAttendance){
 		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
-		List<Attendance> attendanceList = dailyAttendanceMarked(sectionId, dateAttendance);
-		List<Student> students = studentResource.getStudentSection(sectionId);
+		String query = "select * from student "
+				+ "where Id not in "
+				+ "(select StudentId from attendance where SectionId="+ sectionId +" and DateAttendance='" + dateAttendance + "')"
+				+ "and SectionId = " + sectionId;
+		List<Student> students = studentResource.getStudents(query);
 		for(Student student: students) {
-			boolean exist = false;
-			for(Attendance attendance: attendanceList){
-				if(attendance.getStudentId() == student.getId()){
-					exist = true;
-					break;
-				}
-			}
-			if(!exist){
-				Attendance att = new Attendance();
-				att.setId(0);
-				att.setSectionId(sectionId);
-				att.setStudentId(student.getId());
-				att.setStudentName(student.getStudentName());
-				att.setSubjectId(0);
-				att.setType("Daily");
-				att.setSession(0);
-				att.setDateAttendance(dateAttendance);
-				att.setTypeOfLeave("");
-				unMarkedAttendanceList.add(att);
-			}
+			Attendance att = new Attendance();
+			att.setId(0);
+			att.setSectionId(sectionId);
+			att.setStudentId(student.getId());
+			att.setStudentName(student.getStudentName());
+			att.setSubjectId(0);
+			att.setType("Daily");
+			att.setSession(0);
+			att.setDateAttendance(dateAttendance);
+			att.setTypeOfLeave("");
+			unMarkedAttendanceList.add(att);
 		}
 		return unMarkedAttendanceList;
 	}
@@ -92,29 +86,23 @@ public class AttendanceService {
 	
 	public List<Attendance> sessionAttendanceUnmarked(int session, long sectionId, String dateAttendance){
 		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
-		List<Attendance> attendanceList = sessionAttendanceMarked(session, sectionId, dateAttendance);
-		List<Student> students = studentResource.getStudentSection(sectionId);
+		String query = "select * from student "
+				+ "where Id not in "
+				+ "(select StudentId from attendance where SectionId="+ sectionId +" and Session="+session+" and DateAttendance='" + dateAttendance + "')"
+				+ "and SectionId = " + sectionId;
+		List<Student> students = studentResource.getStudents(query);
 		for(Student student: students) {
-			boolean exist = false;
-			for(Attendance attendance: attendanceList){
-				if(attendance.getStudentId() == student.getId()){
-					exist = true;
-					break;
-				}
-			}
-			if(!exist){
-				Attendance att = new Attendance();
-				att.setId(0);
-				att.setSectionId(sectionId);
-				att.setStudentId(student.getId());
-				att.setStudentName(student.getStudentName());
-				att.setSubjectId(0);
-				att.setType("Daily");
-				att.setSession(session);
-				att.setDateAttendance(dateAttendance);
-				att.setTypeOfLeave("");
-				unMarkedAttendanceList.add(att);
-			}
+			Attendance att = new Attendance();
+			att.setId(0);
+			att.setSectionId(sectionId);
+			att.setStudentId(student.getId());
+			att.setStudentName(student.getStudentName());
+			att.setSubjectId(0);
+			att.setType("Daily");
+			att.setSession(session);
+			att.setDateAttendance(dateAttendance);
+			att.setTypeOfLeave("");
+			unMarkedAttendanceList.add(att);
 		}
 		return unMarkedAttendanceList;
 	}
