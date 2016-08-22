@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import com.project.guldu.model.Credentials;
 import com.project.guldu.service.AdminService;
 
-@Path("/authentication")
+@Path("/login")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class AdminResource {
@@ -18,7 +18,7 @@ public class AdminResource {
 	AdminService adminService = new AdminService();
 	
 	@POST
-    @Produces("application/json")
+	@Produces("application/json")
 	public Response authenticate(Credentials credentials) {
 		return adminService.authenticateUser(credentials);
 	}

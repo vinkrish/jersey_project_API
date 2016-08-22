@@ -20,8 +20,12 @@ public class SchoolResource {
 
 	@GET
 	@Path("/{schoolId}")
-	public School getSchool(@PathParam("schoolId") long schoolId) {
-		return schoolService.getSchool(schoolId);
+	public School getSchoolById(@PathParam("schoolId") long schoolId) {
+		return schoolService.getSchoolById(schoolId);
+	}
+	
+	public School getSchoolByUsername(String username) {
+		return schoolService.getSchoolByUserName(username);
 	}
 
 	@POST

@@ -21,8 +21,17 @@ public class SchoolService {
 		}
 	}
 	
-	public School getSchool(long schoolId) {
+	public School getSchoolById(long schoolId) {
 		String query = "select * from school where Id = " + schoolId;
+		return getSchool(query);
+	}
+	
+	public School getSchoolByUserName(String username) {
+		String query = "select * from school where AdminUsername = '" + username + "'";
+		return getSchool(query);
+	}
+	
+	private School getSchool(String query){
 		School school = new School();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
