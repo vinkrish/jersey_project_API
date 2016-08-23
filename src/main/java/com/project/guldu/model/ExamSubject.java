@@ -4,6 +4,7 @@ public class ExamSubject {
 	private long id;
 	private long examId;
 	private long subjectId;
+	private String subjectName;
 	private float maximumMark;
 	private float failMark;
 	private float percentage;
@@ -25,6 +26,12 @@ public class ExamSubject {
 	}
 	public void setSubjectId(long subjectId) {
 		this.subjectId = subjectId;
+	}
+	public String getSubjectName() {
+		return subjectName;
+	}
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
 	}
 	public float getMaximumMark() {
 		return maximumMark;

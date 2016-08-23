@@ -29,6 +29,7 @@ public class ExamSubjectService {
 				examSubject.setId(rs.getLong("Id"));
 				examSubject.setExamId(rs.getLong("ExamId"));
 				examSubject.setSubjectId(rs.getLong("SubjectId"));
+				examSubject.setSubjectName(rs.getString("SubjectName"));
 				examSubject.setMaximumMark(rs.getFloat("MaximumMark"));
 				examSubject.setFailMark(rs.getFloat("FailMark"));
 				examSubject.setPercentage(rs.getFloat("Percentage"));
@@ -42,11 +43,12 @@ public class ExamSubjectService {
 	
 	public ExamSubject add(ExamSubject examSubject) {
 		try {
-			String query = "insert into exam(Id, ExamName, ClassId, Term, Type, Percentage) "
+			String query = "insert into exam_subject(Id, ExamId, SubjectId, SubjectName, MaximumMark, FailMark, Percentage) "
 					+ "values ("
 					+ examSubject.getId() + "," 
 					+ examSubject.getExamId() + ","
-					+ examSubject.getSubjectId() + ","
+					+ examSubject.getSubjectId() + ",'"
+					+ examSubject.getSubjectName() + "',"
 					+ examSubject.getMaximumMark() + ","
 					+ examSubject.getFailMark() + ","
 					+ examSubject.getPercentage() + ")";
@@ -60,7 +62,7 @@ public class ExamSubjectService {
 	
 	public void update(ExamSubject examSubject) {
 		try {
-			String query = "update exam set MaximumMark="+examSubject.getMaximumMark()+ ", FailMark="+ examSubject.getFailMark()+ ", Percentage="+examSubject.getPercentage() 
+			String query = "update exam_subject set MaximumMark="+examSubject.getMaximumMark()+ ", FailMark="+ examSubject.getFailMark()+ ", Percentage="+examSubject.getPercentage() 
 			+ " where Id=" + examSubject.getId();
 			System.out.println(query);
 			stmt.executeUpdate(query);

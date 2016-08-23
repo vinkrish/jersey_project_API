@@ -29,6 +29,7 @@ public class ExamSubjectGroupService {
 				esg.setId(rs.getLong("Id"));
 				esg.setExamId(rs.getLong("ExamId"));
 				esg.setSubjectGroupId(rs.getLong("SubjectGroupId"));
+				esg.setSubjectGroupName(rs.getString("SubjectGroupName"));
 				examSubjectGroups.add(esg);
 			}
 		} catch (SQLException e) {
@@ -39,11 +40,12 @@ public class ExamSubjectGroupService {
 	
 	public ExamSubjectGroup add(ExamSubjectGroup esg) {
 		try {
-			String query = "insert into exam_subject_group(Id, ExamId, SubjectGroupId) "
+			String query = "insert into exam_subject_group(Id, ExamId, SubjectGroupId, SubjectGroupName) "
 					+ "values ("
 					+ esg.getId() + "," 
 					+ esg.getExamId() + ","
-					+ esg.getSubjectGroupId() + "')"; 
+					+ esg.getSubjectGroupId() + ",'"
+					+ esg.getSubjectGroupName() + "')"; 
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			esg.setId(pk);
 		} catch (SQLException e) {
