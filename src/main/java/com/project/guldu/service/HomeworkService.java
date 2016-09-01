@@ -12,15 +12,16 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.project.guldu.model.Homework;
 import com.project.guldu.model.SubjectTeacher;
+import com.project.guldu.resources.SubjectTeacherResource;
 
 public class HomeworkService {
 	Statement stmt = null;
-	SubjectTeacherService sts;
+	SubjectTeacherResource str;
 
 	public HomeworkService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
-			sts = new SubjectTeacherService();
+			str = new SubjectTeacherResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -52,34 +53,28 @@ public class HomeworkService {
 	}
 	
 	public List<Homework> getUnHomeworkToday(long sectionId, String homeworkDate){
-		List<Homework> hwListExist = getHomeworkToday(sectionId, homeworkDate);
-		List<SubjectTeacher> stList = sts.getSubjectTeacher(sectionId);
+		String query = "select * from subject_teacher "
+				+ "where SubjectId not in "
+				+ "(select SubjectId from homework where SectionId = " + sectionId + " and HomeworkDate = '" + homeworkDate + "')"
+				+ "and SectionId = " + sectionId;
+		
+		List<Homework> homeworkList = getHomeworkToday(sectionId, homeworkDate);
+		List<SubjectTeacher> stList = str.getSubjectTeacherByQuery(query);
 		for(SubjectTeacher st: stList) {
-			boolean hwExist = false;
-			for(Homework homework: hwListExist){
-				if(homework.getSubjectId() == st.getSubjectId()){
-					hwExist = true;
-					break;
-				}
-			}
-			if(!hwExist){
-				Homework h = new Homework();
-				h.setId(0);
-				h.setSectionId(sectionId);
-				h.setSubjectId(st.getSubjectId());
-				h.setSubjectName(st.getSubjectName());
-				h.setHomeworkDate(homeworkDate);
-				h.setHomeworkMessage("");
-				hwListExist.add(h);
-			}
+			Homework h = new Homework();
+			h.setId(0);
+			h.setSectionId(sectionId);
+			h.setSubjectId(st.getSubjectId());
+			h.setSubjectName(st.getSubjectName());
+			h.setHomeworkDate(homeworkDate);
+			h.setHomeworkMessage("");
+			homeworkList.add(h);
 		}
-		return hwListExist;
+		return homeworkList;
 	}
 
 	public void addHomework(String homeworkStr) {
-		System.out.println(homeworkStr);
 		JSONArray homeworkArray = new JSONArray(homeworkStr);
-
 		for (int i = 0; i < homeworkArray.length(); i++) {
 			JSONObject homeworkJson = homeworkArray.getJSONObject(i);
 			Gson gson = new Gson();
@@ -122,7 +117,6 @@ public class HomeworkService {
 		try {
 			String query = "update homework set HomeworkMessage='"+ homework.getHomeworkMessage() 
 			+ "' where Id=" + homework.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -132,7 +126,6 @@ public class HomeworkService {
 	public void delete(long homeworkId){
 		try {
 			String query = "delete from homework where Id=" + homeworkId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -61,7 +61,6 @@ public class ClassSubjectGroupService {
 			+ ", SubjectGroupId = " + csg.getSubjectGroupId() 
 			+ ", SubjectGroupName = '" + csg.getSubjectGroupName() 
 			+ "' where Id=" + csg.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -71,7 +70,6 @@ public class ClassSubjectGroupService {
 	public void delete(long id){
 		try {
 			String query = "delete from class_subject_group where Id=" + id;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

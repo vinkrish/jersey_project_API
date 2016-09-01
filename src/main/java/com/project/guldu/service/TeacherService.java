@@ -6,10 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.project.guldu.model.Teacher;
 
 public class TeacherService {
@@ -48,35 +44,6 @@ public class TeacherService {
 			e.printStackTrace();
 		}
 		return teacherList;
-	}
-	
-	public void addTeacher(String teacherStr){
-		JSONArray teacherArray = new JSONArray(teacherStr);
-		for (int i = 0; i < teacherArray.length(); i++) {
-			JSONObject teacherJson = teacherArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Teacher teacher = gson.fromJson(teacherJson.toString(), Teacher.class);
-			try {
-				String query = "insert into teacher(Id, TeacherName, Image, Username, Password, SchoolId, "
-						+ "DateOfBirth, Mobile, Qualification, DateOfJoining, Gender, Email) "
-						+ "values ("
-						+ teacher.getId() + ",'" 
-						+ teacher.getTeacherName() + "','"
-						+ teacher.getImage() + "','"
-						+ teacher.getUsername() + "','"
-						+ teacher.getPassword() + "',"
-						+ teacher.getSchoolId() + ",'"
-						+ teacher.getDateOfBirth() + "','"
-						+ teacher.getMobile() + "','"
-						+ teacher.getQualification() + "','"
-						+ teacher.getDateOfJoining() + "','"
-						+ teacher.getGender() + "','"
-						+ teacher.getEmail() + "')";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public Teacher add(Teacher teacher) {

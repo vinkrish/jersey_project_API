@@ -37,13 +37,6 @@ public class StudentResource {
 	public List<Student> getStudentClass(@PathParam("classId") long classId) {
 		return studentService.getStudentClass(classId);
 	}
-
-	@Secured
-	@POST
-	@Path("list")
-	public void addStudent(String studentStr) {
-		studentService.addStudent(studentStr);
-	}
 	
 	@Secured
 	@POST

@@ -39,7 +39,6 @@ public class ExamSubjectResource {
 	
 	@Secured
 	@PUT
-	@Path("/{examSubjectId}")
 	public void update(ExamSubject exam) {
 		examSubjectService.update(exam);
 	}

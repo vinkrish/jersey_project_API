@@ -82,7 +82,6 @@ public class TimetableService {
 			+ ", TimingFrom = '" + timetable.getTimingFrom()
 			+ "', TimingTo = '" + timetable.getTimingTo()
 			+ "' where Id=" + timetable.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -92,7 +91,6 @@ public class TimetableService {
 	public void delete(long timetableId){
 		try {
 			String query = "delete from timetable where Id=" + timetableId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

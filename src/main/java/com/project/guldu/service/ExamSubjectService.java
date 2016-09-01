@@ -64,7 +64,6 @@ public class ExamSubjectService {
 		try {
 			String query = "update exam_subject set MaximumMark="+examSubject.getMaximumMark()+ ", FailMark="+ examSubject.getFailMark()+ ", Percentage="+examSubject.getPercentage() 
 			+ " where Id=" + examSubject.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,7 +73,6 @@ public class ExamSubjectService {
 	public void delete(long id){
 		try {
 			String query = "delete from exam_subject where Id=" + id;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

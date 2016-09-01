@@ -6,10 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.project.guldu.model.SubjectTeacher;
 
 public class SubjectTeacherService {
@@ -25,6 +21,10 @@ public class SubjectTeacherService {
 	
 	public List<SubjectTeacher> getSubjectTeacher(long sectionId) {
 		String query = "select * from subject_teacher where SectionId = " + sectionId;
+		return getSubjectTeacherList(query);
+	}
+	
+	public List<SubjectTeacher> getSubjectTeacherList(String query){
 		List<SubjectTeacher> classList = new ArrayList<SubjectTeacher>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
@@ -42,26 +42,6 @@ public class SubjectTeacherService {
 			e.printStackTrace();
 		}
 		return classList;
-	}
-	
-	public void addSubjectTeacher(String subjectTeacherStr) {
-		JSONArray subjectTeacherArray = new JSONArray(subjectTeacherStr);
-		for (int i = 0; i < subjectTeacherArray.length(); i++) {
-			JSONObject subjectTeacherJson = subjectTeacherArray.getJSONObject(i);
-			Gson gson = new Gson();
-			SubjectTeacher subjectTeacher = gson.fromJson(subjectTeacherJson.toString(), SubjectTeacher.class);
-			try {
-			String query = "insert into subject_teacher(Id, SectionId, SubjectId, TeacherId) "
-						+ "values (" 
-						+ subjectTeacher.getId() + "," 
-						+ subjectTeacher.getSectionId() + ","
-						+ subjectTeacher.getSubjectId() + ","
-						+ subjectTeacher.getTeacherId() + ")";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public SubjectTeacher add(SubjectTeacher subjectTeacher) {
@@ -88,7 +68,6 @@ public class SubjectTeacherService {
 			+ "', SubjectId = " + subjectTeacher.getSubjectId() 
 			+ ", SubjectName = '" + subjectTeacher.getSubjectName()
 			+ "' where Id=" + subjectTeacher.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -98,7 +77,6 @@ public class SubjectTeacherService {
 	public void delete(long id){
 		try {
 			String query = "delete from subject_teacher where Id=" + id;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

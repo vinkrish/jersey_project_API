@@ -6,10 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.project.guldu.model.Clas;
 
 public class ClassService {
@@ -42,26 +38,6 @@ public class ClassService {
 		return classList;
 	}
 	
-	public void addClasses(String classStr) {
-		JSONArray classArray = new JSONArray(classStr);
-		for (int i = 0; i < classArray.length(); i++) {
-			JSONObject classJson = classArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Clas clas = gson.fromJson(classJson.toString(), Clas.class);
-			try {
-				String query = "insert into class(Id, ClassName, SchoolId, AttendanceType) "
-						+ "values ("
-						+ clas.getId() + ",'" 
-						+ clas.getClassName() + "',"
-						+ clas.getSchoolId() + ",'" 
-						+ clas.getAttendanceType() + "')";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	public Clas add(Clas clas) {
 		try {
 			String query = "insert into class(Id, ClassName, SchoolId, AttendanceType) "
@@ -82,7 +58,6 @@ public class ClassService {
 		try {
 			String query = "update class set ClassName='"+clas.getClassName() + "', AttendanceType='" + clas.getAttendanceType() 
 			+ "' where Id=" + clas.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -92,7 +67,6 @@ public class ClassService {
 	public void delete(long classId){
 		try {
 			String query = "delete from class where Id=" + classId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

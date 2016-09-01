@@ -58,7 +58,6 @@ public class SubjectGroupSubjectService {
 	public void delete(long id){
 		try {
 			String query = "delete from subject_group_subject where Id=" + id;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -38,14 +38,6 @@ public class SubjectResource {
 		return subjectService.getClassSubjects(classId);
 	}
 	
-	
-	@Secured
-	@POST
-	@Path("list")
-	public void addSubject(String subjectStr) {
-		subjectService.addSubject(subjectStr);
-	}
-	
 	@Secured
 	@POST
 	public Subject add(Subject subject) {

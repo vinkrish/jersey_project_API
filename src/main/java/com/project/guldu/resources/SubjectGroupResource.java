@@ -30,13 +30,6 @@ public class SubjectGroupResource {
 	public List<SubjectGroup> getSubjectGroupList(@PathParam("schoolId") long schoolId) {
 		return subjectGroupService.getSubjectGroupList(schoolId);
 	}
-
-	@Secured
-	@POST
-	@Path("list")
-	public void addSubjectGroup(String subjectGroupStr) {
-		subjectGroupService.addSubjectGroup(subjectGroupStr);
-	}
 	
 	@Secured
 	@POST

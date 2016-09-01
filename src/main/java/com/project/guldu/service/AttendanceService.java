@@ -181,7 +181,6 @@ public class AttendanceService {
 		try {
 			String query = "update attendance set Type= '"+ attendance.getType() +"', Session="+ attendance.getSession()
 			+ ", TypeOfLeave = '"+ attendance.getTypeOfLeave() +"' where Id=" + attendance.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -191,7 +190,6 @@ public class AttendanceService {
 	public void delete(long attendanceId){
 		try {
 			String query = "delete from attendance where Id=" + attendanceId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

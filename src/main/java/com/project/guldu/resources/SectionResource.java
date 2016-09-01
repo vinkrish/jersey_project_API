@@ -33,13 +33,6 @@ public class SectionResource {
 
 	@Secured
 	@POST
-	@Path("list")
-	public void addSection(String sectionStr) {
-		sectionService.addSection(sectionStr);
-	}
-	
-	@Secured
-	@POST
 	public Section add(Section section) {
 		return sectionService.add(section);
 	}

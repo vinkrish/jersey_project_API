@@ -6,10 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.project.guldu.model.Section;
 
 public class SectionService {
@@ -42,26 +38,6 @@ public class SectionService {
 		return sectionList;
 	}
 	
-	public void addSection(String sectionStr) {
-		JSONArray sectionArray = new JSONArray(sectionStr);
-		for (int i = 0; i < sectionArray.length(); i++) {
-			JSONObject sectionJson = sectionArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Section section = gson.fromJson(sectionJson.toString(), Section.class);
-			try {
-				String query = "insert into section(SectionId, SectionName, ClassId, TeacherId) "
-						+ "values (" 
-						+ section.getId() + ",'" 
-						+ section.getSectionName() + "',"
-						+ section.getClassId() + ","
-						+ section.getTeacherId() + ")";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	public Section add(Section section) {
 		try {
 			String query = "insert into section(Id, SectionName, ClassId, TeacherId) "
@@ -83,7 +59,6 @@ public class SectionService {
 			String query = "update section set SectionName = '" + section.getSectionName() 
 			+ "', ClassId = " + section.getClassId() + ", TeacherId = " + section.getTeacherId() 
 			+ " where Id=" + section.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,7 +68,6 @@ public class SectionService {
 	public void delete(long sectionId){
 		try {
 			String query = "delete from section where Id=" + sectionId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -30,14 +30,7 @@ public class SubjectTeacherResource {
 	public List<SubjectTeacher> getSubjectTeacher (@PathParam("sectionId") long sectionId) {
 		return subjectTeacherService.getSubjectTeacher(sectionId);
 	}
-	
-	@Secured
-	@POST
-	@Path("list")
-	public void addSubjectTeacher(String subjectTeacherStr) {
-		subjectTeacherService.addSubjectTeacher(subjectTeacherStr);
-	}
-	
+
 	@Secured
 	@POST
 	public SubjectTeacher add(SubjectTeacher subjectTeacher) {
@@ -56,6 +49,10 @@ public class SubjectTeacherResource {
 	@Path("/{id}")
 	public void delete(@PathParam("id") long id) {
 		subjectTeacherService.delete(id);
+	}
+	
+	public List<SubjectTeacher> getSubjectTeacherByQuery(String query) {
+		return subjectTeacherService.getSubjectTeacherList(query);
 	}
 	
 }

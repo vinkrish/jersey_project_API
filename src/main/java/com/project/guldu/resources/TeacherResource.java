@@ -33,13 +33,6 @@ public class TeacherResource {
 	
 	@Secured
 	@POST
-	@Path("/list")
-	public void addTeacher(String teacherStr) {
-		teacherService.addTeacher(teacherStr);
-	}
-	
-	@Secured
-	@POST
 	public Teacher add(Teacher teacher) {
 		return teacherService.add(teacher);
 	}

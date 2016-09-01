@@ -6,10 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.project.guldu.model.Student;
 
 public class StudentService {
@@ -68,44 +64,6 @@ public class StudentService {
 		return studentList;
 	}
 	
-	public void addStudent (String studentStr) {
-		JSONArray studentArray = new JSONArray(studentStr);
-		for (int i = 0; i < studentArray.length(); i++) {
-			JSONObject studentJson = studentArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Student student = gson.fromJson(studentJson.toString(), Student.class);
-			try {
-				String query = "insert into student(Id, StudentName, SectionId, "
-						+ "AdmissionNo, RollNo, Username, Password, Image, FatherName, MotherName, DateOfBirth, "
-						+ "Gender, Email, Mobile1, Mobile2, Street, City, District, State, Pincode) "
-						+ "values (" 
-						+ student.getId() + ",'" 
-						+ student.getStudentName() + "',"
-						+ student.getSectionId()  + ",'"
-						+ student.getAdmissionNo() + "',"
-						+ student.getRollNo() + ",'"
-						+ student.getUsername() + "','"
-						+ student.getPassword() + "','"
-						+ student.getImage() + "','"
-						+ student.getFatherName() + "','"
-						+ student.getMotherName() + "','"
-						+ student.getDateOfBirth() + "','"
-						+ student.getGender() + "','"
-						+ student.getEmail() + "','"
-						+ student.getMobile1() + "','"
-						+ student.getMobile2() + "','"
-						+ student.getStreet() + "','"
-						+ student.getCity() + "','"
-						+ student.getDistrict() + "','"
-						+ student.getState() + "','"
-						+ student.getPincode() + "')";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	public Student add(Student student) {
 		try {
 			String query = "insert into student(StudentId, StudentName, SchoolId, SectionId, "
@@ -161,7 +119,6 @@ public class StudentService {
 			+ "', State = '" + student.getState() 
 			+ "', Pincode = '" + student.getPincode() 
 			+ "' where Id=" + student.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -171,7 +128,6 @@ public class StudentService {
 	public void delete(long studentId){
 		try {
 			String query = "delete from student where Id=" + studentId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

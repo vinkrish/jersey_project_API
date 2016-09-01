@@ -62,7 +62,6 @@ public class ExamService {
 		try {
 			String query = "update exam set ExamName='"+exam.getExamName()+ "', Type='"+ exam.getType()+ "', Percentage="+exam.getPercentage() 
 			+ " where Id=" + exam.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -72,7 +71,6 @@ public class ExamService {
 	public void delete(long examId){
 		try {
 			String query = "delete from exam where Id=" + examId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

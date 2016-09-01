@@ -6,10 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.project.guldu.model.ClassSubjectGroup;
 import com.project.guldu.model.Subject;
 import com.project.guldu.model.SubjectGroupSubject;
@@ -65,28 +61,6 @@ public class SubjectService {
 		return subjectList;
 	}
 	
-	public void addSubject(String subjectStr){
-		JSONArray subjectArray = new JSONArray(subjectStr);
-		for (int i = 0; i < subjectArray.length(); i++) {
-			JSONObject subjectJson = subjectArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Subject subject = gson.fromJson(subjectJson.toString(), Subject.class);
-			try {
-				String query = "insert into subject(Id, SchoolId, SubjectName, PartitionType, TheorySubjectId, PracticalSubjectId) "
-						+ "values ("
-						+ subject.getId() + ","
-						+ subject.getSchoolId() + ",'"
-						+ subject.getSubjectName() + "',"
-						+ subject.getPartitionType() + ","
-						+ subject.getTheorySubjectId() + ","
-						+ subject.getPracticalSubjectId() + ")";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	public Subject add(Subject subject){
 		try {
 			String query = "insert into subject(Id, SchoolId, SubjectName, PartitionType, TheorySubjectId, PracticalSubjectId) "
@@ -111,7 +85,6 @@ public class SubjectService {
 			+"', PartitionType = "+ subject.getPartitionType() 
 			+ ", TheorySubjectId = " + subject.getTheorySubjectId() 
 			+ ", PracticalSubjectId = " + subject.getPracticalSubjectId() + " where Id=" + subject.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -121,7 +94,6 @@ public class SubjectService {
 	public void delete(long subjectId) {
 		try {
 			String query = "delete from subject where Id=" + subjectId;
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

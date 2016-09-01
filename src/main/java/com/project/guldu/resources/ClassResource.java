@@ -33,12 +33,6 @@ public class ClassResource {
 
 	@Secured
 	@POST
-	@Path("/list")
-	public void addClasses(String classStr) {
-		classService.addClasses(classStr);
-	}
-	@Secured
-	@POST
 	public Clas add(Clas clas) {
 		return classService.add(clas);
 	}
