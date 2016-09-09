@@ -10,6 +10,7 @@ public class Activity {
 	private float weightage;
 	private int calculation;
 	private float activityAvg;
+	private int orders;
 	
 	public long getId() {
 		return id;
@@ -64,6 +65,12 @@ public class Activity {
 	}
 	public void setActivityAvg(float activityAvg) {
 		this.activityAvg = activityAvg;
+	}
+	public int getOrders() {
+		return orders;
+	}
+	public void setOrders(int orders) {
+		this.orders = orders;
 	}
 	
 }

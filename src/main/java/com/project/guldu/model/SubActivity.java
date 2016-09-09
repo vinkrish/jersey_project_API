@@ -8,6 +8,7 @@ public class SubActivity {
 	private float weightage;
 	private int calculation;
 	private float subActivityAvg;
+	private int orders;
 	
 	public long getId() {
 		return id;
@@ -50,6 +51,12 @@ public class SubActivity {
 	}
 	public void setSubActivityAvg(float subActivityAvg) {
 		this.subActivityAvg = subActivityAvg;
+	}
+	public int getOrders() {
+		return orders;
+	}
+	public void setOrders(int orders) {
+		this.orders = orders;
 	}
 	
 }

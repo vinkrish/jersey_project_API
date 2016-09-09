@@ -20,7 +20,9 @@ public class ActivityService {
 	}
 	
 	public List<Activity> getActivities(long sectionId, long examId, long subjectId) {
-		String query = "select * from activity where SectionId = " + sectionId + " and ExamId = " + examId + " and SubjectId = " + subjectId;
+		String query = "select * from activity "
+				+ "where "
+				+ "SectionId = " + sectionId + " and ExamId = " + examId + " and SubjectId = " + subjectId + " order by Orders";
 		List<Activity> activities = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
@@ -35,6 +37,7 @@ public class ActivityService {
 				activity.setWeightage(rs.getFloat("Weightage"));
 				activity.setCalculation(rs.getInt("Calculation"));
 				activity.setActivityAvg(rs.getFloat("ActivityAvg"));
+				activity.setOrders(rs.getInt("Orders"));
 				activities.add(activity);
 			}
 		} catch (SQLException e) {
@@ -45,7 +48,7 @@ public class ActivityService {
 	
 	public Activity add(Activity activity) {
 		try {
-			String query = "insert into activity(Id, SectionId, ExamId, SubjectId, ActivityName, MaximumMark, Weightage, Calculation, ActivityAvg) "
+			String query = "insert into activity(Id, SectionId, ExamId, SubjectId, ActivityName, MaximumMark, Weightage, Calculation, ActivityAvg, Orders) "
 					+ "values ("
 					+ activity.getId() + "," 
 					+ activity.getSectionId() + ","
@@ -55,7 +58,8 @@ public class ActivityService {
 					+ activity.getMaximumMark() + ","
 					+ activity.getWeightage() + ","
 					+ activity.getCalculation() + ","
-					+ activity.getActivityAvg() + ")";
+					+ activity.getActivityAvg() + ","
+					+ activity.getOrders() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			activity.setId(pk);
 		} catch (SQLException e) {
@@ -68,10 +72,11 @@ public class ActivityService {
 		try {
 			String query = "update activity set"
 					+ " ActivityName = '" + activity.getActivityName()
-					+ "', MaximumMark="+ activity.getMaximumMark() 
-					+ ", Weightage="+ activity.getWeightage() 
-					+ ", Calculation="+ activity.getCalculation()
-					+ " where Id=" + activity.getId();
+					+ "', MaximumMark = " + activity.getMaximumMark() 
+					+ ", Weightage = " + activity.getWeightage() 
+					+ ", Calculation = " + activity.getCalculation()
+					+ ", Orders = " + activity.getOrders()
+					+ " where Id = " + activity.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

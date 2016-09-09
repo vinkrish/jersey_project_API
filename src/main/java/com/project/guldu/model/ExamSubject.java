@@ -8,6 +8,7 @@ public class ExamSubject {
 	private float maximumMark;
 	private float failMark;
 	private float percentage;
+	private int orders;
 	
 	public long getId() {
 		return id;
@@ -50,6 +51,12 @@ public class ExamSubject {
 	}
 	public void setPercentage(float percentage) {
 		this.percentage = percentage;
+	}
+	public int getOrders() {
+		return orders;
+	}
+	public void setOrders(int orders) {
+		this.orders = orders;
 	}
 	
 }

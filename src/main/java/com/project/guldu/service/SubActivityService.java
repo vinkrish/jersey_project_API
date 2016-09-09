@@ -20,7 +20,7 @@ public class SubActivityService {
 	}
 	
 	public List<SubActivity> getSubActivities(long activityId) {
-		String query = "select * from subactivity where ActivityId = " + activityId;
+		String query = "select * from subactivity where ActivityId = " + activityId + " order by Orders";
 		List<SubActivity> subactivities = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
@@ -33,6 +33,7 @@ public class SubActivityService {
 				subactivity.setWeightage(rs.getFloat("Weightage"));
 				subactivity.setCalculation(rs.getInt("Calculation"));
 				subactivity.setSubActivityAvg(rs.getFloat("SubActivityAvg"));
+				subactivity.setOrders(rs.getInt("Orders"));
 				subactivities.add(subactivity);
 			}
 		} catch (SQLException e) {
@@ -43,7 +44,7 @@ public class SubActivityService {
 	
 	public SubActivity add(SubActivity subactivity) {
 		try {
-			String query = "insert into subactivity(Id, ActivityId, SubActivityName, MaximumMark, Weightage, Calculation, SubActivityAvg) "
+			String query = "insert into subactivity(Id, ActivityId, SubActivityName, MaximumMark, Weightage, Calculation, SubActivityAvg, Orders)"
 					+ "values ("
 					+ subactivity.getId() + "," 
 					+ subactivity.getActivityId() + ",'"
@@ -51,7 +52,8 @@ public class SubActivityService {
 					+ subactivity.getMaximumMark() + ","
 					+ subactivity.getWeightage() + ","
 					+ subactivity.getCalculation() + ","
-					+ subactivity.getSubActivityAvg() + ")";
+					+ subactivity.getSubActivityAvg() + ","
+					+ subactivity.getOrders() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			subactivity.setId(pk);
 		} catch (SQLException e) {
@@ -64,10 +66,11 @@ public class SubActivityService {
 		try {
 			String query = "update subactivity set"
 					+ " SubActivityName = '" + subactivity.getSubActivityName()
-					+ "', MaximumMark="+ subactivity.getMaximumMark() 
-					+ ", Weightage="+ subactivity.getWeightage() 
-					+ ", Calculation="+ subactivity.getCalculation()
-					+ " where Id=" + subactivity.getId();
+					+ "', MaximumMark = " + subactivity.getMaximumMark() 
+					+ ", Weightage = " + subactivity.getWeightage() 
+					+ ", Calculation = " + subactivity.getCalculation()
+					+ ", Orders = " + subactivity.getOrders()
+					+ " where Id = " + subactivity.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

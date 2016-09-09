@@ -20,7 +20,7 @@ public class ExamSubjectService {
 	}
 	
 	public List<ExamSubject> getExamSubjects(long examId) {
-		String query = "select * from exam_subject where ExamId = " + examId;
+		String query = "select * from exam_subject where ExamId = " + examId + " order by Orders";
 		List<ExamSubject> examSubjects = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
@@ -33,6 +33,7 @@ public class ExamSubjectService {
 				examSubject.setMaximumMark(rs.getFloat("MaximumMark"));
 				examSubject.setFailMark(rs.getFloat("FailMark"));
 				examSubject.setPercentage(rs.getFloat("Percentage"));
+				examSubject.setOrders(rs.getInt("Orders"));
 				examSubjects.add(examSubject);
 			}
 		} catch (SQLException e) {
@@ -43,7 +44,7 @@ public class ExamSubjectService {
 	
 	public ExamSubject add(ExamSubject examSubject) {
 		try {
-			String query = "insert into exam_subject(Id, ExamId, SubjectId, SubjectName, MaximumMark, FailMark, Percentage) "
+			String query = "insert into exam_subject(Id, ExamId, SubjectId, SubjectName, MaximumMark, FailMark, Percentage, Orders) "
 					+ "values ("
 					+ examSubject.getId() + "," 
 					+ examSubject.getExamId() + ","
@@ -51,7 +52,8 @@ public class ExamSubjectService {
 					+ examSubject.getSubjectName() + "',"
 					+ examSubject.getMaximumMark() + ","
 					+ examSubject.getFailMark() + ","
-					+ examSubject.getPercentage() + ")";
+					+ examSubject.getPercentage() + ","
+					+ examSubject.getOrders() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			examSubject.setId(pk);
 		} catch (SQLException e) {
@@ -62,8 +64,12 @@ public class ExamSubjectService {
 	
 	public void update(ExamSubject examSubject) {
 		try {
-			String query = "update exam_subject set MaximumMark="+examSubject.getMaximumMark()+ ", FailMark="+ examSubject.getFailMark()+ ", Percentage="+examSubject.getPercentage() 
-			+ " where Id=" + examSubject.getId();
+			String query = "update exam_subject set "
+					+ "MaximumMark = " +examSubject.getMaximumMark() 
+					+ ", FailMark = " + examSubject.getFailMark() 
+					+ ", Percentage = " +examSubject.getPercentage() 
+					+ ", Orders = " + examSubject.getOrders()
+					+ " where Id = " + examSubject.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
