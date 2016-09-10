@@ -1,9 +1,8 @@
 package com.project.guldu.model;
 
-public class Mark {
+public class SubActivityScore {
 	private long id;
-	private long examId;
-	private long subjectId;
+	private long subActivityId;
 	private long studentId;
 	private float mark;
 	private String grade;
@@ -14,17 +13,11 @@ public class Mark {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getExamId() {
-		return examId;
+	public long getSubActivityId() {
+		return subActivityId;
 	}
-	public void setExamId(long examId) {
-		this.examId = examId;
-	}
-	public long getSubjectId() {
-		return subjectId;
-	}
-	public void setSubjectId(long subjectId) {
-		this.subjectId = subjectId;
+	public void setSubActivityId(long subActivityId) {
+		this.subActivityId = subActivityId;
 	}
 	public long getStudentId() {
 		return studentId;

@@ -4,7 +4,7 @@ public class SubjectStudent {
 	private long id;
 	private long sectionId;
 	private long subjectId;
-	private long studentId;
+	private String studentIds;
 
 	public long getId() {
 		return id;
@@ -30,12 +30,12 @@ public class SubjectStudent {
 		this.subjectId = subjectId;
 	}
 
-	public long getStudentId() {
-		return studentId;
+	public String getStudentIds() {
+		return studentIds;
 	}
 
-	public void setStudentId(long studentId) {
-		this.studentId = studentId;
+	public void setStudentIds(String studentIds) {
+		this.studentIds = studentIds;
 	}
 
 }
