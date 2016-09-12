@@ -1,5 +1,7 @@
 package com.project.guldu.resources;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,22 +26,29 @@ public class SubjectStudentResource {
 	@Secured
 	@GET
 	@Path("section/{sectionId}/subject/{subjectId}")
-	public SubjectStudent getSubjectGroupList(@PathParam("sectionId") long sectionId,
+	public SubjectStudent getSubjectGroup(@PathParam("sectionId") long sectionId,
 			@PathParam("subjectId") long subjectId) {
 		return subjectStudentService.getSubjectStudents(sectionId, subjectId);
 	}
 	
 	@Secured
+	@GET
+	@Path("section/{sectionId}/subjectGroup/{subjectGroupId}")
+	public List<SubjectStudent> getSubjectGroupList(@PathParam("sectionId") long sectionId,
+			@PathParam("subjectGroupId") long subjectGroupId) {
+		return subjectStudentService.getSubjectStudentsList(sectionId, subjectGroupId);
+	}
+	
+	@Secured
 	@POST
-	public SubjectStudent add(SubjectStudent subjectStudent) {
-		return subjectStudentService.add(subjectStudent);
+	public void add(List<SubjectStudent> subjectStudents) {
+		subjectStudentService.add(subjectStudents);
 	}
 	
 	@Secured
 	@PUT
-	@Path("/{subjectStudentId}")
-	public void update(SubjectStudent subjectStudent) {
-		subjectStudentService.update(subjectStudent);
+	public void update(List<SubjectStudent> subjectStudents) {
+		subjectStudentService.update(subjectStudents);
 	}
 
 }
