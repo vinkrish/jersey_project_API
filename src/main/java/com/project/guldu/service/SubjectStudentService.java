@@ -21,7 +21,7 @@ public class SubjectStudentService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public SubjectStudent getSubjectStudents(long sectionId, long subjectId) {
 		String query = "select * from subject_student where SectionId = " + sectionId + " and SubjectId = " + subjectId;
 		SubjectStudent ss = new SubjectStudent();
@@ -38,12 +38,13 @@ public class SubjectStudentService {
 		}
 		return ss;
 	}
-	
+
 	public List<SubjectStudent> getSubjectStudentsList(long sectionId, long subjectGroupId) {
 		List<SubjectStudent> ssList = new ArrayList<>();
 		List<SubjectGroupSubject> sgsList = sgsService.getSubjectGroupSubjects(subjectGroupId);
 		for(SubjectGroupSubject sgs: sgsList) {
-			String query = "select * from subject_student where SectionId = " + sectionId + " and SubjectId = " + sgs.getSubjectId();
+			String query = "select * from subject_student "
+					+ "where SectionId = " + sectionId + " and SubjectId = " + sgs.getSubjectId();
 			try {
 				ResultSet rs = stmt.executeQuery(query);
 				while (rs.next()){
@@ -60,7 +61,7 @@ public class SubjectStudentService {
 		}
 		return ssList;
 	}
-	
+
 	public void add(List<SubjectStudent> ssList) {
 		for (SubjectStudent ss: ssList) {
 			try {
@@ -77,7 +78,7 @@ public class SubjectStudentService {
 			}
 		}
 	}
-	
+
 	public void update(List<SubjectStudent> ssList) {
 		for(SubjectStudent ss: ssList) {
 			try {
@@ -88,6 +89,30 @@ public class SubjectStudentService {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void recent(List<SubjectStudent> ssList) {
+		try{
+			for (SubjectStudent ss: ssList) {
+				SubjectStudent temp = getSubjectStudents(ss.getSectionId(), ss.getSubjectId());
+				if(temp.getStudentIds() == null) {
+					String query = "insert into subject_student(Id, SectionId, SubjectId, StudentIds) "
+							+ "values (" 
+							+ ss.getId() + ","
+							+ ss.getSectionId() + ","
+							+ ss.getSubjectId() + ",'"
+							+ ss.getStudentIds() + "')";
+					stmt.executeUpdate(query);
+				} else {
+					String query = "update subject_student set StudentIds = '" + ss.getStudentIds()  
+					+ "' where SectionId=" + ss.getSectionId() + " and SubjectId = "  + ss.getSubjectId();
+					stmt.executeUpdate(query);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

@@ -50,5 +50,12 @@ public class SubjectStudentResource {
 	public void update(List<SubjectStudent> subjectStudents) {
 		subjectStudentService.update(subjectStudents);
 	}
+	
+	@Secured
+	@POST
+	@Path("recent")
+	public void recent(List<SubjectStudent> subjectStudent){
+		subjectStudentService.recent(subjectStudent);
+	}
 
 }
