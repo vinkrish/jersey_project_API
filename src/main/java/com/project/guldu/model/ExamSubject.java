@@ -5,6 +5,7 @@ public class ExamSubject {
 	private long examId;
 	private long subjectId;
 	private String subjectName;
+	private String type;
 	private float maximumMark;
 	private float failMark;
 	private float percentage;
@@ -57,6 +58,12 @@ public class ExamSubject {
 	}
 	public void setOrders(int orders) {
 		this.orders = orders;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }
