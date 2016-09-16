@@ -6,6 +6,7 @@ public class Activity {
 	private long examId;
 	private long subjectId;
 	private String activityName;
+	private String type;
 	private float maximumMark;
 	private float weightage;
 	private int calculation;
@@ -71,6 +72,12 @@ public class Activity {
 	}
 	public void setOrders(int orders) {
 		this.orders = orders;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

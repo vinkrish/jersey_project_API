@@ -27,7 +27,7 @@ public class SubjectService {
 	
 	public List<Subject> getSubjectList(long schoolId) {
 		String query ="select * from subject where SchoolId = " + schoolId;
-		List<Subject> subjectList = new ArrayList<>();
+		List<Subject> subjects = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -38,12 +38,43 @@ public class SubjectService {
 				subject.setPartitionType(rs.getInt("partitionType"));
 				subject.setTheorySubjectId(rs.getLong("TheorySubjectId"));
 				subject.setPracticalSubjectId(rs.getLong("PracticalSubjectId"));
-				subjectList.add(subject);
+				subjects.add(subject);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return subjectList;
+		return subjects;
+	}
+	
+	public Subject getSubject(String query) {
+		Subject subject = new Subject();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				subject.setId(rs.getLong("Id"));
+				subject.setSchoolId(rs.getLong("SchoolId"));
+				subject.setSubjectName(rs.getString("SubjectName"));
+				subject.setPartitionType(rs.getInt("partitionType"));
+				subject.setTheorySubjectId(rs.getLong("TheorySubjectId"));
+				subject.setPracticalSubjectId(rs.getLong("PracticalSubjectId"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return subject;
+	}
+	
+	public List<Subject> getPartitionSubjects(long subjectId) {
+		String query ="select * from subject where Id = " + subjectId;
+		List<Subject> subjects = new ArrayList<>();
+		Subject parentSubject = getSubject(query);
+		if(parentSubject.getPartitionType() == 1) {
+			String theorySubject ="select * from subject where Id = " + parentSubject.getTheorySubjectId();
+			subjects.add(getSubject(theorySubject));
+			String practicalSubject ="select * from subject where Id = " + parentSubject.getPracticalSubjectId();
+			subjects.add(getSubject(practicalSubject));
+		}
+		return subjects;
 	}
 	
 	public List<Subject> getClassSubjects(long classId) {

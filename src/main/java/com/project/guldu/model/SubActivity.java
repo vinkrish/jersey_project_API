@@ -4,6 +4,7 @@ public class SubActivity {
 	private long id;
 	private long activityId;
 	private String subActivityName;
+	private String type;
 	private float maximumMark;
 	private float weightage;
 	private int calculation;
@@ -57,6 +58,12 @@ public class SubActivity {
 	}
 	public void setOrders(int orders) {
 		this.orders = orders;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

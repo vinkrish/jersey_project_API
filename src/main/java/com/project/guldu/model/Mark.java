@@ -4,6 +4,7 @@ public class Mark {
 	private long id;
 	private long examId;
 	private long subjectId;
+	private long sectionId;
 	private long studentId;
 	private float mark;
 	private String grade;
@@ -25,6 +26,12 @@ public class Mark {
 	}
 	public void setSubjectId(long subjectId) {
 		this.subjectId = subjectId;
+	}
+	public long getSectionId() {
+		return sectionId;
+	}
+	public void setSectionId(long sectionId) {
+		this.sectionId = sectionId;
 	}
 	public long getStudentId() {
 		return studentId;

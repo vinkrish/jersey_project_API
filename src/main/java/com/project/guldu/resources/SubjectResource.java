@@ -39,6 +39,13 @@ public class SubjectResource {
 	}
 	
 	@Secured
+	@GET
+	@Path("/{subjectId}")
+	public List<Subject> getPartitionSubjects(@PathParam("subjectId") long subjectId) {
+		return subjectService.getPartitionSubjects(subjectId);
+	}
+	
+	@Secured
 	@POST
 	public Subject add(Subject subject) {
 		return subjectService.add(subject);

@@ -33,6 +33,7 @@ public class ActivityService {
 				activity.setExamId(rs.getLong("ExamId"));
 				activity.setSubjectId(rs.getLong("SubjectId"));
 				activity.setActivityName(rs.getString("ActivityName"));
+				activity.setType(rs.getString("Type"));
 				activity.setMaximumMark(rs.getFloat("MaximumMark"));
 				activity.setWeightage(rs.getFloat("Weightage"));
 				activity.setCalculation(rs.getInt("Calculation"));
@@ -48,13 +49,14 @@ public class ActivityService {
 	
 	public Activity add(Activity activity) {
 		try {
-			String query = "insert into activity(Id, SectionId, ExamId, SubjectId, ActivityName, MaximumMark, Weightage, Calculation, ActivityAvg, Orders) "
+			String query = "insert into activity(Id, SectionId, ExamId, SubjectId, ActivityName, Type, MaximumMark, Weightage, Calculation, ActivityAvg, Orders) "
 					+ "values ("
 					+ activity.getId() + "," 
 					+ activity.getSectionId() + ","
 					+ activity.getExamId() + ","
 					+ activity.getSubjectId() + ",'"
-					+ activity.getActivityName() + "',"
+					+ activity.getActivityName() + "','"
+					+ activity.getType() + "',"
 					+ activity.getMaximumMark() + ","
 					+ activity.getWeightage() + ","
 					+ activity.getCalculation() + ","
@@ -72,6 +74,7 @@ public class ActivityService {
 		try {
 			String query = "update activity set"
 					+ " ActivityName = '" + activity.getActivityName()
+					+ "', Type = '" + activity.getType()
 					+ "', MaximumMark = " + activity.getMaximumMark() 
 					+ ", Weightage = " + activity.getWeightage() 
 					+ ", Calculation = " + activity.getCalculation()

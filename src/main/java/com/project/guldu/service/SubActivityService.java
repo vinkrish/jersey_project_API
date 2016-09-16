@@ -29,6 +29,7 @@ public class SubActivityService {
 				subactivity.setId(rs.getLong("Id"));
 				subactivity.setActivityId(rs.getLong("ActivityId"));
 				subactivity.setSubActivityName(rs.getString("SubActivityName"));
+				subactivity.setType(rs.getString("Type"));
 				subactivity.setMaximumMark(rs.getFloat("MaximumMark"));
 				subactivity.setWeightage(rs.getFloat("Weightage"));
 				subactivity.setCalculation(rs.getInt("Calculation"));
@@ -44,11 +45,12 @@ public class SubActivityService {
 	
 	public SubActivity add(SubActivity subactivity) {
 		try {
-			String query = "insert into subactivity(Id, ActivityId, SubActivityName, MaximumMark, Weightage, Calculation, SubActivityAvg, Orders)"
+			String query = "insert into subactivity(Id, ActivityId, SubActivityName, Type, MaximumMark, Weightage, Calculation, SubActivityAvg, Orders)"
 					+ "values ("
 					+ subactivity.getId() + "," 
 					+ subactivity.getActivityId() + ",'"
-					+ subactivity.getSubActivityName() + "',"
+					+ subactivity.getSubActivityName() + "','"
+					+ subactivity.getType() + "',"
 					+ subactivity.getMaximumMark() + ","
 					+ subactivity.getWeightage() + ","
 					+ subactivity.getCalculation() + ","
@@ -66,6 +68,7 @@ public class SubActivityService {
 		try {
 			String query = "update subactivity set"
 					+ " SubActivityName = '" + subactivity.getSubActivityName()
+					+ "', Type = '" + subactivity.getType()
 					+ "', MaximumMark = " + subactivity.getMaximumMark() 
 					+ ", Weightage = " + subactivity.getWeightage() 
 					+ ", Calculation = " + subactivity.getCalculation()
