@@ -24,7 +24,7 @@ public class MarkService {
 			preparedStatement.setLong(1, examId);
 	    	preparedStatement.setLong(2, subjectId);
 	    	preparedStatement.setLong(3, sectionId);
-			ResultSet rs = preparedStatement.executeQuery(query);
+			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				Mark mark = new Mark();
 				mark.setId(rs.getLong("Id"));
@@ -38,6 +38,8 @@ public class MarkService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			//JDBC.closeConnection();
 		}
 		return marks;
 	}
@@ -65,13 +67,7 @@ public class MarkService {
 				e1.printStackTrace();
 			}
 		} finally {
-		    if(connection != null) {
-		        try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		    }
+			//JDBC.closeConnection();
 		}
 	}
 
@@ -93,7 +89,8 @@ public class MarkService {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		} finally {
+		}
+		/*finally {
 		    if(connection != null) {
 		        try {
 					connection.close();
@@ -101,7 +98,7 @@ public class MarkService {
 					e.printStackTrace();
 				}
 		    }
-		}
+		}*/
 	}
 	
 	public void delete(long examId, long subjectId, long sectionId) {
@@ -120,14 +117,6 @@ public class MarkService {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		} finally {
-		    if(connection != null) {
-		        try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		    }
 		}
 	}
 

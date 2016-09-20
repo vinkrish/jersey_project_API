@@ -26,7 +26,7 @@ public class SubjectStudentResource {
 	@Secured
 	@GET
 	@Path("section/{sectionId}/subject/{subjectId}")
-	public SubjectStudent getSubjectGroup(@PathParam("sectionId") long sectionId,
+	public SubjectStudent getSubjectStudent(@PathParam("sectionId") long sectionId,
 			@PathParam("subjectId") long subjectId) {
 		return subjectStudentService.getSubjectStudents(sectionId, subjectId);
 	}
@@ -34,7 +34,7 @@ public class SubjectStudentResource {
 	@Secured
 	@GET
 	@Path("section/{sectionId}/subjectGroup/{subjectGroupId}")
-	public List<SubjectStudent> getSubjectGroupList(@PathParam("sectionId") long sectionId,
+	public List<SubjectStudent> getSubjectStudentsByGroupId(@PathParam("sectionId") long sectionId,
 			@PathParam("subjectGroupId") long subjectGroupId) {
 		return subjectStudentService.getSubjectStudentsList(sectionId, subjectGroupId);
 	}

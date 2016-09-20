@@ -57,7 +57,7 @@ public class SectionService {
 	public void update(Section section) {
 		try {
 			String query = "update section set SectionName = '" + section.getSectionName() 
-			+ "', ClassId = " + section.getClassId() + ", TeacherId = " + section.getTeacherId() 
+			+ "', TeacherId = " + section.getTeacherId() 
 			+ " where Id=" + section.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {

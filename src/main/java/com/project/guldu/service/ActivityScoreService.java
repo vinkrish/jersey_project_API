@@ -22,7 +22,7 @@ public class ActivityScoreService {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, activityId);
-			ResultSet rs = preparedStatement.executeQuery(query);
+			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				ActivityScore score = new ActivityScore();
 				score.setId(rs.getLong("Id"));
@@ -58,14 +58,6 @@ public class ActivityScoreService {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		} finally {
-		    if(connection != null) {
-		        try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		    }
 		}
 	}
 
@@ -87,14 +79,6 @@ public class ActivityScoreService {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		} finally {
-		    if(connection != null) {
-		        try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		    }
 		}
 	}
 	
@@ -112,14 +96,6 @@ public class ActivityScoreService {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		} finally {
-		    if(connection != null) {
-		        try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		    }
 		}
 	}
 
