@@ -30,12 +30,12 @@ public class SliptestService {
 				sliptest.setSectionId(rs.getLong("SectionId"));
 				sliptest.setSubjectId(rs.getLong("SubjectId"));
 				sliptest.setSliptestName(rs.getString("SliptestName"));
+				sliptest.setPortionIds(rs.getString("PortionIds"));
 				sliptest.setExtraPortion(rs.getString("ExtraPortion"));
-				sliptest.setMaximumMark(rs.getFloat("MaxinumMark"));
+				sliptest.setMaximumMark(rs.getFloat("MaximumMark"));
 				sliptest.setAverage(rs.getFloat("Average"));
 				sliptest.setTestDate(rs.getString("TestDate"));
 				sliptest.setSubmissionDate(rs.getString("SubmissionDate"));
-				sliptest.setWeightage(rs.getFloat("Weightage"));
 				sliptests.add(sliptest);
 			}
 		} catch (SQLException e) {
@@ -46,18 +46,19 @@ public class SliptestService {
 	
 	public Sliptest add(Sliptest sliptest) {
 		try {
-			String query = "insert into sliptest(Id, SectionId, SubjectId, SliptestName, ExtraPortion, MaximumMark, Average, TestDate, SubmissionDate, Weightage) "
+			String query = "insert into sliptest(Id, SectionId, SubjectId, SliptestName, PortionIds, "
+					+ "ExtraPortion, MaximumMark, Average, TestDate, SubmissionDate) "
 					+ "values (" 
 					+ sliptest.getId() + ","
 					+ sliptest.getSectionId() + ","
 					+ sliptest.getSubjectId() + ",'" 
 					+ sliptest.getSliptestName() + "','"
+					+ sliptest.getPortionIds() + "','"
 					+ sliptest.getExtraPortion() + "',"
 					+ sliptest.getMaximumMark() + ","
 					+ sliptest.getAverage() + ",'"
 					+ sliptest.getTestDate() + "','"
-					+ sliptest.getSubmissionDate() + "',"
-					+ sliptest.getWeightage() + ")";
+					+ sliptest.getSubmissionDate() + "')";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			sliptest.setId(pk);
 		} catch (SQLException e) {
@@ -68,14 +69,14 @@ public class SliptestService {
 	
 	public void update(Sliptest sliptest) {
 		try {
-			String query = "update sliptest set SliptestnName = '" + sliptest.getSliptestName()
+			String query = "update sliptest set SliptestName = '" + sliptest.getSliptestName()
+			+ "', PortionIds = '" + sliptest.getPortionIds()
 			+ "', ExtraPortion = '" + sliptest.getExtraPortion()
-			+ "', MaximumMark = '" + sliptest.getMaximumMark()
+			+ "', MaximumMark = " + sliptest.getMaximumMark()
 			+ ", Average = " + sliptest.getAverage()
 			+ ", TestDate = '" + sliptest.getTestDate()
 			+ "', SubmissionDate = '" + sliptest.getSubmissionDate()
-			+ "', Weightage = " + sliptest.getWeightage()
-			+ " where Id=" + sliptest.getId();
+			+ "' where Id=" + sliptest.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

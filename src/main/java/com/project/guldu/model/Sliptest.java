@@ -5,12 +5,12 @@ public class Sliptest {
 	private long sectionId;
 	private long subjectId;
 	private String sliptestName;
+	private String portionIds;
 	private String extraPortion;
 	private float maximumMark;
 	private float average;
 	private String testDate;
 	private String submissionDate;
-	private float weightage;
 	
 	public long getId() {
 		return id;
@@ -66,11 +66,11 @@ public class Sliptest {
 	public void setSubmissionDate(String submissionDate) {
 		this.submissionDate = submissionDate;
 	}
-	public float getWeightage() {
-		return weightage;
+	public String getPortionIds() {
+		return portionIds;
 	}
-	public void setWeightage(float weightage) {
-		this.weightage = weightage;
+	public void setPortionIds(String portionIds) {
+		this.portionIds = portionIds;
 	}
 	
 }
