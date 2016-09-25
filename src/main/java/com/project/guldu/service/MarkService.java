@@ -102,7 +102,7 @@ public class MarkService {
 	}
 	
 	public void delete(long examId, long subjectId, long sectionId) {
-		String query = "delete from mark where ExamId=?, SubjectId=? where SectionId=?";
+		String query = "delete from mark where ExamId=? and SubjectId=? and SectionId=?";
 		try{
 		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
