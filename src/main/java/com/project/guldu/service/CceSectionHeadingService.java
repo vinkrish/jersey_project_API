@@ -19,8 +19,8 @@ public class CceSectionHeadingService {
 		}
 	}
 	
-	public List<CceSectionHeading> getCceSectionHeadings(long CoScholasticId) {
-		String query = "select * from cce_section_heading where CoScholasticId = " + CoScholasticId;
+	public List<CceSectionHeading> getCceSectionHeadings(long coScholasticId) {
+		String query = "select * from cce_section_heading where CoScholasticId = " + coScholasticId;
 		List<CceSectionHeading> coscholastics = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
@@ -55,7 +55,7 @@ public class CceSectionHeadingService {
 	public void update(CceSectionHeading sectionHeading) {
 		try {
 			String query = "update cce_section_heading set Name = '" + sectionHeading.getName()
-			+ "',  where Id=" + sectionHeading.getId();
+			+ "'  where Id=" + sectionHeading.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
