@@ -26,9 +26,9 @@ public class CceTopicPrimaryResource {
 
 	@Secured
 	@GET
-	@Path("topicprimary/{topicPrimaryId}")
-	public List<CceTopicPrimary> getCceSectionHeadings(@PathParam("topicPrimaryId") long topicPrimaryId) {
-		return service.getCceTopicPrimarys(topicPrimaryId);
+	@Path("sectionheading/{sectionHeadingId}")
+	public List<CceTopicPrimary> getCceTopicPrimarys(@PathParam("sectionHeadingId") long sectionHeadingId) {
+		return service.getCceTopicPrimarys(sectionHeadingId);
 	}
 
 	@Secured
@@ -46,8 +46,8 @@ public class CceTopicPrimaryResource {
 	
 	@Secured
 	@DELETE
-	@Path("/{topicPrimaryId}")
-	public void delete(@PathParam("topicPrimaryId") long topicPrimaryId) {
-		service.delete(topicPrimaryId);
+	@Path("/{topicId}")
+	public void delete(@PathParam("topicId") long topicId) {
+		service.delete(topicId);
 	}
 }
