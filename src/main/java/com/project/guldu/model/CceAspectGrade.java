@@ -1,6 +1,6 @@
 package com.project.guldu.model;
 
-public class CceCoschAspectGrade {
+public class CceAspectGrade {
 	private long id;
 	private long sectionId;
 	private long studentId;
@@ -8,7 +8,7 @@ public class CceCoschAspectGrade {
 	private int type;
 	private int term;
 	private String grade;
-	private int vale;
+	private int value;
 	private String description;
 	
 	public long getId() {
@@ -53,11 +53,11 @@ public class CceCoschAspectGrade {
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
-	public int getVale() {
-		return vale;
+	public int getValue() {
+		return value;
 	}
-	public void setVale(int vale) {
-		this.vale = vale;
+	public void setValue(int value) {
+		this.value = value;
 	}
 	public String getDescription() {
 		return description;
