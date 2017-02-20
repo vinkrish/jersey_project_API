@@ -14,12 +14,12 @@ public class AuthorizationService {
 			e.printStackTrace();
 		}
 	}
-	
-	public boolean isTokenValid(String token){
+
+	public boolean isTokenValid(String token) {
 		String query = "select User from authorization where Token = '" + token + "'";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
-			if (rs.next()){
+			if (rs.next()) {
 				return true;
 			}
 		} catch (SQLException e) {
