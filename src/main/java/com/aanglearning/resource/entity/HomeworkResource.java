@@ -21,34 +21,34 @@ import com.aanglearning.service.entity.HomeworkService;
 @Produces(MediaType.APPLICATION_JSON)
 public class HomeworkResource {
 	
-	HomeworkService homeworkService = new HomeworkService();
+	HomeworkService service = new HomeworkService();
 	
 	@Secured
 	@GET
 	@Path("section/{sectionId}/date/{homeworkDate}")
 	public List<Homework> getHomeworkToday(@PathParam("sectionId") long sectionId,
 			@PathParam("homeworkDate") String homeworkDate){
-		return homeworkService.getUnHomeworkToday(sectionId, homeworkDate);
+		return service.getUnHomeworkToday(sectionId, homeworkDate);
 	}
 	
 	@Secured
 	@POST
 	public Homework add(Homework homework){
-		return homeworkService.add(homework);
+		return service.add(homework);
 	}
 	
 	@Secured
 	@PUT
 	@Path("{homeworkId}")
 	public void update(Homework homework){
-		homeworkService.update(homework);
+		service.update(homework);
 	}
 	
 	@Secured
 	@DELETE
 	@Path("{homeworkId}")
 	public void delete(@PathParam("homeworkId") long homeworkId){
-		homeworkService.delete(homeworkId);
+		service.delete(homeworkId);
 	}
 
 }

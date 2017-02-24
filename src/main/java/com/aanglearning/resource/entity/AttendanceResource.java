@@ -21,14 +21,14 @@ import com.aanglearning.service.entity.AttendanceService;
 @Produces(MediaType.APPLICATION_JSON)
 public class AttendanceResource {
 
-	AttendanceService attendanceService = new AttendanceService();
+	AttendanceService service = new AttendanceService();
 	
 	@Secured
 	@GET
 	@Path("daily/marked/section/{sectionId}/date/{dateAttendance}")
 	public List<Attendance> dailyAttendanceMarked(@PathParam("sectionId") long sectionId,
 			@PathParam("dateAttendance") String dateAttendance) {
-		return attendanceService.dailyAttendanceMarked(sectionId, dateAttendance);
+		return service.dailyAttendanceMarked(sectionId, dateAttendance);
 	}
 	
 	@Secured
@@ -36,7 +36,7 @@ public class AttendanceResource {
 	@Path("daily/unmarked/section/{sectionId}/date/{dateAttendance}")
 	public List<Attendance> dailyAttendanceUnMarked(@PathParam("sectionId") long sectionId,
 			@PathParam("dateAttendance") String dateAttendance) {
-		return attendanceService.dailyAttendanceUnmarked(sectionId, dateAttendance);
+		return service.dailyAttendanceUnmarked(sectionId, dateAttendance);
 	}
 	
 	@Secured
@@ -45,7 +45,7 @@ public class AttendanceResource {
 	public List<Attendance> sessionAttendanceMarked(@PathParam("session") int session, 
 			@PathParam("sectionId") long sectionId,
 			@PathParam("dateAttendance") String dateAttendance) {
-		return attendanceService.sessionAttendanceMarked(session, sectionId, dateAttendance);
+		return service.sessionAttendanceMarked(session, sectionId, dateAttendance);
 	}
 	
 	@Secured
@@ -54,34 +54,34 @@ public class AttendanceResource {
 	public List<Attendance> sessionAttendanceUnmarked(@PathParam("session") int session, 
 			@PathParam("sectionId") long sectionId,
 			@PathParam("dateAttendance") String dateAttendance) {
-		return attendanceService.sessionAttendanceUnmarked(session, sectionId, dateAttendance);
+		return service.sessionAttendanceUnmarked(session, sectionId, dateAttendance);
 	}
 
 	@Secured
 	@POST
 	public Attendance add(Attendance attendance){
-		return attendanceService.add(attendance);
+		return service.add(attendance);
 	}
 	
 	@Secured
 	@POST
 	@Path("list")
 	public void add(List<Attendance> attendances){
-		attendanceService.addAttendanceList(attendances);
+		service.addAttendanceList(attendances);
 	}
 	
 	@Secured
 	@PUT
 	@Path("{attendanceId}")
 	public void update(Attendance attendance){
-		attendanceService.update(attendance);
+		service.update(attendance);
 	}
 	
 	@Secured
 	@DELETE
 	@Path("{attendanceId}")
 	public void delete(@PathParam("attendanceId") long attendanceId){
-		attendanceService.delete(attendanceId);
+		service.delete(attendanceId);
 	}
 
 }

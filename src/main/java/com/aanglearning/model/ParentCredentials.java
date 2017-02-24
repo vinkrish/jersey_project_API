@@ -3,14 +3,14 @@ package com.aanglearning.model;
 import java.util.ArrayList;
 
 public class ParentCredentials {
-	private String token;
+	private String authToken;
 	private ArrayList<ChildInfo> info;
 	
-	public String getToken() {
-		return token;
+	public String getAuthToken() {
+		return authToken;
 	}
-	public void setToken(String token) {
-		this.token = token;
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 	public ArrayList<ChildInfo> getInfo() {
 		return info;

@@ -28,10 +28,11 @@ public class LoginService {
 		ParentCredentials parentCredentials = null;
 		try {
 			if(authenticate(credentials.getUsername(), credentials.getPassword())) {
+				deleteToken(credentials.getUsername());
 				String token = issueToken(credentials.getUsername());
 				saveToken(credentials.getUsername(), token);
 				parentCredentials = new ParentCredentials();
-				parentCredentials.setToken(token);
+				parentCredentials.setAuthToken(token);
 				parentCredentials.setInfo(getChildInfo(credentials.getUsername()));
 				return Response.ok(parentCredentials).build();
 			} else {
@@ -43,7 +44,7 @@ public class LoginService {
 	}
 		
 	private boolean authenticate(String mobile, String password) throws Exception {
-		String query = "select Password from student where Mobile1 = '" + mobile + "'";
+		String query = "select Password from student where Mobile1 = '" + mobile + "' OR Mobile2 = '" + mobile + "'";
 		String validatedPasswrod = "";
 		boolean validPassword = false;
 		try {
@@ -87,6 +88,15 @@ public class LoginService {
 			e.printStackTrace();
 		}
 		return infos;
+	}
+	
+	private void deleteToken(String mobileNo) {
+		try {
+			String query = "delete from authorization where User = '" + mobileNo + "')";
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private String issueToken(String username) {
