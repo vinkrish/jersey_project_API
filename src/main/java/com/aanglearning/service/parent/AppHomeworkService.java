@@ -41,5 +41,26 @@ public class AppHomeworkService {
 		}
 		return hwList;
 	}
+	
+	public List<Homework> getTodaysHomeworks(long sectionId, String currentDate) {
+		String query = "select * from homework where SectionId = " + sectionId + " and HomeworkDate = '" + currentDate + "'";
+		List<Homework> hwList = new ArrayList<Homework>();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				Homework homework = new Homework();
+				homework.setId(rs.getLong("Id"));
+				homework.setSectionId(rs.getLong("SectionId"));
+				homework.setSubjectId(rs.getLong("SubjectId"));
+				homework.setSubjectName(rs.getString("SubjectName"));
+				homework.setHomeworkMessage(rs.getString("HomeworkMessage"));
+				homework.setHomeworkDate(rs.getString("HomeworkDate"));
+				hwList.add(homework);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return hwList;
+	}
 
 }

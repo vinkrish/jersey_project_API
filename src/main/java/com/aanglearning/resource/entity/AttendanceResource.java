@@ -56,11 +56,12 @@ public class AttendanceResource {
 			@PathParam("dateAttendance") String dateAttendance) {
 		return service.sessionAttendanceUnmarked(session, sectionId, dateAttendance);
 	}
-
+	
 	@Secured
 	@POST
-	public Attendance add(Attendance attendance){
-		return service.add(attendance);
+	@Path("noAbsentees")
+	public Attendance noAbsentees(Attendance attendance){
+		return service.noAbsentees(attendance);
 	}
 	
 	@Secured
@@ -82,6 +83,13 @@ public class AttendanceResource {
 	@Path("{attendanceId}")
 	public void delete(@PathParam("attendanceId") long attendanceId){
 		service.delete(attendanceId);
+	}
+	
+	@Secured
+	@DELETE
+	@Path("deleteWhole")
+	public void deleteWhole(Attendance attendance){
+		service.deleteWhole(attendance);
 	}
 
 }

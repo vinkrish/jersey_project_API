@@ -92,7 +92,7 @@ public class LoginService {
 	
 	private void deleteToken(String mobileNo) {
 		try {
-			String query = "delete from authorization where User = '" + mobileNo + "')";
+			String query = "delete from authorization where User = '" + mobileNo + "'";
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

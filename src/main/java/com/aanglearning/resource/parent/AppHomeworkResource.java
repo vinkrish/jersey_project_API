@@ -27,5 +27,13 @@ public class AppHomeworkResource {
 			@PathParam("lastDate") String lastDate) {
 		return service.getHomeworks(sectionId, lastDate);
 	}
+	
+	@Secured
+	@GET
+	@Path("section/{sectionId}/currentDate/{currentDate}")
+	public List<Homework> getTodaysHomeworks(@PathParam("sectionId") long sectionId,
+			@PathParam("currentDate") String currentDate) {
+		return service.getTodaysHomeworks(sectionId, currentDate);
+	}
 
 }

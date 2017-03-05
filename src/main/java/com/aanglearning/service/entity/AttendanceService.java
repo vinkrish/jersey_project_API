@@ -27,20 +27,20 @@ public class AttendanceService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public List<Attendance> dailyAttendanceMarked(long sectionId, String dateAttendance) {
-		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '" + dateAttendance + "'";
+		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '"
+				+ dateAttendance + "'";
 		return getAttendanceList(query);
 	}
-	
-	public List<Attendance> dailyAttendanceUnmarked(long sectionId, String dateAttendance){
+
+	public List<Attendance> dailyAttendanceUnmarked(long sectionId, String dateAttendance) {
 		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
-		String query = "select * from student "
-				+ "where Id not in "
-				+ "(select StudentId from attendance where SectionId="+ sectionId +" and DateAttendance='" + dateAttendance + "')"
-				+ "and SectionId = " + sectionId;
+		String query = "select * from student " + "where Id not in "
+				+ "(select StudentId from attendance where SectionId=" + sectionId + " and DateAttendance='"
+				+ dateAttendance + "')" + "and SectionId = " + sectionId;
 		List<Student> students = studentResource.getStudents(query);
-		for(Student student: students) {
+		for (Student student : students) {
 			Attendance att = new Attendance();
 			att.setId(0);
 			att.setSectionId(sectionId);
@@ -56,11 +56,11 @@ public class AttendanceService {
 		return unMarkedAttendanceList;
 	}
 
-	public List<Attendance> getAttendanceList(String query){
+	public List<Attendance> getAttendanceList(String query) {
 		List<Attendance> attList = new ArrayList<Attendance>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()){
+			while (rs.next()) {
 				Attendance attendance = new Attendance();
 				attendance.setId(rs.getLong("Id"));
 				attendance.setSectionId(rs.getLong("SectionId"));
@@ -78,21 +78,20 @@ public class AttendanceService {
 		}
 		return attList;
 	}
-	
+
 	public List<Attendance> sessionAttendanceMarked(int session, long sectionId, String dateAttendance) {
-		String query = "select * from attendance where Session = " + session + " and "
-				+ "SectionId = " + sectionId + " and DateAttendance = '" + dateAttendance + "'";
+		String query = "select * from attendance where Session = " + session + " and " + "SectionId = " + sectionId
+				+ " and DateAttendance = '" + dateAttendance + "'";
 		return getAttendanceList(query);
 	}
-	
-	public List<Attendance> sessionAttendanceUnmarked(int session, long sectionId, String dateAttendance){
+
+	public List<Attendance> sessionAttendanceUnmarked(int session, long sectionId, String dateAttendance) {
 		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
-		String query = "select * from student "
-				+ "where Id not in "
-				+ "(select StudentId from attendance where SectionId="+ sectionId +" and Session="+session+" and DateAttendance='" + dateAttendance + "')"
-				+ "and SectionId = " + sectionId;
+		String query = "select * from student " + "where Id not in "
+				+ "(select StudentId from attendance where SectionId=" + sectionId + " and Session=" + session
+				+ " and DateAttendance='" + dateAttendance + "')" + "and SectionId = " + sectionId;
 		List<Student> students = studentResource.getStudents(query);
-		for(Student student: students) {
+		for (Student student : students) {
 			Attendance att = new Attendance();
 			att.setId(0);
 			att.setSectionId(sectionId);
@@ -116,16 +115,10 @@ public class AttendanceService {
 			Attendance attendance = gson.fromJson(attendanceJson.toString(), Attendance.class);
 			try {
 				String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
-						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
-						+ "values (" 
-						+ attendance.getId() + "," 
-						+ attendance.getSectionId() + "," 
-						+ attendance.getStudentId() + ",'" 
-						+ attendance.getStudentName() + "',"
-						+ attendance.getSubjectId() + ",'" 
-						+ attendance.getType() + "'," 
-						+ attendance.getSession() + ",'" 
-						+ attendance.getDateAttendance() + "','" 
+						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) " + "values (" + attendance.getId()
+						+ "," + attendance.getSectionId() + "," + attendance.getStudentId() + ",'"
+						+ attendance.getStudentName() + "'," + attendance.getSubjectId() + ",'" + attendance.getType()
+						+ "'," + attendance.getSession() + ",'" + attendance.getDateAttendance() + "','"
 						+ attendance.getTypeOfLeave() + "')";
 				stmt.executeUpdate(query);
 			} catch (SQLException e) {
@@ -133,21 +126,15 @@ public class AttendanceService {
 			}
 		}
 	}
-	
-	public void addAttendanceList(List<Attendance> attendances){
-		for(Attendance attendance: attendances){
+
+	public void addAttendanceList(List<Attendance> attendances) {
+		for (Attendance attendance : attendances) {
 			try {
 				String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
-						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
-						+ "values (" 
-						+ attendance.getId() + "," 
-						+ attendance.getSectionId() + "," 
-						+ attendance.getStudentId() + ",'" 
-						+ attendance.getStudentName() + "',"
-						+ attendance.getSubjectId() + ",'" 
-						+ attendance.getType() + "'," 
-						+ attendance.getSession() + ",'" 
-						+ attendance.getDateAttendance() + "','" 
+						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) " + "values (" + attendance.getId()
+						+ "," + attendance.getSectionId() + "," + attendance.getStudentId() + ",'"
+						+ attendance.getStudentName() + "'," + attendance.getSubjectId() + ",'" + attendance.getType()
+						+ "'," + attendance.getSession() + ",'" + attendance.getDateAttendance() + "','"
 						+ attendance.getTypeOfLeave() + "')";
 				stmt.executeUpdate(query);
 			} catch (SQLException e) {
@@ -155,42 +142,50 @@ public class AttendanceService {
 			}
 		}
 	}
-	
-	public Attendance add(Attendance attendance) {
+
+	public Attendance noAbsentees(Attendance attendance) {
 		try {
-			String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
-					+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) "
-					+ "values (" 
-					+ attendance.getId() + "," 
-					+ attendance.getSectionId() + "," 
-					+ attendance.getStudentId() + ",'"
-					+ attendance.getStudentName() + "',"
-					+ attendance.getSubjectId() + ",'" 
-					+ attendance.getType() + "'," 
-					+ attendance.getSession() + ",'" 
-					+ attendance.getDateAttendance() + "','" 
+			String query = "insert into attendance(Id, SectionId, Type, Session, DateAttendance, TypeOfLeave) "
+					+ "values (" + attendance.getId() + "," + attendance.getSectionId() + ",'" + attendance.getType()
+					+ "'," + attendance.getSession() + ",'" + attendance.getDateAttendance() + "','"
 					+ attendance.getTypeOfLeave() + "')";
-			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-			attendance.setId(pk);
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = stmt.getGeneratedKeys();
+			while (rs.next()) {
+				int idColVar = rs.getInt(1);
+				attendance.setId(idColVar);
+			}
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return attendance;
 	}
-	
+
 	public void update(Attendance attendance) {
 		try {
-			String query = "update attendance set Type= '"+ attendance.getType() +"', Session="+ attendance.getSession()
-			+ ", TypeOfLeave = '"+ attendance.getTypeOfLeave() +"' where Id=" + attendance.getId();
+			String query = "update attendance set Type= '" + attendance.getType() + "', Session="
+					+ attendance.getSession() + ", TypeOfLeave = '" + attendance.getTypeOfLeave() + "' where Id="
+					+ attendance.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void delete(long attendanceId){
+
+	public void delete(long attendanceId) {
 		try {
 			String query = "delete from attendance where Id=" + attendanceId;
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteWhole(Attendance attendance) {
+		try {
+			String query = "delete from attendance where SectionId=" + attendance.getSectionId() + " and Session = "
+					+ attendance.getSession() + " and DateAttendance = " + attendance.getDateAttendance();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
