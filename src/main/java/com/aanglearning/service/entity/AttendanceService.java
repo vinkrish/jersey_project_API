@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.aanglearning.model.entity.Attendance;
+import com.aanglearning.model.entity.Clas;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.service.JDBC;
@@ -86,6 +87,7 @@ public class AttendanceService {
 	}
 
 	public List<Attendance> sessionAttendanceUnmarked(int session, long sectionId, String dateAttendance) {
+		String attendanceType = getClassAttendanceType(sectionId);
 		List<Attendance> unMarkedAttendanceList = new ArrayList<>();
 		String query = "select * from student " + "where Id not in "
 				+ "(select StudentId from attendance where SectionId=" + sectionId + " and Session=" + session
@@ -98,13 +100,27 @@ public class AttendanceService {
 			att.setStudentId(student.getId());
 			att.setStudentName(student.getStudentName());
 			att.setSubjectId(0);
-			att.setType("Daily");
+			att.setType(attendanceType);
 			att.setSession(session);
 			att.setDateAttendance(dateAttendance);
 			att.setTypeOfLeave("");
 			unMarkedAttendanceList.add(att);
 		}
 		return unMarkedAttendanceList;
+	}
+	
+	public String getClassAttendanceType(long sectionId) {
+		String query = "select A.AttendanceType from class A, section B where A.Id = B.ClassId and B.Id = " +  sectionId;
+		String attendanceType = "Daily";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				attendanceType = rs.getString("AttendanceType");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return attendanceType;
 	}
 
 	public void addAttendance(String attendanceStr) {

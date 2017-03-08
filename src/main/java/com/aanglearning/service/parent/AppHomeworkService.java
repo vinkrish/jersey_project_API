@@ -20,6 +20,27 @@ public class AppHomeworkService {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<Homework> getAllHomeworks(long sectionId) {
+		String query = "select * from homework where SectionId = " + sectionId;
+		List<Homework> hwList = new ArrayList<Homework>();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				Homework homework = new Homework();
+				homework.setId(rs.getLong("Id"));
+				homework.setSectionId(rs.getLong("SectionId"));
+				homework.setSubjectId(rs.getLong("SubjectId"));
+				homework.setSubjectName(rs.getString("SubjectName"));
+				homework.setHomeworkMessage(rs.getString("HomeworkMessage"));
+				homework.setHomeworkDate(rs.getString("HomeworkDate"));
+				hwList.add(homework);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return hwList;
+	}
 
 	public List<Homework> getHomeworks(long sectionId, String lastDate) {
 		String query = "select * from homework where SectionId = " + sectionId + " and HomeworkDate > '" + lastDate + "'";
