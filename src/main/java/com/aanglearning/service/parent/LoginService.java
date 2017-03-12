@@ -67,7 +67,7 @@ public class LoginService {
 	}
 	
 	private ArrayList<ChildInfo> getChildInfo(String mobile) {
-		String query = "select A.SchoolId, A.SectionId, A.StudentName, B.SchoolName, C.SectionName, D.Id, D.ClassName "
+		String query = "select A.SchoolId, A.SectionId, A.StudentName, A.Id, B.SchoolName, C.SectionName, D.Id, D.ClassName "
 				+ "from student A, school B, section C, class D  "
 				+ "where A.Mobile1 = '" + mobile + "' and A.SchoolId = B.Id and A.SectionId = C.Id and C.ClassId = D.Id";
 		ArrayList<ChildInfo> infos = new ArrayList<>();
@@ -81,6 +81,7 @@ public class LoginService {
 				info.setClassName(rs.getString("D.ClassName"));
 				info.setSectionId(rs.getLong("A.SectionId"));
 				info.setSectionName(rs.getString("C.SectionName"));
+				info.setStudentId(rs.getLong("A.Id"));
 				info.setName(rs.getString("A.StudentName"));
 				infos.add(info);
 			}

@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.aanglearning.model.entity.Attendance;
-import com.aanglearning.model.entity.Clas;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.service.JDBC;

@@ -23,10 +23,25 @@ public class AppAttendanceService {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<Attendance> getAttendance(long sectionId) {
+		String query = "select * from attendance where SectionId = " + sectionId;
+		return getAttendanceList(query);
+	}
 
-	public List<Attendance> getAttendanceMarked(long sectionId, long studentId, String dateAttendance) {
+	public List<Attendance> getAttendance(long sectionId, String dateAttendance) {
 		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance > '"
-				+ dateAttendance + "' and (StudentId = " + studentId + " or StudentId = 0)";
+				+ dateAttendance + "'";
+		return getAttendanceList(query);
+	}
+	
+	public List<Attendance> getTodaysAttendance(long sectionId, String dateAttendance) {
+		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '"
+				+ dateAttendance + "'";
+		return getAttendanceList(query);
+	}
+	
+	public List<Attendance> getAttendanceList(String query) {
 		List<Attendance> attList = new ArrayList<Attendance>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

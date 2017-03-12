@@ -19,13 +19,28 @@ import com.aanglearning.service.parent.AppAttendanceService;
 public class AppAttendanceResource {
 
 	AppAttendanceService service = new AppAttendanceService();
+	
+	@Secured
+	@GET
+	@Path("section/{sectionId}")
+	public List<Attendance> dailyAttendance(@PathParam("sectionId") long sectionId) {
+		return service.getAttendance(sectionId);
+	}
 
 	@Secured
 	@GET
-	@Path("section/{sectionId}/student/{studentId}/date/{dateAttendance}")
+	@Path("section/{sectionId}/date/{lastDate}")
+	public List<Attendance> dailyAttendance(@PathParam("sectionId") long sectionId,
+			@PathParam("studentId") long studentId, @PathParam("lastDate") String lastDate) {
+		return service.getAttendance(sectionId, lastDate);
+	}
+	
+	@Secured
+	@GET
+	@Path("section/{sectionId}/currentDate/{dateAttendance}")
 	public List<Attendance> dailyAttendanceMarked(@PathParam("sectionId") long sectionId,
 			@PathParam("studentId") long studentId, @PathParam("dateAttendance") String dateAttendance) {
-		return service.getAttendanceMarked(sectionId, studentId, dateAttendance);
+		return service.getTodaysAttendance(sectionId, dateAttendance);
 	}
 
 }
