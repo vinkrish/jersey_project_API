@@ -37,7 +37,7 @@ public class AppAttendanceService {
 	
 	public List<Attendance> getTodaysAttendance(long sectionId, String dateAttendance) {
 		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '"
-				+ dateAttendance + "'";
+				+ dateAttendance + "' order by Session ASC";
 		return getAttendanceList(query);
 	}
 	

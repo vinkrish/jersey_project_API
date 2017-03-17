@@ -4,7 +4,7 @@ public class ClassSubjectGroup {
 	private long id;
 	private long classId;
 	private long subjectGroupId;
-	private String subjectGroupName; 
+	private String subjectGroupName;
 
 	public long getId() {
 		return id;
