@@ -8,7 +8,7 @@ public class JDBC {
 
 	private static Connection connection = null;
     private final static String ADDRESS   = "jdbc:mysql://localhost";
-    private final static String DATABASE = "unnamedprojectdb";
+    private final static String DATABASE = "thyreportdb";
     private final static String USER     = "root";
     private final static String PASSWORD = "thisisntfunmysql";
     private final static String PORT     = "3306";

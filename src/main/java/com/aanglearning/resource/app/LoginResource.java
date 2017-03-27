@@ -1,4 +1,4 @@
-package com.aanglearning.resource.parent;
+package com.aanglearning.resource.app;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.aanglearning.model.Credentials;
-import com.aanglearning.service.parent.LoginService;
+import com.aanglearning.service.app.LoginService;
 
 @Path("/user")
 @Consumes(MediaType.APPLICATION_JSON)

@@ -1,4 +1,4 @@
-package com.aanglearning.resource.parent;
+package com.aanglearning.resource.app;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.entity.Homework;
-import com.aanglearning.service.parent.AppHomeworkService;
+import com.aanglearning.service.app.AppHomeworkService;
 
 @Path("/app/homework")
 @Consumes(MediaType.APPLICATION_JSON)

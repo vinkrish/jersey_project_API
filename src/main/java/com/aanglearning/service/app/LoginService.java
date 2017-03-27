@@ -1,4 +1,4 @@
-package com.aanglearning.service.parent;
+package com.aanglearning.service.app;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

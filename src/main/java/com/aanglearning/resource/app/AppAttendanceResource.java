@@ -1,4 +1,4 @@
-package com.aanglearning.resource.parent;
+package com.aanglearning.resource.app;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.entity.Attendance;
-import com.aanglearning.service.parent.AppAttendanceService;
+import com.aanglearning.service.app.AppAttendanceService;
 
 @Path("/app/attendance")
 @Consumes(MediaType.APPLICATION_JSON)

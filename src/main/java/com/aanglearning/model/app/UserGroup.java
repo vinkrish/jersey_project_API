@@ -3,6 +3,7 @@ package com.aanglearning.model.app;
 public class UserGroup {
 	private long id;
 	private long userId;
+	private String role;
 	private long groupId;
 	private String createdDate;
 	private boolean isActive;
@@ -21,6 +22,14 @@ public class UserGroup {
 
 	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public long getGroupId() {
