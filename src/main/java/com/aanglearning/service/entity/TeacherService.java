@@ -20,6 +20,29 @@ public class TeacherService {
 		}
 	}
 	
+	public Teacher getTeacher(String username) {
+		String query = "select * from teacher where Username = '" + username + "'";
+		Teacher teacher = new Teacher();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				teacher.setId(rs.getLong("Id"));
+				teacher.setTeacherName(rs.getString("TeacherName"));
+				teacher.setImage(rs.getString("Image"));
+				teacher.setSchoolId(rs.getLong("SchoolId"));
+				teacher.setDateOfBirth(rs.getString("DateOfBirth"));
+				teacher.setMobile(rs.getString("Mobile"));
+				teacher.setQualification(rs.getString("Qualification"));
+				teacher.setDateOfJoining(rs.getString("DateOfJoining"));
+				teacher.setGender(rs.getString("Gender"));
+				teacher.setEmail(rs.getString("Email"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return teacher;
+	}
+	
 	public List<Teacher> getTeacherList(long schoolId) {
 		String query = "select * from teacher where SchoolId = " + schoolId;
 		List<Teacher> teacherList = new ArrayList<>();

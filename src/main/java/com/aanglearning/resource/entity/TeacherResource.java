@@ -49,5 +49,9 @@ public class TeacherResource {
 	public void delete(@PathParam("teacherId") long teacherId) {
 		teacherService.delete(teacherId);
 	}
+	
+	public Teacher getTeacher(String username) {
+		return teacherService.getTeacher(username);
+	}
 
 }

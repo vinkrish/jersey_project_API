@@ -8,14 +8,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.aanglearning.model.Credentials;
-import com.aanglearning.service.app.LoginService;
+import com.aanglearning.service.app.ParentService;
 
-@Path("/user")
+@Path("/parent")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class LoginResource {
+public class ParentResource {
 	
-	LoginService service = new LoginService();
+	ParentService service = new ParentService();
 	
 	@POST
 	@Path("login")

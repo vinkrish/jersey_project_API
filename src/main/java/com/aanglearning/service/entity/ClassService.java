@@ -30,6 +30,7 @@ public class ClassService {
 				clas.setId(rs.getLong("Id"));
 				clas.setClassName(rs.getString("ClassName"));
 				clas.setSchoolId(rs.getLong("SchoolId"));
+				clas.setTeacherId(rs.getLong("TeacherId"));
 				clas.setAttendanceType(rs.getString("AttendanceType"));
 				classList.add(clas);
 			}
@@ -41,11 +42,12 @@ public class ClassService {
 	
 	public Clas add(Clas clas) {
 		try {
-			String query = "insert into class(Id, ClassName, SchoolId, AttendanceType) "
+			String query = "insert into class(Id, ClassName, SchoolId, TeacherId, AttendanceType) "
 					+ "values ("
 					+ clas.getId() + ",'" 
 					+ clas.getClassName() + "',"
-					+ clas.getSchoolId() + ",'" 
+					+ clas.getSchoolId() + "," 
+					+ clas.getTeacherId() + ",'"
 					+ clas.getAttendanceType() + "')";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			clas.setId(pk);

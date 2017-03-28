@@ -13,10 +13,10 @@ import com.aanglearning.model.Credentials;
 import com.aanglearning.model.ParentCredentials;
 import com.aanglearning.service.JDBC;
 
-public class LoginService {
+public class ParentService {
 	Statement stmt = null;
 	
-	public LoginService() {
+	public ParentService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
 		} catch (SQLException e) {
