@@ -8,7 +8,6 @@ import com.aanglearning.model.app.Groups;
 import com.aanglearning.service.JDBC;
 
 public class GroupsService {
-	
 	Statement stmt = null;
 
 	public GroupsService() {
@@ -28,7 +27,7 @@ public class GroupsService {
 					+ group.getSectionId() + ","
 					+ group.isSection() + ","
 					+ group.getClassId() + ","
-					+ group.isClass() + ","
+					+ group.isClas() + ","
 					+ group.getCreatedBy() + ",'"
 					+ group.getCreatedDate() + "',"
 					+ group.isActive() + ")";
@@ -53,7 +52,7 @@ public class GroupsService {
 				groups.setSectionId(rs.getLong("SectionId"));
 				groups.setSection(rs.getBoolean("IsSection"));
 				groups.setClassId(rs.getLong("ClassId"));
-				groups.setClass(rs.getBoolean("IsClass"));
+				groups.setClas(rs.getBoolean("IsClass"));
 				groups.setCreatedBy(rs.getLong("CreatedBy"));
 				groups.setCreatedDate(rs.getString("CreatedDate"));
 				groups.setActive(rs.getBoolean("IsActive"));
@@ -71,7 +70,7 @@ public class GroupsService {
 					+ "', SectionId = " + groups.getSectionId()
 					+ ", IsSection = " + groups.isSection()
 					+ ", ClassId = " + groups.getClassId()
-					+ ", IsClass = " + groups.isClass()
+					+ ", IsClass = " + groups.isClas()
 					+ ", IsActive = " + groups.isActive()
 					+ " where Id = " + groups.getId();
 			stmt.executeUpdate(query);

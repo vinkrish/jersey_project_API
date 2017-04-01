@@ -27,7 +27,21 @@ public class TeacherResource {
 	@GET
 	@Path("school/{schoolId}")
 	public List<Teacher> getTeacherList(@PathParam("schoolId") long schoolId){
-		return teacherService.getTeacherList(schoolId);
+		return teacherService.getSchoolTeachers(schoolId);
+	}
+	
+	@Secured
+	@GET
+	@Path("class/{classId}")
+	public List<Teacher> getClassSubjectTeachers(@PathParam("classId") long classId){
+		return teacherService.getClassSubjectTeachers(classId);
+	}
+	
+	@Secured
+	@GET
+	@Path("section/{sectionId}")
+	public List<Teacher> getSectionSubjectTeachers(@PathParam("sectionId") long sectionId){
+		return teacherService.getSectionSubjectTeachers(sectionId);
 	}
 	
 	@Secured

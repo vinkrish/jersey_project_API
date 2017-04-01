@@ -43,8 +43,23 @@ public class TeacherService {
 		return teacher;
 	}
 	
-	public List<Teacher> getTeacherList(long schoolId) {
+	public List<Teacher> getSchoolTeachers(long schoolId) {
 		String query = "select * from teacher where SchoolId = " + schoolId;
+		return getTeacherList(query);
+	}
+	
+	public List<Teacher> getClassSubjectTeachers(long classId) {
+		String query = "select * from teacher where Id in (select TeacherId from subject_teacher where SectionId = " + classId + ")";
+		return getTeacherList(query);
+	}
+	
+	public List<Teacher> getSectionSubjectTeachers(long sectionId) {
+		String query = "select * from teacher where Id in "
+				+ "(select TeacherId from subject_teacher where SectionId in (select Id from section where ClassId = " + sectionId + "))";
+		return getTeacherList(query);
+	}
+	
+	public List<Teacher> getTeacherList(String query) {
 		List<Teacher> teacherList = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

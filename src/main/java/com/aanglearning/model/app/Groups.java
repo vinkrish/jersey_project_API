@@ -4,12 +4,12 @@ public class Groups {
 	private long id;
 	private String name;
 	private long sectionId;
-	private boolean isSection;
+	private boolean section;
 	private long classId;
-	private boolean isClass;
+	private boolean clas;
 	private long createdBy;
 	private String createdDate;
-	private boolean isActive;
+	private boolean active;
 
 	public long getId() {
 		return id;
@@ -36,11 +36,27 @@ public class Groups {
 	}
 
 	public boolean isSection() {
-		return isSection;
+		return section;
 	}
 
-	public void setSection(boolean isSection) {
-		this.isSection = isSection;
+	public void setSection(boolean section) {
+		this.section = section;
+	}
+
+	public boolean isClas() {
+		return clas;
+	}
+
+	public void setClas(boolean clas) {
+		this.clas = clas;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public long getClassId() {
@@ -49,14 +65,6 @@ public class Groups {
 
 	public void setClassId(long classId) {
 		this.classId = classId;
-	}
-
-	public boolean isClass() {
-		return isClass;
-	}
-
-	public void setClass(boolean isClass) {
-		this.isClass = isClass;
 	}
 
 	public long getCreatedBy() {
@@ -73,14 +81,6 @@ public class Groups {
 
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
 	}
 
 }

@@ -23,7 +23,7 @@ public class GroupsResource {
 	@Secured
 	@GET
 	@Path("{id}")
-	public Groups getExamSubjects(@PathParam("id") long id) {
+	public Groups getGroups(@PathParam("id") long id) {
 		return service.getGroup(id);
 	}
 	

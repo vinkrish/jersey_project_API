@@ -18,7 +18,7 @@ public class UserGroupService {
 	}
 	
 	public void add(List<UserGroup> userGroupList) {
-		String query = "insert into user_group(Id, UserId, Role, GroupId, CreatedDate, IsActive) values (?,?,?,?,?,?)";
+		String query = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
 		try{
 		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -27,8 +27,7 @@ public class UserGroupService {
 		    	preparedStatement.setLong(2, userGroup.getUserId());
 		    	preparedStatement.setString(3, userGroup.getRole());
 		    	preparedStatement.setLong(4, userGroup.getGroupId());
-		    	preparedStatement.setString(5, userGroup.getCreatedDate());
-		    	preparedStatement.setBoolean(6,  userGroup.isActive());
+		    	preparedStatement.setBoolean(5,  userGroup.isActive());
 		    	preparedStatement.executeUpdate();
 		    }
 		    connection.commit();
@@ -54,7 +53,6 @@ public class UserGroupService {
 				userGroup.setUserId(rs.getLong("UserId"));
 				userGroup.setRole(rs.getString("Role"));
 				userGroup.setGroupId(rs.getLong("GroupId"));
-				userGroup.setCreatedDate(rs.getString("CreatedDate"));
 				userGroup.setActive(rs.getBoolean("IsActive"));
 				userGroups.add(userGroup);
 			}
@@ -70,6 +68,23 @@ public class UserGroupService {
 		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    	preparedStatement.setLong(1, groupId);
+		    	preparedStatement.executeUpdate();
+		    connection.commit();
+		} catch(Exception e) {
+		    try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteUser(long id) {
+		String query = "delete from user_group where Id=?";
+		try{
+		    connection.setAutoCommit(false);
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    	preparedStatement.setLong(1, id);
 		    	preparedStatement.executeUpdate();
 		    connection.commit();
 		} catch(Exception e) {
