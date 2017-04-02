@@ -95,4 +95,25 @@ public class UserGroupService {
 			}
 		}
 	}
+	
+	public void add(UserGroup userGroup) {
+		String query = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
+		try{
+		    connection.setAutoCommit(false);
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    	preparedStatement.setLong(1, userGroup.getId());
+		    	preparedStatement.setLong(2, userGroup.getUserId());
+		    	preparedStatement.setString(3, userGroup.getRole());
+		    	preparedStatement.setLong(4, userGroup.getGroupId());
+		    	preparedStatement.setBoolean(5,  userGroup.isActive());
+		    	preparedStatement.executeUpdate();
+		    connection.commit();
+		} catch(Exception e) {
+		    try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
 }

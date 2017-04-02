@@ -48,5 +48,9 @@ public class UserGroupResource {
 	public void deleteUser(@PathParam("id") long id) {
 		service.deleteUser(id);
 	}
+	
+	public void add(UserGroup userGroup) {
+		service.add(userGroup);
+	}
 
 }

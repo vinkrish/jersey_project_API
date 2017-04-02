@@ -3,16 +3,22 @@ package com.aanglearning.service.app;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aanglearning.model.app.Groups;
+import com.aanglearning.model.app.UserGroup;
+import com.aanglearning.resource.app.UserGroupResource;
 import com.aanglearning.service.JDBC;
 
 public class GroupsService {
 	Statement stmt = null;
+	UserGroupResource resource;
 
 	public GroupsService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
+			resource = new UserGroupResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -33,6 +39,19 @@ public class GroupsService {
 					+ group.isActive() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			group.setId(pk);
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()){
+			    pk = rs.getInt(1);
+			}
+			
+			UserGroup userGroup = new UserGroup();
+			userGroup.setActive(true);
+			userGroup.setGroupId(pk);
+			userGroup.setRole("admin");
+			userGroup.setUserId(group.getCreatedBy());
+			resource.add(userGroup);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -56,6 +75,32 @@ public class GroupsService {
 				groups.setCreatedBy(rs.getLong("CreatedBy"));
 				groups.setCreatedDate(rs.getString("CreatedDate"));
 				groups.setActive(rs.getBoolean("IsActive"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return groups;
+	}
+	
+	public List<Groups> getGroups(long userId) {
+		List<Groups> groups = new ArrayList<>();
+		String query = "select * from groups "
+				+ "where "
+				+ "Id in (select GroupId from user_group where UserId = " + userId + ")";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				Groups group = new Groups();
+				group.setId(rs.getLong("Id"));
+				group.setName(rs.getString("Name"));
+				group.setSectionId(rs.getLong("SectionId"));
+				group.setSection(rs.getBoolean("IsSection"));
+				group.setClassId(rs.getLong("ClassId"));
+				group.setClas(rs.getBoolean("IsClass"));
+				group.setCreatedBy(rs.getLong("CreatedBy"));
+				group.setCreatedDate(rs.getString("CreatedDate"));
+				group.setActive(rs.getBoolean("IsActive"));
+				groups.add(group);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

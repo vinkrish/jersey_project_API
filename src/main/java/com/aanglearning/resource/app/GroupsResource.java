@@ -1,5 +1,7 @@
 package com.aanglearning.resource.app;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -23,8 +25,15 @@ public class GroupsResource {
 	@Secured
 	@GET
 	@Path("{id}")
-	public Groups getGroups(@PathParam("id") long id) {
+	public Groups getGroup(@PathParam("id") long id) {
 		return service.getGroup(id);
+	}
+	
+	@Secured
+	@GET
+	@Path("user/{id}")
+	public List<Groups> getGroups(@PathParam("id") long id) {
+		return service.getGroups(id);
 	}
 	
 	@Secured
