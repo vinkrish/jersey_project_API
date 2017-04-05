@@ -54,4 +54,8 @@ public class GroupsResource {
 	public void delete(@PathParam("id") long id) {
 		service.delete(id);
 	}
+
+	public Groups getGroupById(long groupId) {
+		return service.getGroup(groupId);
+	}
 }

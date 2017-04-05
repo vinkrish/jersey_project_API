@@ -8,17 +8,14 @@ import java.util.List;
 
 import com.aanglearning.model.app.Groups;
 import com.aanglearning.model.app.UserGroup;
-import com.aanglearning.resource.app.UserGroupResource;
 import com.aanglearning.service.JDBC;
 
 public class GroupsService {
 	Statement stmt = null;
-	UserGroupResource resource;
 
 	public GroupsService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
-			resource = new UserGroupResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +47,14 @@ public class GroupsService {
 			userGroup.setGroupId(pk);
 			userGroup.setRole("admin");
 			userGroup.setUserId(group.getCreatedBy());
-			resource.add(userGroup);
+			
+			String query2 = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values ("
+					+ userGroup.getId() + "," 
+					+ userGroup.getUserId() + ",'"
+					+ userGroup.getRole() + "',"
+					+ userGroup.getGroupId() + ","
+					+ userGroup.isActive() + ")";
+			stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,9 +63,7 @@ public class GroupsService {
 	}
 	
 	public Groups getGroup(long groupId) {
-		String query = "select * from groups "
-				+ "where "
-				+ "Id = " + groupId ;
+		String query = "select * from groups where Id = " + groupId ;
 		Groups groups = new Groups();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

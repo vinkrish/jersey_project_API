@@ -3,9 +3,10 @@ package com.aanglearning.model.app;
 public class UserGroup {
 	private long id;
 	private long userId;
+	private String name;
 	private String role;
 	private long groupId;
-	private boolean isActive;
+	private boolean active;
 
 	public long getId() {
 		return id;
@@ -21,6 +22,14 @@ public class UserGroup {
 
 	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getRole() {
@@ -40,11 +49,11 @@ public class UserGroup {
 	}
 
 	public boolean isActive() {
-		return isActive;
+		return active;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

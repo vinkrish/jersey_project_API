@@ -3,7 +3,8 @@ package com.aanglearning.model.app;
 public class MessageRecipient {
 	private long id;
 	private long recipientId;
-	private long recipientGroupId;
+	private String role;
+	private long groupId;
 	private long messageId;
 	private boolean isRead;
 
@@ -23,12 +24,20 @@ public class MessageRecipient {
 		this.recipientId = recipientId;
 	}
 
-	public long getRecipientGroupId() {
-		return recipientGroupId;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRecipientGroupId(long recipientGroupId) {
-		this.recipientGroupId = recipientGroupId;
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public long getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		this.groupId = groupId;
 	}
 
 	public long getMessageId() {

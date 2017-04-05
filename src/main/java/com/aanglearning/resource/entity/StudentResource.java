@@ -61,4 +61,13 @@ public class StudentResource {
 		return studentService.getStudentList(query);
 	}
 	
+	
+	public List<Student> getSectionGroupUsers(long groupId, long sectionId) {
+		return studentService.getSectionGroupUsers(groupId, sectionId);
+	}
+	
+	public List<Student> getClassGroupUsers(long groupId, long classId) {
+		return studentService.getClassGroupUsers(groupId, classId);
+	}
+	
 }

@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
+import com.aanglearning.model.app.GroupUsers;
 import com.aanglearning.model.app.UserGroup;
 import com.aanglearning.service.app.UserGroupService;
 
@@ -28,6 +29,13 @@ public class UserGroupResource {
 	public List<UserGroup> getUserGroups(@PathParam("groupId") long groupId) {
 		return service.getUserGroups(groupId);
 	}
+	
+	@Secured
+	@GET
+	@Path("groupusers/groups/{groupId}")
+	public GroupUsers getGroupUsers(@PathParam("groupId") long groupId) {
+		return service.getGroupUsers(groupId);
+	}
 
 	@Secured
 	@POST
@@ -43,10 +51,10 @@ public class UserGroupResource {
 	}
 
 	@Secured
-	@DELETE
-	@Path("{id}")
-	public void deleteUser(@PathParam("id") long id) {
-		service.deleteUser(id);
+	@POST
+	@Path("delete")
+	public void deleteUsers(List<UserGroup> userGroups) {
+		service.deleteUsers(userGroups);
 	}
 	
 	public void add(UserGroup userGroup) {

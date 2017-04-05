@@ -67,5 +67,13 @@ public class TeacherResource {
 	public Teacher getTeacher(String username) {
 		return teacherService.getTeacher(username);
 	}
+	
+	public List<Teacher> getSectionGroupUsers(long groupId, long sectionId) {
+		return teacherService.getSectionGroupUsers(groupId, sectionId);
+	}
+	
+	public List<Teacher> getClassGroupUsers(long groupId, long classId) {
+		return teacherService.getClassGroupUsers(groupId, classId);
+	}
 
 }

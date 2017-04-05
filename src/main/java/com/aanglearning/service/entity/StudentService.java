@@ -30,6 +30,18 @@ public class StudentService {
 		return getStudentList(query);
 	}
 	
+	public List<Student> getSectionGroupUsers (long groupId, long sectionId) {
+		String query = "select * from student where Id not in "
+				+ "(select UserId from user_group where Role='student' and GroupId=" + groupId + ") and SectionId = " + sectionId + " order by RollNo";
+		return getStudentList(query);
+	}
+	
+	public List<Student> getClassGroupUsers (long groupId, long classId) {
+		String query = "select * from student where Id not in "
+				+ "(select UserId from user_group where Role='student' and GroupId=" + groupId + ") and ClassId = " + classId;
+		return getStudentList(query);
+	}
+	
 	public List<Student> getStudentList(String query) {
 		List<Student> studentList = new ArrayList<Student>();
 		try {
@@ -39,6 +51,7 @@ public class StudentService {
 				student.setId(rs.getLong("Id"));
 				student.setStudentName(rs.getString("StudentName"));
 				student.setSchoolId(rs.getLong("SchoolId"));
+				student.setClassId(rs.getLong("ClassId"));
 				student.setSectionId(rs.getLong("SectionId"));
 				student.setAdmissionNo(rs.getString("AdmissionNo"));
 				student.setRollNo(rs.getInt("RollNo"));
@@ -67,13 +80,14 @@ public class StudentService {
 	
 	public Student add(Student student) {
 		try {
-			String query = "insert into student(StudentId, StudentName, SchoolId, SectionId, "
+			String query = "insert into student(StudentId, StudentName, SchoolId, ClassId, SectionId, "
 					+ "AdmissionNo, RollNo, Username, Password, Image, FatherName, MotherName, DateOfBirth, "
 					+ "Gender, Email, Mobile1, Mobile2, Street, City, District, State, Pincode) "
 					+ "values (" 
 					+ student.getId() + ",'" 
 					+ student.getStudentName() + "',"
 					+ student.getSchoolId() + ","
+					+ student.getClassId()  + ","
 					+ student.getSectionId()  + ",'"
 					+ student.getAdmissionNo() + "',"
 					+ student.getRollNo() + ",'"

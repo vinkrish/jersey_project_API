@@ -7,18 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.entity.Attendance;
-import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.service.JDBC;
 
 public class AppAttendanceService {
 
 	Statement stmt = null;
-	StudentResource studentResource;
 
 	public AppAttendanceService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
-			studentResource = new StudentResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

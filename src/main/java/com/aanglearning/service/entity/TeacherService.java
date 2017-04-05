@@ -49,13 +49,25 @@ public class TeacherService {
 	}
 	
 	public List<Teacher> getClassSubjectTeachers(long classId) {
-		String query = "select * from teacher where Id in (select TeacherId from subject_teacher where SectionId = " + classId + ")";
+		String query = "select * from teacher where Id in "
+				+ "(select TeacherId from subject_teacher where SectionId in (select Id from section where ClassId = " + classId + "))";
 		return getTeacherList(query);
 	}
 	
 	public List<Teacher> getSectionSubjectTeachers(long sectionId) {
-		String query = "select * from teacher where Id in "
-				+ "(select TeacherId from subject_teacher where SectionId in (select Id from section where ClassId = " + sectionId + "))";
+		String query = "select * from teacher where Id in (select TeacherId from subject_teacher where SectionId = " + sectionId + ")";
+		return getTeacherList(query);
+	}
+	
+	public List<Teacher> getClassGroupUsers(long groupId, long classId) {
+		String query = "select * from teacher where Id not in (select UserId from user_group where Role='teacher' and GroupId="+groupId+") and Id in "
+				+ "(select TeacherId from subject_teacher where SectionId in (select Id from section where ClassId = " + classId + "))";
+		return getTeacherList(query);
+	}
+	
+	public List<Teacher> getSectionGroupUsers(long groupId, long sectionId) {
+		String query = "select * from teacher where Id not in (select UserId from user_group where Role='teacher' and GroupId="+groupId+") and Id in "
+				+ "(select TeacherId from subject_teacher where SectionId = " + sectionId + ")";
 		return getTeacherList(query);
 	}
 	
