@@ -113,17 +113,12 @@ public class UserGroupService {
 	public void delete(long groupId) {
 		String query = "delete from user_group where GroupId=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    	preparedStatement.setLong(1, groupId);
 		    	preparedStatement.executeUpdate();
 		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 	
@@ -150,7 +145,6 @@ public class UserGroupService {
 	public void add(UserGroup userGroup) {
 		String query = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    	preparedStatement.setLong(1, userGroup.getId());
 		    	preparedStatement.setLong(2, userGroup.getUserId());
@@ -160,11 +154,7 @@ public class UserGroupService {
 		    	preparedStatement.executeUpdate();
 		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 }

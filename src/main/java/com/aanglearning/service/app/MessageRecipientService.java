@@ -1,19 +1,13 @@
 package com.aanglearning.service.app;
 
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Connection;
 
 import com.aanglearning.service.JDBC;
 
 public class MessageRecipientService {
-
-	Statement stmt = null;
+	Connection connection = null;
 
 	public MessageRecipientService() {
-		try {
-			stmt = JDBC.getConnection().createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		connection = JDBC.getConnection();
 	}
 }

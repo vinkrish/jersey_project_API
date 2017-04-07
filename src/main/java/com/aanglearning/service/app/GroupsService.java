@@ -39,7 +39,7 @@ public class GroupsService {
 			
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()){
-			    pk = rs.getInt(1);
+			    pk = rs.getLong(1);
 			}
 			
 			UserGroup userGroup = new UserGroup();
