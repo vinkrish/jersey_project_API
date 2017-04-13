@@ -24,16 +24,16 @@ public class GroupsResource {
 	
 	@Secured
 	@GET
-	@Path("{id}")
-	public Groups getGroup(@PathParam("id") long id) {
-		return service.getGroup(id);
+	@Path("student/{id}")
+	public List<Groups> getStudentGroups(@PathParam("id") long id) {
+		return service.getStudentGroups(id);
 	}
 	
 	@Secured
 	@GET
-	@Path("user/{id}")
-	public List<Groups> getGroups(@PathParam("id") long id) {
-		return service.getGroups(id);
+	@Path("teacher/{id}")
+	public List<Groups> getTeacherGroups(@PathParam("id") long id) {
+		return service.getTeacherGroups(id);
 	}
 	
 	@Secured

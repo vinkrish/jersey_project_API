@@ -84,11 +84,35 @@ public class GroupsService {
 		return groups;
 	}
 	
-	public List<Groups> getGroups(long userId) {
+	public List<Groups> getStudentGroups(long userId) {
 		List<Groups> groups = new ArrayList<>();
-		String query = "select * from groups "
-				+ "where "
-				+ "Id in (select GroupId from user_group where UserId = " + userId + ")";
+		String query = "select * from groups where "
+				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='student')";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				Groups group = new Groups();
+				group.setId(rs.getLong("Id"));
+				group.setName(rs.getString("Name"));
+				group.setSectionId(rs.getLong("SectionId"));
+				group.setSection(rs.getBoolean("IsSection"));
+				group.setClassId(rs.getLong("ClassId"));
+				group.setClas(rs.getBoolean("IsClass"));
+				group.setCreatedBy(rs.getLong("CreatedBy"));
+				group.setCreatedDate(rs.getString("CreatedDate"));
+				group.setActive(rs.getBoolean("IsActive"));
+				groups.add(group);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return groups;
+	}
+	
+	public List<Groups> getTeacherGroups(long userId) {
+		List<Groups> groups = new ArrayList<>();
+		String query = "select * from groups where "
+				+ "Id in (select GroupId from user_group where UserId = " + userId + " and (Role='admin' or Role='teacher'))";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()){

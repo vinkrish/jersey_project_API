@@ -23,18 +23,17 @@ public class MessageService {
 				+ "values (?,?,?,?,?,?,?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-		    	preparedStatement.setLong(1, message.getId());
-		    	preparedStatement.setLong(2, message.getSenderId());
-		    	preparedStatement.setString(3, message.getSenderRole());
-		    	preparedStatement.setLong(4, message.getRecipientId());
-		    	preparedStatement.setString(5, message.getRecipientRole());
-		    	preparedStatement.setLong(6, message.getGroupId());
-		    	preparedStatement.setString(7, message.getMessageType());
-		    	preparedStatement.setString(8, message.getMessageBody());
-		    	preparedStatement.setString(9, message.getImageUrl());
-		    	preparedStatement.setString(10, message.getCreatedAt());
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
+	    	preparedStatement.setLong(1, message.getId());
+	    	preparedStatement.setLong(2, message.getSenderId());
+	    	preparedStatement.setString(3, message.getSenderRole());
+	    	preparedStatement.setLong(4, message.getRecipientId());
+	    	preparedStatement.setString(5, message.getRecipientRole());
+	    	preparedStatement.setLong(6, message.getGroupId());
+	    	preparedStatement.setString(7, message.getMessageType());
+	    	preparedStatement.setString(8, message.getMessageBody());
+	    	preparedStatement.setString(9, message.getImageUrl());
+	    	preparedStatement.setString(10, message.getCreatedAt());
+	    	preparedStatement.executeUpdate();
 		    
 		    ResultSet rs = preparedStatement.getGeneratedKeys();
 		    long pk = 0;
@@ -61,7 +60,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getMessages(long senderId, long recipientId) {
-		String query = "select * from message where SenderId=? and RecipientId=? order by Id limit 100";
+		String query = "select * from message where SenderId=? and RecipientId=? order by Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -76,7 +75,7 @@ public class MessageService {
 				message.setRecipientId(rs.getLong("RecipientId"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				message.setGroupId(rs.getLong("GroupId"));
-				message.setMessageType(rs.getString("MessageTyep"));
+				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
@@ -89,12 +88,13 @@ public class MessageService {
 	}
 	
 	public List<Message> getMessagesFromId(long senderId, long recipientId, long messageId) {
-		String query = "select * from message where SenderId=? and RecipientId=? and Id>messageId order by Id limit 100";
+		String query = "select * from message where SenderId=? and RecipientId=? and Id<? order by Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, senderId);
 			preparedStatement.setLong(2, recipientId);
+			preparedStatement.setLong(3, messageId);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				Message message = new Message();
@@ -104,7 +104,7 @@ public class MessageService {
 				message.setRecipientId(rs.getLong("RecipientId"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				message.setGroupId(rs.getLong("GroupId"));
-				message.setMessageType(rs.getString("MessageTyep"));
+				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
@@ -117,7 +117,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessages(long groupId) {
-		String query = "select * from message where GroupId=? order by Id limit 50";
+		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc limit 20";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -128,10 +128,11 @@ public class MessageService {
 				message.setId(rs.getLong("Id"));
 				message.setSenderId(rs.getLong("SenderId"));
 				message.setSenderRole(rs.getString("SenderRole"));
+				message.setSenderName(rs.getString("TeacherName"));
 				message.setRecipientId(rs.getLong("RecipientId"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				message.setGroupId(rs.getLong("GroupId"));
-				message.setMessageType(rs.getString("MessageTyep"));
+				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
@@ -144,21 +145,23 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessagesFromId(long groupId, long messageId) {
-		String query = "select * from message where GroupId=? and Id>messageId order by Id limit 50";
+		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc limit 20";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, groupId);
+			preparedStatement.setLong(2, messageId);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				Message message = new Message();
 				message.setId(rs.getLong("Id"));
 				message.setSenderId(rs.getLong("SenderId"));
 				message.setSenderRole(rs.getString("SenderRole"));
+				message.setSenderName(rs.getString("TeacherName"));
 				message.setRecipientId(rs.getLong("RecipientId"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				message.setGroupId(rs.getLong("GroupId"));
-				message.setMessageType(rs.getString("MessageTyep"));
+				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
@@ -174,9 +177,8 @@ public class MessageService {
 		String query = "delete from message where Id=?";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, id);
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
+		    preparedStatement.setLong(1, id);
+		    preparedStatement.executeUpdate();
 		} catch(Exception e) {
 		    e.printStackTrace();
 		}
