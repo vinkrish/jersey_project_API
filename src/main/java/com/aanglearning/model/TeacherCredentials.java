@@ -1,5 +1,6 @@
 package com.aanglearning.model;
 
+import com.aanglearning.model.entity.Service;
 import com.aanglearning.model.entity.Teacher;
 
 public class TeacherCredentials {
@@ -7,6 +8,7 @@ public class TeacherCredentials {
 	private long schoolId;
 	private String schoolName;
 	private Teacher teacher;
+	private Service service;
 	
 	public String getAuthToken() {
 		return authToken;
@@ -31,5 +33,11 @@ public class TeacherCredentials {
 	}
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+	}
+	public Service getService() {
+		return service;
+	}
+	public void setService(Service service) {
+		this.service = service;
 	}
 }

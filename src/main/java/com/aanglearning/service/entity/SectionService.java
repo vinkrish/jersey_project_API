@@ -22,6 +22,15 @@ public class SectionService {
 	
 	public List<Section> getSectionList(long classId) {
 		String query = "select * from section where ClassId = " + classId;
+		return getSections(query);
+	}
+	
+	public List<Section> getSectionTeacherSections(long classId, long teacherId) {
+		String query = "select * from section where ClassId = " + classId + " and TeacherId = " + teacherId;
+		return getSections(query);
+	}
+	
+	public List<Section> getSections(String query) {
 		List<Section> sectionList = new ArrayList<Section>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

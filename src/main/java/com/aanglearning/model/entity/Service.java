@@ -3,13 +3,12 @@ package com.aanglearning.model.entity;
 public class Service {
 	private long id;
 	private long schoolId;
-	private boolean message;
-	private boolean sms;
-	private boolean attendance;
-	private boolean homework;
-	private boolean attendanceSms;
-	private boolean homeworkSms;
-	
+	private boolean isMessage;
+	private boolean isSms;
+	private boolean isAttendance;
+	private boolean isHomework;
+	private boolean isAttendanceSms;
+	private boolean isHomeworkSms;
 	
 	public long getId() {
 		return id;
@@ -23,41 +22,40 @@ public class Service {
 	public void setSchoolId(long schoolId) {
 		this.schoolId = schoolId;
 	}
-	public boolean isMessage() {
-		return message;
+	public boolean getIsMessage() {
+		return isMessage;
 	}
-	public void setMessage(boolean message) {
-		this.message = message;
+	public void setIsMessage(boolean isMessage) {
+		this.isMessage = isMessage;
 	}
-	public boolean isSms() {
-		return sms;
+	public boolean getIsSms() {
+		return isSms;
 	}
-	public void setSms(boolean sms) {
-		this.sms = sms;
+	public void setIsSms(boolean isSms) {
+		this.isSms = isSms;
 	}
-	public boolean isAttendance() {
-		return attendance;
+	public boolean getIsAttendance() {
+		return isAttendance;
 	}
-	public void setAttendance(boolean attendance) {
-		this.attendance = attendance;
+	public void setIsAttendance(boolean isAttendance) {
+		this.isAttendance = isAttendance;
 	}
-	public boolean isHomework() {
-		return homework;
+	public boolean getIsHomework() {
+		return isHomework;
 	}
-	public void setHomework(boolean homework) {
-		this.homework = homework;
+	public void setIsHomework(boolean isHomework) {
+		this.isHomework = isHomework;
 	}
-	public boolean isAttendanceSms() {
-		return attendanceSms;
+	public boolean getIsAttendanceSms() {
+		return isAttendanceSms;
 	}
-	public void setAttendanceSms(boolean attendanceSms) {
-		this.attendanceSms = attendanceSms;
+	public void setIsAttendanceSms(boolean isAttendanceSms) {
+		this.isAttendanceSms = isAttendanceSms;
 	}
-	public boolean isHomeworkSms() {
-		return homeworkSms;
+	public boolean getIsHomeworkSms() {
+		return isHomeworkSms;
 	}
-	public void setHomeworkSms(boolean homeworkSms) {
-		this.homeworkSms = homeworkSms;
+	public void setIsHomeworkSms(boolean isHomeworkSms) {
+		this.isHomeworkSms = isHomeworkSms;
 	}
-	
 }

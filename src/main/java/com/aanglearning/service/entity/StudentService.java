@@ -25,7 +25,7 @@ public class StudentService {
 		return getStudentList(query);
 	}
 	
-	public List<Student> getStudentClass (long classId) {
+	public List<Student> getStudentClass(long classId) {
 		String query = "select * from student where ClassId = " + classId;
 		return getStudentList(query);
 	}

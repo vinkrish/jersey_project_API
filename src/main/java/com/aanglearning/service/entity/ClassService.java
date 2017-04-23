@@ -22,6 +22,15 @@ public class ClassService {
 	
 	public List<Clas> getClassList(long schoolId) {
 		String query = "select * from class where SchoolId = " + schoolId;
+		return getClasses(query);
+	}
+	
+	public List<Clas> getSectionTeacherClasses(long teacherId) {
+		String query = "select * from class where Id in (select ClassId from section where TeacherId = " + teacherId + ")";
+		return getClasses(query);
+	}
+	
+	public List<Clas> getClasses(String query) {
 		List<Clas> classList = new ArrayList<Clas>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

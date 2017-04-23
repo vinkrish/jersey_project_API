@@ -7,14 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.entity.School;
+import com.aanglearning.model.entity.Service;
+import com.aanglearning.resource.entity.ServiceResource;
 import com.aanglearning.service.JDBC;
 
 public class SchoolService {
 	Statement stmt = null;
+	ServiceResource resource;
 
 	public SchoolService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
+			resource = new ServiceResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -129,9 +133,15 @@ public class SchoolService {
 					+ "'," + school.getPrincipalId() 
 					+ "," + school.getNumberOfStudents() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) pk = rs.getLong(1);
 			school.setId(pk);
+			
+			Service service = new Service();
+			service.setSchoolId(school.getId());
+			service.setIsMessage(true);
+			resource.addService(service);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

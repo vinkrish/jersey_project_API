@@ -6,16 +6,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aanglearning.model.app.AttendanceSet;
 import com.aanglearning.model.entity.Attendance;
+import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.service.JDBC;
 
 public class AppAttendanceService {
-
 	Statement stmt = null;
+	StudentResource studentResource;
 
 	public AppAttendanceService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
+			studentResource = new StudentResource();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -36,6 +39,17 @@ public class AppAttendanceService {
 		String query = "select * from attendance where SectionId = " + sectionId + " and DateAttendance = '"
 				+ dateAttendance + "' order by Session ASC";
 		return getAttendanceList(query);
+	}
+	
+	public AttendanceSet getAttendanceSet(long sectionId, String dateAttendance, int session) {
+		AttendanceSet attendanceSet = new AttendanceSet();
+		attendanceSet.setAttendanceList(getAttendanceList("select * from attendance where SectionId = " + sectionId + " and DateAttendance = '"
+				+ dateAttendance + "' and Session = " + session));
+		attendanceSet.setStudents(studentResource.getStudents("select * from student where Id not in "
+				+ "(select StudentId from attendance where "
+				+ "SectionId = " + sectionId + " and DateAttendance = '" + dateAttendance + "' and Session = " + session 
+				+ ") and SectionId = " + sectionId + " order by RollNo"));
+		return attendanceSet;
 	}
 	
 	public List<Attendance> getAttendanceList(String query) {
@@ -59,6 +73,33 @@ public class AppAttendanceService {
 			e.printStackTrace();
 		}
 		return attList;
+	}
+	
+	public void saveAttendance(List<Attendance> attendanceList) {
+		try {
+			for(Attendance attendance: attendanceList) {
+				String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
+						+ "SubjectId, Type, Session, DateAttendance, TypeOfLeave) " + "values (" + attendance.getId()
+						+ "," + attendance.getSectionId() + "," + attendance.getStudentId() + ",'"
+						+ attendance.getStudentName() + "'," + attendance.getSubjectId() + ",'" + attendance.getType()
+						+ "'," + attendance.getSession() + ",'" + attendance.getDateAttendance() + "','"
+						+ attendance.getTypeOfLeave() + "')";
+				stmt.executeUpdate(query);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteAttendance(List<Attendance> attendanceList) {
+		try {
+			for(Attendance attendance: attendanceList) {
+				String query = "delete from attendance where Id=" + attendance.getId();
+				stmt.executeUpdate(query);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

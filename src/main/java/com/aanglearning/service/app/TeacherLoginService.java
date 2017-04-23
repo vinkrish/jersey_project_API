@@ -12,18 +12,18 @@ import com.aanglearning.model.TeacherCredentials;
 import com.aanglearning.model.entity.Teacher;
 import com.aanglearning.service.JDBC;
 import com.aanglearning.service.entity.SchoolService;
+import com.aanglearning.service.entity.ServicesService;
 import com.aanglearning.service.entity.TeacherService;
 
 public class TeacherLoginService {
-	Statement stmt = null;
-	TeacherService teacherService = null;
-	SchoolService schoolService = null;
+	Statement stmt;
+	TeacherService teacherService = new TeacherService();
+	SchoolService schoolService = new SchoolService();
+	ServicesService servicesService = new ServicesService();
 	
 	public TeacherLoginService() {
 		try {
 			stmt = JDBC.getConnection().createStatement();
-			teacherService = new TeacherService();
-			schoolService = new SchoolService();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -42,6 +42,7 @@ public class TeacherLoginService {
 				teacherCredentials.setTeacher(teacher);
 				teacherCredentials.setSchoolId(teacher.getSchoolId());
 				teacherCredentials.setSchoolName(schoolService.getSchoolById(teacher.getSchoolId()).getSchoolName());
+				teacherCredentials.setService(servicesService.getService(teacher.getSchoolId()));
 				return Response.ok(teacherCredentials).build();
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();

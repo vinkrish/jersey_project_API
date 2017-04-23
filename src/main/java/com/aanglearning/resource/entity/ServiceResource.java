@@ -24,7 +24,7 @@ public class ServiceResource {
 	@Secured
 	@GET
 	@Path("school/{id}")
-	public Service getService(long id) {
+	public Service getService(@PathParam("id") long id) {
 		return service.getService(id);
 	}
 
@@ -45,5 +45,9 @@ public class ServiceResource {
 	@Path("/{id}")
 	public void delete(@PathParam("id") long id) {
 		service.delete(id);
+	}
+	
+	public void addService(Service srvice) {
+		service.add(srvice);
 	}
 }

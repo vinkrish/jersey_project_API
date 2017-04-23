@@ -8,7 +8,7 @@ import com.aanglearning.model.entity.Service;
 import com.aanglearning.service.JDBC;
 
 public class ServicesService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public ServicesService() {
 		try {
@@ -24,12 +24,12 @@ public class ServicesService {
 					+ "values ("
 					+ service.getId() + "," 
 					+ service.getSchoolId() + ","
-					+ service.isMessage() + ","
-					+ service.isSms() + ","
-					+ service.isAttendance() + ","
-					+ service.isAttendanceSms() + ","
-					+ service.isHomework() + ","
-					+ service.isHomeworkSms() + ")";
+					+ service.getIsMessage() + ","
+					+ service.getIsSms() + ","
+					+ service.getIsAttendance() + ","
+					+ service.getIsAttendanceSms() + ","
+					+ service.getIsHomework() + ","
+					+ service.getIsHomeworkSms() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) pk = rs.getLong(1);
@@ -48,12 +48,12 @@ public class ServicesService {
 			while (rs.next()){
 				service.setId(rs.getLong("Id"));
 				service.setSchoolId(rs.getLong("SchoolId"));
-				service.setMessage(rs.getBoolean("IsMessage"));
-				service.setSms(rs.getBoolean("IsSms"));
-				service.setAttendance(rs.getBoolean("IsAttendance"));
-				service.setAttendanceSms(rs.getBoolean("IsAttendanceSms"));
-				service.setHomework(rs.getBoolean("IsHomework"));
-				service.setHomeworkSms(rs.getBoolean("IsHomeworkSms"));
+				service.setIsMessage(rs.getBoolean("IsMessage"));
+				service.setIsSms(rs.getBoolean("IsSms"));
+				service.setIsAttendance(rs.getBoolean("IsAttendance"));
+				service.setIsAttendanceSms(rs.getBoolean("IsAttendanceSms"));
+				service.setIsHomework(rs.getBoolean("IsHomework"));
+				service.setIsHomeworkSms(rs.getBoolean("IsHomeworkSms"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -64,13 +64,14 @@ public class ServicesService {
 	public void update(Service service) {
 		try {
 			String query = "update service set"
-					+ ", IsMessage = " + service.isMessage()
-					+ ", IsSms = " + service.isSms()
-					+ ", IsAttendance = " + service.isAttendance()
-					+ ", IsAttendanceSms = " + service.isAttendanceSms()
-					+ ", IsHomework = " + service.isHomework()
-					+ ", IsHomeworkSms = " + service.isHomeworkSms()
+					+ " IsMessage = " + service.getIsMessage()
+					+ ", IsSms = " + service.getIsSms()
+					+ ", IsAttendance = " + service.getIsAttendance()
+					+ ", IsAttendanceSms = " + service.getIsAttendanceSms()
+					+ ", IsHomework = " + service.getIsHomework()
+					+ ", IsHomeworkSms = " + service.getIsHomeworkSms()
 					+ " where Id = " + service.getId();
+			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

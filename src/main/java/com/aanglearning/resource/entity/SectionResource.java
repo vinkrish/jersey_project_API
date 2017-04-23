@@ -29,6 +29,14 @@ public class SectionResource {
 	public List<Section> getSectionList(@PathParam("classId") long classId) {
 		return sectionService.getSectionList(classId);
 	}
+	
+	@Secured
+	@GET
+	@Path("class/{classId}/teacher/{teacherId}")
+	public List<Section> getSectionTeacherSections(@PathParam("classId") long classId,
+			@PathParam("teacherId") long teacherId) {
+		return sectionService.getSectionTeacherSections(classId, teacherId);
+	}
 
 	@Secured
 	@POST
