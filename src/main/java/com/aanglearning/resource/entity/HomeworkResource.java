@@ -33,13 +33,19 @@ public class HomeworkResource {
 	
 	@Secured
 	@POST
+	@Path("delete")
+	public void deleteHomework(List<Homework> homeworks) {
+		service.deleteList(homeworks);
+	}
+	
+	@Secured
+	@POST
 	public Homework add(Homework homework){
 		return service.add(homework);
 	}
 	
 	@Secured
 	@PUT
-	@Path("{homeworkId}")
 	public void update(Homework homework){
 		service.update(homework);
 	}

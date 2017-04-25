@@ -63,8 +63,8 @@ public class AppHomeworkService {
 		return hwList;
 	}
 	
-	public List<Homework> getTodaysHomeworks(long sectionId, String currentDate) {
-		String query = "select * from homework where SectionId = " + sectionId + " and HomeworkDate = '" + currentDate + "'";
+	public List<Homework> getTodaysHomeworks(long sectionId, String homeworkDate) {
+		String query = "select * from homework where SectionId = " + sectionId + " and HomeworkDate = '" + homeworkDate + "'";
 		List<Homework> hwList = new ArrayList<Homework>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

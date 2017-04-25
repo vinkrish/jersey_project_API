@@ -6,17 +6,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.aanglearning.model.entity.Homework;
 import com.aanglearning.model.entity.SubjectTeacher;
 import com.aanglearning.resource.entity.SubjectTeacherResource;
 import com.aanglearning.service.JDBC;
-import com.google.gson.Gson;
 
 public class HomeworkService {
-	Statement stmt = null;
+	Statement stmt;
 	SubjectTeacherResource str;
 
 	public HomeworkService() {
@@ -73,28 +69,6 @@ public class HomeworkService {
 		}
 		return homeworkList;
 	}
-
-	public void addHomework(String homeworkStr) {
-		JSONArray homeworkArray = new JSONArray(homeworkStr);
-		for (int i = 0; i < homeworkArray.length(); i++) {
-			JSONObject homeworkJson = homeworkArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Homework homework = gson.fromJson(homeworkJson.toString(), Homework.class);
-			try {
-				String query = "insert into homework(Id, SectionId, SubjectId, SubjectName, HomeworkMessage, HomeworkDate) "
-						+ "values (" 
-						+ homework.getId() + "," 
-						+ homework.getSectionId() + "," 
-						+ homework.getSubjectId() + ",'" 
-						+ homework.getSubjectName() + "','"
-						+ homework.getHomeworkMessage() + "','"
-						+ homework.getHomeworkDate() + "')";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	public Homework add(Homework homework) {
 		try {
@@ -128,6 +102,17 @@ public class HomeworkService {
 		try {
 			String query = "delete from homework where Id=" + homeworkId;
 			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteList(List<Homework> homeworks) {
+		try {
+			for(Homework homework: homeworks) {
+				String query = "delete from homework where Id=" + homework.getId();
+				stmt.executeUpdate(query);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
