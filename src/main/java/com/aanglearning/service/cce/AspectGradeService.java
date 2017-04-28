@@ -11,7 +11,7 @@ import com.aanglearning.model.cce.CceAspectGrade;
 import com.aanglearning.service.JDBC;
 
 public class AspectGradeService {
-	Connection connection = null;
+	Connection connection;
 
 	public AspectGradeService() {
 		connection = JDBC.getConnection();
@@ -100,19 +100,13 @@ public class AspectGradeService {
 	public void delete(long aspectId, long sectionId, int term) {
 		String query = "delete from cce_aspect_grade where AspectId=? and SectionId=? and Term=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, aspectId);
-		    	preparedStatement.setLong(2, sectionId);
-		    	preparedStatement.setInt(3, term);
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
+	    	preparedStatement.setLong(1, aspectId);
+	    	preparedStatement.setLong(2, sectionId);
+	    	preparedStatement.setInt(3, term);
+	    	preparedStatement.executeUpdate();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 }

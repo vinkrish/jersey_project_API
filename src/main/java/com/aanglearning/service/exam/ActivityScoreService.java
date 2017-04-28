@@ -11,7 +11,7 @@ import com.aanglearning.model.exam.ActivityScore;
 import com.aanglearning.service.JDBC;
 
 public class ActivityScoreService {
-	Connection connection = null;
+	Connection connection;
 
 	public ActivityScoreService() {
 		connection = JDBC.getConnection();
@@ -86,17 +86,11 @@ public class ActivityScoreService {
 	public void delete(long activityId) {
 		String query = "delete from activity_score where ActivityId=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, activityId);
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
+		    preparedStatement.setLong(1, activityId);
+		    preparedStatement.executeUpdate();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 

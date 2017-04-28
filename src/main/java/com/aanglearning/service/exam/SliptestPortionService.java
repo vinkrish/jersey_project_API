@@ -10,7 +10,7 @@ import com.aanglearning.model.exam.SliptestPortion;
 import com.aanglearning.service.JDBC;
 
 public class SliptestPortionService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public SliptestPortionService() {
 		try {

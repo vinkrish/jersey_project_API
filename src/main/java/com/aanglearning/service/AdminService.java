@@ -13,7 +13,7 @@ import com.aanglearning.model.entity.School;
 import com.aanglearning.service.entity.SchoolService;
 
 public class AdminService {
-	Statement stmt = null;
+	Statement stmt;
 	SchoolService schoolService;
 
 	public AdminService() {

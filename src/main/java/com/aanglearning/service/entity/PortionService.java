@@ -10,7 +10,7 @@ import com.aanglearning.model.entity.Portion;
 import com.aanglearning.service.JDBC;
 
 public class PortionService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public PortionService() {
 		try {

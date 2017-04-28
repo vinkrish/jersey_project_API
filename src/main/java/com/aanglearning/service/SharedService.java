@@ -11,8 +11,7 @@ import com.aanglearning.service.entity.SectionService;
 import com.aanglearning.service.entity.SubjectGroupSubjectService;
 
 public class SharedService {
-
-	Statement stmt = null;
+	Statement stmt;
 	SectionService sectionService;
 	ClassSubjectGroupService csgService;
 	SubjectGroupSubjectService sgsService;

@@ -16,7 +16,7 @@ import com.aanglearning.service.JDBC;
 import com.google.gson.Gson;
 
 public class AttendanceService {
-	Statement stmt = null;
+	Statement stmt;
 	StudentResource studentResource;
 
 	public AttendanceService() {

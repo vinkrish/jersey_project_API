@@ -20,7 +20,6 @@ import com.aanglearning.service.app.GroupsService;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GroupsResource {
-	
 	GroupsService service = new GroupsService();
 	
 	@Secured
@@ -51,7 +50,7 @@ public class GroupsResource {
 	
 	@Secured
 	@DELETE
-	@Path("/{id}")
+	@Path("{id}")
 	public void delete(@PathParam("id") long id) {
 		service.delete(id);
 	}

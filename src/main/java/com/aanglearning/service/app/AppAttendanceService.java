@@ -12,7 +12,7 @@ import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.service.JDBC;
 
 public class AppAttendanceService {
-	Statement stmt = null;
+	Statement stmt;
 	StudentResource studentResource;
 
 	public AppAttendanceService() {

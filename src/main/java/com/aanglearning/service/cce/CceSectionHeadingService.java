@@ -10,7 +10,7 @@ import com.aanglearning.model.cce.CceSectionHeading;
 import com.aanglearning.service.JDBC;
 
 public class CceSectionHeadingService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public CceSectionHeadingService() {
 		try {

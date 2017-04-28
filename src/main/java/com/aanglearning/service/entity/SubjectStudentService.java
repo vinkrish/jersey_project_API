@@ -11,8 +11,8 @@ import com.aanglearning.model.entity.SubjectStudent;
 import com.aanglearning.service.JDBC;
 
 public class SubjectStudentService {
-	Statement stmt = null;
-	SubjectGroupSubjectService sgsService = null;
+	Statement stmt;
+	SubjectGroupSubjectService sgsService;
 
 	public SubjectStudentService() {
 		try {

@@ -35,12 +35,12 @@ public class GroupsService {
 					+ group.getCreatedDate() + "',"
 					+ group.isActive() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-			group.setId(pk);
 			
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()){
 			    pk = rs.getLong(1);
 			}
+			group.setId(pk);
 			
 			UserGroup userGroup = new UserGroup();
 			userGroup.setActive(true);

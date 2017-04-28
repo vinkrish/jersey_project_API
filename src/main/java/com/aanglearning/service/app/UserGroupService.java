@@ -16,7 +16,7 @@ import com.aanglearning.resource.entity.TeacherResource;
 import com.aanglearning.service.JDBC;
 
 public class UserGroupService {
-	Connection connection = null;
+	Connection connection;
 	StudentResource studentResource;
 	TeacherResource teacherResource;
 	GroupsResource groupsResource;

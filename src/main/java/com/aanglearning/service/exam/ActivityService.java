@@ -10,7 +10,7 @@ import com.aanglearning.model.exam.Activity;
 import com.aanglearning.service.JDBC;
 
 public class ActivityService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public ActivityService() {
 		try {

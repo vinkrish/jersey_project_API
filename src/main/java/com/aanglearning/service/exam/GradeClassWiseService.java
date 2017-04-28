@@ -10,7 +10,7 @@ import com.aanglearning.model.exam.GradeClassWise;
 import com.aanglearning.service.JDBC;
 
 public class GradeClassWiseService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public GradeClassWiseService() {
 		try {

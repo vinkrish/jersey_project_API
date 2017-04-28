@@ -10,8 +10,7 @@ import com.aanglearning.model.entity.ClassSubjectGroup;
 import com.aanglearning.service.JDBC;
 
 public class ClassSubjectGroupService {
-	
-	Statement stmt = null;
+	Statement stmt;
 
 	public ClassSubjectGroupService() {
 		try {

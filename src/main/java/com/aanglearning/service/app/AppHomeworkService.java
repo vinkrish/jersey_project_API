@@ -10,8 +10,7 @@ import com.aanglearning.model.entity.Homework;
 import com.aanglearning.service.JDBC;
 
 public class AppHomeworkService {
-
-	Statement stmt = null;
+	Statement stmt;
 
 	public AppHomeworkService() {
 		try {

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AuthorizationService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public AuthorizationService() {
 		try {

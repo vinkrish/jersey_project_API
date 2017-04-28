@@ -20,15 +20,16 @@ public class ServicesService {
 	
 	public Service add(Service service) {
 		try {
-			String query = "insert into service(Id, SchoolId, IsMessage, IsSms, IsAttendance, IsHomework, IsAttendanceSms, IsHomeworkSms) "
+			String query = "insert into service(Id, SchoolId, IsMessage, IsSms, IsChat, IsAttendance, IsHomework, IsAttendanceSms, IsHomeworkSms) "
 					+ "values ("
 					+ service.getId() + "," 
 					+ service.getSchoolId() + ","
 					+ service.getIsMessage() + ","
 					+ service.getIsSms() + ","
+					+ service.getIsChat() + ","
 					+ service.getIsAttendance() + ","
-					+ service.getIsAttendanceSms() + ","
 					+ service.getIsHomework() + ","
+					+ service.getIsAttendanceSms() + ","
 					+ service.getIsHomeworkSms() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -66,12 +67,12 @@ public class ServicesService {
 			String query = "update service set"
 					+ " IsMessage = " + service.getIsMessage()
 					+ ", IsSms = " + service.getIsSms()
+					+ ", IsChat = " + service.getIsChat()
 					+ ", IsAttendance = " + service.getIsAttendance()
 					+ ", IsAttendanceSms = " + service.getIsAttendanceSms()
 					+ ", IsHomework = " + service.getIsHomework()
 					+ ", IsHomeworkSms = " + service.getIsHomeworkSms()
 					+ " where Id = " + service.getId();
-			System.out.println(query);
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

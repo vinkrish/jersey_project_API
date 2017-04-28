@@ -59,13 +59,15 @@ public class MessageService {
 		return message;
 	}
 	
-	public List<Message> getMessages(long senderId, long recipientId) {
-		String query = "select * from message where SenderId=? and RecipientId=? order by Id desc limit 100";
+	public List<Message> getMessages(long senderId, String senderRole, long recipientId, String recipientRole) {
+		String query = "select * from message where SenderId=? and SenderRole=? and RecipientId=? and RecipeintRole=? order by Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, senderId);
-			preparedStatement.setLong(2, recipientId);
+			preparedStatement.setString(2, senderRole);
+			preparedStatement.setLong(3, recipientId);
+			preparedStatement.setString(4, recipientRole);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				Message message = new Message();
@@ -87,8 +89,8 @@ public class MessageService {
 		return messages;
 	}
 	
-	public List<Message> getMessagesFromId(long senderId, long recipientId, long messageId) {
-		String query = "select * from message where SenderId=? and RecipientId=? and Id<? order by Id desc limit 100";
+	public List<Message> getMessagesFromId(long senderId, String senderRole, long recipientId, String recipientRole, long messageId) {
+		String query = "select * from message where SenderId=? and SenderRole=? and RecipientId=? and RecipeintRole=? and Id<? order by Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);

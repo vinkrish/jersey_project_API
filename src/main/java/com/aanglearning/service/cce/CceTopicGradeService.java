@@ -10,7 +10,7 @@ import com.aanglearning.model.cce.CceTopicGrade;
 import com.aanglearning.service.JDBC;
 
 public class CceTopicGradeService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public CceTopicGradeService() {
 		try {

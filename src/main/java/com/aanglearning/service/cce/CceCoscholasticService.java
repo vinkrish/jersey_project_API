@@ -10,7 +10,7 @@ import com.aanglearning.model.cce.CceCoscholastic;
 import com.aanglearning.service.JDBC;
 
 public class CceCoscholasticService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public CceCoscholasticService() {
 		try {

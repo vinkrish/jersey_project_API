@@ -10,7 +10,7 @@ import com.aanglearning.model.entity.Student;
 import com.aanglearning.service.JDBC;
 
 public class StudentService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public StudentService() {
 		try {

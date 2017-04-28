@@ -12,7 +12,7 @@ import com.aanglearning.model.entity.SubjectGroupSubject;
 import com.aanglearning.service.JDBC;
 
 public class SubjectService {
-	Statement stmt = null;
+	Statement stmt;
 	ClassSubjectGroupService csgService;
 	SubjectGroupSubjectService sgsService;
 

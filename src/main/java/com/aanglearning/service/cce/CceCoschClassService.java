@@ -10,8 +10,7 @@ import com.aanglearning.model.cce.CceCoschClass;
 import com.aanglearning.service.JDBC;
 
 public class CceCoschClassService {
-	
-	Statement stmt = null;
+	Statement stmt;
 
 	public CceCoschClassService() {
 		try {

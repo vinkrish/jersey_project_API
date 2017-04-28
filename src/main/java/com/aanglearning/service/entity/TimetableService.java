@@ -14,7 +14,7 @@ import com.aanglearning.service.JDBC;
 import com.google.gson.Gson;
 
 public class TimetableService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public TimetableService() {
 		try {

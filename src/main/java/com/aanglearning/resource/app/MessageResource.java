@@ -29,10 +29,12 @@ public class MessageResource {
 	
 	@Secured
 	@GET
-	@Path("sender/{senderId}/recipient/{recipientId}")
+	@Path("sender/{senderId}/{senderRole}/recipient/{recipientId}/{recipientRole}")
 	public List<Message> getMessages(@PathParam("senderId") long senderId,
-			@PathParam("recipientId") long recipientId) {
-		return service.getMessages(senderId, recipientId);
+			@PathParam("senderRole") String senderRole,
+			@PathParam("recipientId") long recipientId,
+			@PathParam("recipientRole") String recipientRole) {
+		return service.getMessages(senderId, senderRole, recipientId, recipientRole);
 	}
 	
 	@Secured
@@ -44,11 +46,13 @@ public class MessageResource {
 	
 	@Secured
 	@GET
-	@Path("sender/{senderId}/recipient/{recipientId}/message/{messageId}")
+	@Path("sender/{senderId}/{senderRole}/recipient/{recipientId}/{recipientRole}/message/{messageId}")
 	public List<Message> getMessagesFromId(@PathParam("senderId") long senderId,
+			@PathParam("senderRole") String senderRole,
 			@PathParam("recipientId") long recipientId,
+			@PathParam("recipientRole") String recipientRole,
 			@PathParam("messageId") long messageId) {
-		return service.getMessagesFromId(senderId, recipientId, messageId);
+		return service.getMessagesFromId(senderId, senderRole, recipientId, recipientRole, messageId);
 	}
 	
 	@Secured

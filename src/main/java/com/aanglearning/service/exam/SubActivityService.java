@@ -10,7 +10,7 @@ import com.aanglearning.model.exam.SubActivity;
 import com.aanglearning.service.JDBC;
 
 public class SubActivityService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public SubActivityService() {
 		try {

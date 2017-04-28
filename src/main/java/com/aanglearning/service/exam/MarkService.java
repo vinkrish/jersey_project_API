@@ -11,7 +11,7 @@ import com.aanglearning.model.exam.Mark;
 import com.aanglearning.service.JDBC;
 
 public class MarkService {
-	Connection connection = null;
+	Connection connection;
 
 	public MarkService() {
 		connection = JDBC.getConnection();
@@ -105,19 +105,13 @@ public class MarkService {
 	public void delete(long examId, long subjectId, long sectionId) {
 		String query = "delete from mark where ExamId=? and SubjectId=? and SectionId=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, examId);
-		    	preparedStatement.setLong(2, subjectId);
-		    	preparedStatement.setLong(3, sectionId);
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
+	    	preparedStatement.setLong(1, examId);
+	    	preparedStatement.setLong(2, subjectId);
+	    	preparedStatement.setLong(3, sectionId);
+	    	preparedStatement.executeUpdate();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 

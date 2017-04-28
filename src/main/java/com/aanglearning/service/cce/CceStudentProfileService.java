@@ -11,7 +11,7 @@ import com.aanglearning.model.cce.CceStudentProfile;
 import com.aanglearning.service.JDBC;
 
 public class CceStudentProfileService {
-	Connection connection = null;
+	Connection connection;
 
 	public CceStudentProfileService() {
 		connection = JDBC.getConnection();

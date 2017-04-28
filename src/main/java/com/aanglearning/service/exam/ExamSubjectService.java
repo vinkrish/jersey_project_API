@@ -10,7 +10,7 @@ import com.aanglearning.model.exam.ExamSubject;
 import com.aanglearning.service.JDBC;
 
 public class ExamSubjectService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public ExamSubjectService() {
 		try {

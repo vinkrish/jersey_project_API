@@ -11,7 +11,7 @@ import com.aanglearning.model.exam.SliptestScore;
 import com.aanglearning.service.JDBC;
 
 public class SliptestScoreService {
-	Connection connection = null;
+	Connection connection;
 
 	public SliptestScoreService() {
 		connection = JDBC.getConnection();
@@ -86,17 +86,11 @@ public class SliptestScoreService {
 	public void delete(long sliptestId) {
 		String query = "delete from sliptest_score where SliptestId=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, sliptestId);
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
+		    preparedStatement.setLong(1, sliptestId);
+		    preparedStatement.executeUpdate();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 
