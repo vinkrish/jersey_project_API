@@ -4,7 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aanglearning.model.entity.Clas;
 import com.aanglearning.service.JDBC;
@@ -28,6 +30,15 @@ public class ClassService {
 	public List<Clas> getSectionTeacherClasses(long teacherId) {
 		String query = "select * from class where Id in (select ClassId from section where TeacherId = " + teacherId + ")";
 		return getClasses(query);
+	}
+	
+	public List<Clas> getSubjectTeacherClasses(long teacherId) {
+		String query1 = "select * from class where Id in (select ClassId from section where Id in "
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId))";
+		String query2 = "select * from class where Id in (select ClassId from section where TeacherId = " + teacherId + ")";
+		Set<Clas> set = new HashSet<Clas>(getClasses(query1));
+		set.addAll(getClasses(query2));
+		return new ArrayList<Clas>(set);
 	}
 	
 	public List<Clas> getClasses(String query) {

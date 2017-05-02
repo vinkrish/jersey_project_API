@@ -51,6 +51,7 @@ public class ServicesService {
 				service.setSchoolId(rs.getLong("SchoolId"));
 				service.setIsMessage(rs.getBoolean("IsMessage"));
 				service.setIsSms(rs.getBoolean("IsSms"));
+				service.setIsChat(rs.getBoolean("IsChat"));
 				service.setIsAttendance(rs.getBoolean("IsAttendance"));
 				service.setIsAttendanceSms(rs.getBoolean("IsAttendanceSms"));
 				service.setIsHomework(rs.getBoolean("IsHomework"));

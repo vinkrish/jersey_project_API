@@ -30,6 +30,12 @@ public class SectionService {
 		return getSections(query);
 	}
 	
+	public List<Section> getSubjectTeacherSections(long classId, long teacherId) {
+		String query = "select * from section where Id in "
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId) and ClassId=" + classId;
+		return getSections(query);
+	}
+	
 	public List<Section> getSections(String query) {
 		List<Section> sectionList = new ArrayList<Section>();
 		try {

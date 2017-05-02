@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,18 @@ public class ChatService {
 	}
 	
 	public Chat add(Chat chat) {
-		String query = "insert into chat(StudentId, TeacherId, CreatedBy, CreatorRole) values (?,?,?,?)";
+		String query = "insert into chat(StudentId, StudentName, ClassName, SectionName, TeacherId, TeacherName, CreatedBy, CreatorRole) "
+				+ "values (?,?,?,?,?,?,?,?)";
 		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	    	preparedStatement.setLong(1, chat.getStudentId());
-	    	preparedStatement.setLong(2, chat.getTeacherId());
-	    	preparedStatement.setLong(3, chat.getCreatedBy());
-	    	preparedStatement.setString(4, chat.getCreatorRole());
+	    	preparedStatement.setString(2, chat.getStudentName());
+	    	preparedStatement.setString(3, chat.getClassName());
+	    	preparedStatement.setString(4, chat.getSectionName());
+	    	preparedStatement.setLong(5, chat.getTeacherId());
+	    	preparedStatement.setString(6, chat.getTeacherName());
+	    	preparedStatement.setLong(7, chat.getCreatedBy());
+	    	preparedStatement.setString(8, chat.getCreatorRole());
 	    	preparedStatement.executeUpdate();
 	    	ResultSet rs = preparedStatement.getGeneratedKeys();
 		    long pk = 0;
@@ -49,7 +55,11 @@ public class ChatService {
 				Chat chat = new Chat();
 				chat.setId(rs.getLong("Id"));
 				chat.setStudentId(rs.getLong("StudentId"));
+				chat.setStudentName(rs.getString("StudentName"));
+				chat.setClassName(rs.getString("ClassName"));
+				chat.setSectionName(rs.getString("SectionName"));
 				chat.setTeacherId(rs.getLong("TeacherId"));
+				chat.setTeacherName(rs.getString("TeacherName"));
 				chat.setCreatedBy(rs.getLong("CreatedBy"));
 				chat.setCreatorRole(rs.getString("CreatorRole"));
 				chats.add(chat);
@@ -71,7 +81,11 @@ public class ChatService {
 				Chat chat = new Chat();
 				chat.setId(rs.getLong("Id"));
 				chat.setStudentId(rs.getLong("StudentId"));
+				chat.setStudentName(rs.getString("StudentName"));
+				chat.setClassName(rs.getString("ClassName"));
+				chat.setSectionName(rs.getString("SectionName"));
 				chat.setTeacherId(rs.getLong("TeacherId"));
+				chat.setTeacherName(rs.getString("TeacherName"));
 				chat.setCreatedBy(rs.getLong("CreatedBy"));
 				chat.setCreatorRole(rs.getString("CreatorRole"));
 				chats.add(chat);

@@ -29,7 +29,7 @@ public class MessageResource {
 	
 	@Secured
 	@GET
-	@Path("sender/{senderId}/{senderRole}/recipient/{recipientId}/{recipientRole}")
+	@Path("{senderRole}/{senderId}/{recipientRole}/{recipientId}")
 	public List<Message> getMessages(@PathParam("senderId") long senderId,
 			@PathParam("senderRole") String senderRole,
 			@PathParam("recipientId") long recipientId,
@@ -46,7 +46,7 @@ public class MessageResource {
 	
 	@Secured
 	@GET
-	@Path("sender/{senderId}/{senderRole}/recipient/{recipientId}/{recipientRole}/message/{messageId}")
+	@Path("{senderRole}/{senderId}/{recipientRole}/{recipientId}/message/{messageId}")
 	public List<Message> getMessagesFromId(@PathParam("senderId") long senderId,
 			@PathParam("senderRole") String senderRole,
 			@PathParam("recipientId") long recipientId,
@@ -65,7 +65,7 @@ public class MessageResource {
 	
 	@Secured
 	@DELETE
-	@Path("/{id}")
+	@Path("{id}")
 	public void delete(@PathParam("id") long id) {
 		service.delete(id);
 	}

@@ -12,7 +12,7 @@ import com.aanglearning.model.app.Message;
 import com.aanglearning.service.JDBC;
 
 public class MessageService {
-	Connection connection = null;
+	Connection connection;
 
 	public MessageService() {
 		connection = JDBC.getConnection();
@@ -32,6 +32,7 @@ public class MessageService {
 	    	preparedStatement.setString(7, message.getMessageType());
 	    	preparedStatement.setString(8, message.getMessageBody());
 	    	preparedStatement.setString(9, message.getImageUrl());
+	        //Timestamp timeStamp = new Timestamp(message.getCreatedAt().getMillis());
 	    	preparedStatement.setString(10, message.getCreatedAt());
 	    	preparedStatement.executeUpdate();
 		    
@@ -60,7 +61,9 @@ public class MessageService {
 	}
 	
 	public List<Message> getMessages(long senderId, String senderRole, long recipientId, String recipientRole) {
-		String query = "select * from message where SenderId=? and SenderRole=? and RecipientId=? and RecipeintRole=? order by Id desc limit 100";
+		String query = "select * from message where "
+				+ "((SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?) or (SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?)) "
+				+ "order by Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -68,6 +71,10 @@ public class MessageService {
 			preparedStatement.setString(2, senderRole);
 			preparedStatement.setLong(3, recipientId);
 			preparedStatement.setString(4, recipientRole);
+			preparedStatement.setLong(5, recipientId);
+			preparedStatement.setString(6, recipientRole);
+			preparedStatement.setLong(7, senderId);
+			preparedStatement.setString(8, senderRole);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				Message message = new Message();
@@ -90,13 +97,21 @@ public class MessageService {
 	}
 	
 	public List<Message> getMessagesFromId(long senderId, String senderRole, long recipientId, String recipientRole, long messageId) {
-		String query = "select * from message where SenderId=? and SenderRole=? and RecipientId=? and RecipeintRole=? and Id<? order by Id desc limit 100";
+		String query = "select * from message where "
+				+ "((SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?) or (SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?)) "
+				+ "and Id<? order by Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, senderId);
-			preparedStatement.setLong(2, recipientId);
-			preparedStatement.setLong(3, messageId);
+			preparedStatement.setString(2, senderRole);
+			preparedStatement.setLong(3, recipientId);
+			preparedStatement.setString(4, recipientRole);
+			preparedStatement.setLong(5, recipientId);
+			preparedStatement.setString(6, recipientRole);
+			preparedStatement.setLong(7, senderId);
+			preparedStatement.setString(8, senderRole);
+			preparedStatement.setLong(9, messageId);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				Message message = new Message();
@@ -119,7 +134,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessages(long groupId) {
-		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc limit 20";
+		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -147,7 +162,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessagesFromId(long groupId, long messageId) {
-		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc limit 20";
+		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc limit 100";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -167,6 +182,7 @@ public class MessageService {
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
+				//message.setCreatedAt(new DateTime(rs.getTimestamp("CreatedAt")));
 				messages.add(message);
 			}
 		} catch (SQLException e) {
