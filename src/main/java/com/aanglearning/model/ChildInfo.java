@@ -1,5 +1,7 @@
 package com.aanglearning.model;
 
+import com.aanglearning.model.entity.Service;
+
 public class ChildInfo {
 	private long schoolId;
 	private String schoolName;
@@ -9,6 +11,7 @@ public class ChildInfo {
 	private String sectionName;
 	private long studentId;
 	private String name;
+	private Service service;
 
 	public long getSchoolId() {
 		return schoolId;
@@ -72,6 +75,14 @@ public class ChildInfo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Service getService() {
+		return service;
+	}
+	
+	public void setService(Service service) {
+		this.service = service;
 	}
 
 }

@@ -12,9 +12,11 @@ import com.aanglearning.model.ChildInfo;
 import com.aanglearning.model.Credentials;
 import com.aanglearning.model.ParentCredentials;
 import com.aanglearning.service.JDBC;
+import com.aanglearning.service.entity.ServicesService;
 
 public class ParentService {
-	Statement stmt = null;
+	Statement stmt;
+	ServicesService servicesService = new ServicesService();
 	
 	public ParentService() {
 		try {
@@ -83,6 +85,7 @@ public class ParentService {
 				info.setSectionName(rs.getString("C.SectionName"));
 				info.setStudentId(rs.getLong("A.Id"));
 				info.setName(rs.getString("A.StudentName"));
+				info.setService(servicesService.getService(rs.getLong("A.SchoolId")));
 				infos.add(info);
 			}
 		} catch (SQLException e) {
