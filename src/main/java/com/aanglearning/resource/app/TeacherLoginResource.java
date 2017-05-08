@@ -22,4 +22,10 @@ TeacherLoginService service = new TeacherLoginService();
 	public Response teacherLogin(Credentials credentials) {
 		return service.authenticateUser(credentials);
 	}
+	
+	@POST
+	@Path("principal/login")
+	public Response principalLogin(Credentials credentials) {
+		return service.authenticatePrincipal(credentials);
+	}
 }
