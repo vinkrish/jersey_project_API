@@ -70,6 +70,32 @@ public class ChatService {
 		return chats;
 	}
 	
+	public List<Chat> getPrincipalChatParents(long teacherId) {
+		String query = "select * from chat where TeacherId=? and CreatorRole='principal' order by Id";
+		List<Chat> chats = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, teacherId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				Chat chat = new Chat();
+				chat.setId(rs.getLong("Id"));
+				chat.setStudentId(rs.getLong("StudentId"));
+				chat.setStudentName(rs.getString("StudentName"));
+				chat.setClassName(rs.getString("ClassName"));
+				chat.setSectionName(rs.getString("SectionName"));
+				chat.setTeacherId(rs.getLong("TeacherId"));
+				chat.setTeacherName(rs.getString("TeacherName"));
+				chat.setCreatedBy(rs.getLong("CreatedBy"));
+				chat.setCreatorRole(rs.getString("CreatorRole"));
+				chats.add(chat);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return chats;
+	}
+	
 	public List<Chat> getChatTeachers(long studentId) {
 		String query = "select * from chat where StudentId=? order by Id";
 		List<Chat> chats = new ArrayList<>();

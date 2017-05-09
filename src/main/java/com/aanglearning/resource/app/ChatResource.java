@@ -36,6 +36,13 @@ public class ChatResource {
 	
 	@Secured
 	@GET
+	@Path("principal/{id}")
+	public List<Chat> getPrincipalChatParents(@PathParam("id") long id) {
+		return service.getPrincipalChatParents(id);
+	}
+	
+	@Secured
+	@GET
 	@Path("parent/{id}")
 	public List<Chat> getChatTeachers(@PathParam("id") long id) {
 		return service.getChatTeachers(id);
