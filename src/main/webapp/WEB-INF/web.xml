@@ -12,6 +12,10 @@
 			<param-value>authentication.AuthenticationFilter</param-value>
 		</init-param>
 		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+			<param-value>authentication.CORSFilter</param-value>
+		</init-param>
+		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
 			<param-value>com.aanglearning;authentication</param-value>
 		</init-param>

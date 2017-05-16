@@ -16,7 +16,7 @@ import javax.ws.rs.Priorities;
 
 @Secured
 @Provider
-@Priority(Priorities.AUTHENTICATION)
+@Priority(Priorities.AUTHORIZATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 	AuthorizationService authorizationService = new AuthorizationService();
 
