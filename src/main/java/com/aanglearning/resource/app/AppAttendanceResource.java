@@ -24,6 +24,13 @@ public class AppAttendanceResource {
 	
 	@Secured
 	@GET
+	@Path("student/{studentId}")
+	public List<Attendance> getStudentAbsentDays(@PathParam("studentId") long studentId) {
+		return service.getStudentAbsentDays(studentId);
+	}
+	
+	@Secured
+	@GET
 	@Path("section/{sectionId}")
 	public List<Attendance> dailyAttendance(@PathParam("sectionId") long sectionId) {
 		return service.getAttendance(sectionId);

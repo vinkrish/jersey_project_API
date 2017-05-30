@@ -9,14 +9,13 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
+import javax.ws.rs.Priorities;
 
 import com.aanglearning.service.AuthorizationService;
 
-import javax.ws.rs.Priorities;
-
 @Secured
 @Provider
-@Priority(Priorities.AUTHORIZATION)
+@Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 	AuthorizationService authorizationService = new AuthorizationService();
 

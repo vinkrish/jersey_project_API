@@ -24,6 +24,11 @@ public class AppAttendanceService {
 		}
 	}
 	
+	public List<Attendance> getStudentAbsentDays(long studentId) {
+		String query = "select * from attendance where StudentId = " + studentId;
+		return getAttendanceList(query);
+	}
+	
 	public List<Attendance> getAttendance(long sectionId) {
 		String query = "select * from attendance where SectionId = " + sectionId;
 		return getAttendanceList(query);

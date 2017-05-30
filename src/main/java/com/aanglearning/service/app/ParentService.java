@@ -30,7 +30,7 @@ public class ParentService {
 		ParentCredentials parentCredentials = null;
 		try {
 			if(authenticate(credentials.getUsername(), credentials.getPassword())) {
-				deleteToken(credentials.getUsername());
+				//deleteToken(credentials.getUsername());
 				String token = issueToken(credentials.getUsername());
 				saveToken(credentials.getUsername(), token);
 				parentCredentials = new ParentCredentials();
