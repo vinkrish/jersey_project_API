@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.cce.CceAspectPrimary;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class CceAspectPrimaryService {
 	Statement stmt;
 
 	public CceAspectPrimaryService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

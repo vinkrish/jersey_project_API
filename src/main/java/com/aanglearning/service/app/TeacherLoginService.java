@@ -10,7 +10,7 @@ import com.aanglearning.authentication.TokenGenerator;
 import com.aanglearning.model.Credentials;
 import com.aanglearning.model.TeacherCredentials;
 import com.aanglearning.model.entity.Teacher;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 import com.aanglearning.service.entity.SchoolService;
 import com.aanglearning.service.entity.ServicesService;
 import com.aanglearning.service.entity.TeacherService;
@@ -23,7 +23,7 @@ public class TeacherLoginService {
 	
 	public TeacherLoginService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

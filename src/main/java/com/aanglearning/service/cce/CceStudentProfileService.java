@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.cce.CceStudentProfile;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class CceStudentProfileService {
 	Connection connection;
 
 	public CceStudentProfileService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<CceStudentProfile> getCceStudentProfiles(long sectionId, int term) {

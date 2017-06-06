@@ -13,19 +13,20 @@ import com.aanglearning.model.app.UserGroup;
 import com.aanglearning.resource.app.GroupsResource;
 import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.resource.entity.TeacherResource;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class UserGroupService {
 	Connection connection;
-	StudentResource studentResource;
-	TeacherResource teacherResource;
-	GroupsResource groupsResource;
+	StudentResource studentResource = new StudentResource();
+	TeacherResource teacherResource = new TeacherResource();
+	GroupsResource groupsResource = new GroupsResource();
 
 	public UserGroupService() {
-		connection = JDBC.getConnection();
-		studentResource = new StudentResource();
-		teacherResource = new TeacherResource();
-		groupsResource = new GroupsResource();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void add(List<UserGroup> userGroupList) {

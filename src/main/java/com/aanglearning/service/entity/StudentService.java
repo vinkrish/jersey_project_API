@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.entity.Student;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class StudentService {
 	Statement stmt;
 
 	public StudentService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

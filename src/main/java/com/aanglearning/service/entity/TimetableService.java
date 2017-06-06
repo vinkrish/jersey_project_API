@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.aanglearning.model.entity.Timetable;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 import com.google.gson.Gson;
 
 public class TimetableService {
@@ -18,7 +18,7 @@ public class TimetableService {
 
 	public TimetableService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

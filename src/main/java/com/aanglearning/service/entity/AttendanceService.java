@@ -12,17 +12,16 @@ import org.json.JSONObject;
 import com.aanglearning.model.entity.Attendance;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.resource.entity.StudentResource;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 import com.google.gson.Gson;
 
 public class AttendanceService {
 	Statement stmt;
-	StudentResource studentResource;
+	StudentResource studentResource = new StudentResource();
 
 	public AttendanceService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
-			studentResource = new StudentResource();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

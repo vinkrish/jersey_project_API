@@ -9,7 +9,7 @@ import java.util.List;
 import com.aanglearning.model.app.AttendanceSet;
 import com.aanglearning.model.entity.Attendance;
 import com.aanglearning.resource.entity.StudentResource;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class AppAttendanceService {
 	Statement stmt;
@@ -17,7 +17,7 @@ public class AppAttendanceService {
 
 	public AppAttendanceService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 			studentResource = new StudentResource();
 		} catch (SQLException e) {
 			e.printStackTrace();

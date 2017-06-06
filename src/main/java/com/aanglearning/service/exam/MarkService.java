@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.exam.Mark;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class MarkService {
 	Connection connection;
 
 	public MarkService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<Mark> getMarks(long examId, long subjectId, long sectionId) {

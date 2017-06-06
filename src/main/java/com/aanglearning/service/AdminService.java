@@ -18,7 +18,7 @@ public class AdminService {
 
 	public AdminService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 			schoolService = new SchoolService();
 		} catch (SQLException e) {
 			e.printStackTrace();

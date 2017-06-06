@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.cce.CceAspectGrade;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class AspectGradeService {
 	Connection connection;
 
 	public AspectGradeService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<CceAspectGrade> getGrades(long aspectId, long sectionId, int term) {

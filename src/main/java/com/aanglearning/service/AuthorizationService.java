@@ -9,7 +9,7 @@ public class AuthorizationService {
 
 	public AuthorizationService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

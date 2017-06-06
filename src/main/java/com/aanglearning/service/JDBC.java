@@ -44,11 +44,11 @@ public class JDBC {
 	}
 
 	private static String getFormatedUrl() {
-		return ADDRESS + ":" + PORT + "/" + DATABASE + "?autoReconnect=true";
+		return ADDRESS + ":" + PORT + "/" + DATABASE;
 	}
 
 	private static String getAwsFormatedUrl() {
-		return RDS_HOSTNAME + ":" + PORT + "/" + RDS_DB_NAME + "?autoReconnect=true";
+		return RDS_HOSTNAME + ":" + PORT + "/" + RDS_DB_NAME;
 	}
 
 	public static Connection getRemoteConnection() {
@@ -72,7 +72,7 @@ public class JDBC {
 		return null;
 	}
 
-	public static Connection getConnection() {
+	public static Connection getAWSConnection() {
 		if (connection == null) {
 			loadDriver();
 			loadAwsConnection();
@@ -80,7 +80,7 @@ public class JDBC {
 		return connection;
 	}
 
-	public static Connection getLocalConnection() {
+	public static Connection getConnection() {
 		if (connection == null) {
 			loadDriver();
 			loadConnection();

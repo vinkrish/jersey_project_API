@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.exam.ActivityScore;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class ActivityScoreService {
 	Connection connection;
 
 	public ActivityScoreService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<ActivityScore> getActivityScores(long activityId) {

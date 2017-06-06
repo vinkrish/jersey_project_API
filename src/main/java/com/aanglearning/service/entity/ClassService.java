@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Set;
 
 import com.aanglearning.model.entity.Clas;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class ClassService {
 	Statement stmt;
 
 	public ClassService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

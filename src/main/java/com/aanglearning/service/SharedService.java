@@ -21,7 +21,7 @@ public class SharedService {
 		csgService = new ClassSubjectGroupService();
 		sgsService = new SubjectGroupSubjectService();
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

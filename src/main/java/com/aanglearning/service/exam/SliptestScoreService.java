@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.exam.SliptestScore;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class SliptestScoreService {
 	Connection connection;
 
 	public SliptestScoreService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<SliptestScore> getSliptestScores(long sliptestId) {

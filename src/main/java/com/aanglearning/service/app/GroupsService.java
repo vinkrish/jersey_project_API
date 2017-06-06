@@ -8,14 +8,14 @@ import java.util.List;
 
 import com.aanglearning.model.app.Groups;
 import com.aanglearning.model.app.UserGroup;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class GroupsService {
 	Statement stmt = null;
 
 	public GroupsService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

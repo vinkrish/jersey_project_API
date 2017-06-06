@@ -11,7 +11,7 @@ import com.aanglearning.authentication.TokenGenerator;
 import com.aanglearning.model.ChildInfo;
 import com.aanglearning.model.Credentials;
 import com.aanglearning.model.ParentCredentials;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 import com.aanglearning.service.entity.ServicesService;
 
 public class ParentService {
@@ -20,7 +20,7 @@ public class ParentService {
 	
 	public ParentService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

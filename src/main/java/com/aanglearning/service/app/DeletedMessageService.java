@@ -3,7 +3,7 @@ package com.aanglearning.service.app;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class DeletedMessageService {
 	
@@ -11,7 +11,7 @@ public class DeletedMessageService {
 
 	public DeletedMessageService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

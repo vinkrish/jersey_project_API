@@ -9,18 +9,16 @@ import java.util.List;
 import com.aanglearning.model.entity.ClassSubjectGroup;
 import com.aanglearning.model.entity.Subject;
 import com.aanglearning.model.entity.SubjectGroupSubject;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class SubjectService {
 	Statement stmt;
-	ClassSubjectGroupService csgService;
-	SubjectGroupSubjectService sgsService;
+	ClassSubjectGroupService csgService = new ClassSubjectGroupService();
+	SubjectGroupSubjectService sgsService = new SubjectGroupSubjectService();
 
 	public SubjectService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
-			csgService = new ClassSubjectGroupService();
-			sgsService = new SubjectGroupSubjectService();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -9,16 +9,15 @@ import java.util.List;
 import com.aanglearning.model.entity.School;
 import com.aanglearning.model.entity.Service;
 import com.aanglearning.resource.entity.ServiceResource;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class SchoolService {
 	Statement stmt;
-	ServiceResource resource;
+	ServiceResource resource = new ServiceResource();
 
 	public SchoolService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
-			resource = new ServiceResource();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

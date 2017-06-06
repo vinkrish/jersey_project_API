@@ -5,14 +5,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.aanglearning.model.entity.Service;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class ServicesService {
 	Statement stmt;
 
 	public ServicesService() {
 		try {
-			stmt = JDBC.getConnection().createStatement();
+			stmt = DatabaseUtil.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

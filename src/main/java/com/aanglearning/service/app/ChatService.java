@@ -9,13 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.app.Chat;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class ChatService {
 	Connection connection;
 	
 	public ChatService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Chat add(Chat chat) {

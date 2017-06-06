@@ -9,13 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aanglearning.model.app.Message;
-import com.aanglearning.service.JDBC;
+import com.aanglearning.service.DatabaseUtil;
 
 public class MessageService {
 	Connection connection;
 
 	public MessageService() {
-		connection = JDBC.getConnection();
+		try {
+			connection = DatabaseUtil.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Message add(Message message) {
