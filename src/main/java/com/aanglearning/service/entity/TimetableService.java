@@ -6,12 +6,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.aanglearning.model.entity.Timetable;
 import com.aanglearning.service.DatabaseUtil;
-import com.google.gson.Gson;
 
 public class TimetableService {
 	Statement stmt;
@@ -95,28 +91,6 @@ public class TimetableService {
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-	}
-	
-	public void addTimetable(String timetableStr) {
-		JSONArray timetableArray = new JSONArray(timetableStr);
-		for (int i = 0; i < timetableArray.length(); i++) {
-			JSONObject timetableJson = timetableArray.getJSONObject(i);
-			Gson gson = new Gson();
-			Timetable timetable = gson.fromJson(timetableJson.toString(), Timetable.class);
-			try {
-				String query = "insert into timetable(Id, SectionId, DayOfWeek, PeriodNo, SubjectId) "
-						+ "values ("
-						+ timetable.getId() + "," 
-						+ timetable.getSectionId() + ",'"
-						+ timetable.getDayOfWeek() +"',"
-						+ timetable.getPeriodNo() + ","
-						+ timetable.getSubjectId() + ")";
-						//+ timetable.getSubjectName() + "')";
-				stmt.executeUpdate(query);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

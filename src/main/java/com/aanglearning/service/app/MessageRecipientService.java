@@ -8,11 +8,7 @@ import com.aanglearning.service.DatabaseUtil;
 public class MessageRecipientService {
 	Connection connection = null;
 
-	public MessageRecipientService() {
-		try {
-			connection = DatabaseUtil.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public MessageRecipientService() throws SQLException {
+		connection = DatabaseUtil.getConnection();
 	}
 }
