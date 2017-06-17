@@ -20,7 +20,7 @@ TeacherLoginService service = new TeacherLoginService();
 	@POST
 	@Path("login")
 	public Response teacherLogin(Credentials credentials) {
-		return service.authenticateUser(credentials);
+		return service.authenticateTeacher(credentials);
 	}
 	
 	@POST

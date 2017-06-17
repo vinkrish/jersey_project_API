@@ -29,7 +29,7 @@ public class TeacherLoginService {
 		}
 	}
 	
-	public Response authenticateUser(Credentials credentials) {
+	public Response authenticateTeacher(Credentials credentials) {
 		TeacherCredentials teacherCredentials = null;
 		try {
 			if(authenticate(credentials.getUsername(), credentials.getPassword())) {
