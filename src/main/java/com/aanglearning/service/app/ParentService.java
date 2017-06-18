@@ -28,10 +28,13 @@ public class ParentService {
 	
 	public Response authenticateUser(Credentials credentials) {
 		ParentCredentials parentCredentials = null;
+		String token = "";
 		try {
 			if(authenticate(credentials.getUsername(), credentials.getPassword())) {
-				//deleteToken(credentials.getUsername());
-				String token = issueToken(credentials.getUsername());
+				token = getToken(credentials.getUsername());
+				if(token.equals("")) {
+					token = issueToken(credentials.getUsername());
+				}
 				saveToken(credentials.getUsername(), token);
 				parentCredentials = new ParentCredentials();
 				parentCredentials.setAuthToken(token);
@@ -94,13 +97,18 @@ public class ParentService {
 		return infos;
 	}
 	
-	private void deleteToken(String mobileNo) {
+	private String getToken(String user) {
+		String token = "";
+		String query = "select Token from authorization where User = '" + user + "'";
 		try {
-			String query = "delete from authorization where User = '" + mobileNo + "'";
-			stmt.executeUpdate(query);
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				token = rs.getString("Token");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return token;
 	}
 	
 	private String issueToken(String username) {

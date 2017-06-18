@@ -27,9 +27,13 @@ public class AdminService {
 	
 	public Response authenticateUser(Credentials credentials) {
 		AuthResponse auth = null;
+		String token = "";
 		try {
 			authenticate(credentials.getUsername(), credentials.getPassword());
-			String token = issueToken(credentials.getUsername());
+			token = getToken(credentials.getUsername());
+			if(token.equals("")) {
+				token = issueToken(credentials.getUsername());
+			}
 			saveToken(credentials.getUsername(), token);
 			School school = schoolService.getSchoolByUserName(credentials.getUsername());
 			auth = new AuthResponse(school.getId(), school.getSchoolName(), token);
@@ -54,6 +58,20 @@ public class AdminService {
 		if (!password.equals(validatedPasswrod)) {
 			throw new Exception();
 		}
+	}
+	
+	private String getToken(String user) {
+		String token = "";
+		String query = "select Token from authorization where User = '" + user + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				token = rs.getString("Token");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return token;
 	}
 	
 	// Issue a token (can be a random String persisted to a database or a JWT token)

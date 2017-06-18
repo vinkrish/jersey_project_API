@@ -31,10 +31,13 @@ public class TeacherLoginService {
 	
 	public Response authenticateTeacher(Credentials credentials) {
 		TeacherCredentials teacherCredentials = null;
+		String token = "";
 		try {
 			if(authenticate(credentials.getUsername(), credentials.getPassword())) {
-				//deleteToken(credentials.getUsername());
-				String token = issueToken(credentials.getUsername());
+				token = getToken(credentials.getUsername());
+				if(token.equals("")) {
+					token = issueToken(credentials.getUsername());
+				}
 				saveToken(credentials.getUsername(), token);
 				teacherCredentials = new TeacherCredentials();
 				teacherCredentials.setAuthToken(token);
@@ -54,10 +57,13 @@ public class TeacherLoginService {
 	
 	public Response authenticatePrincipal(Credentials credentials) {
 		TeacherCredentials teacherCredentials = null;
+		String token = "";
 		try {
 			if(isPrincipal(credentials.getUsername(), credentials.getPassword())) {
-				//deleteToken(credentials.getUsername());
-				String token = issueToken(credentials.getUsername());
+				token = getToken(credentials.getUsername());
+				if(token.equals("")) {
+					token = issueToken(credentials.getUsername());
+				}
 				saveToken(credentials.getUsername(), token);
 				teacherCredentials = new TeacherCredentials();
 				teacherCredentials.setAuthToken(token);
@@ -121,13 +127,18 @@ public class TeacherLoginService {
 		}
 	}
 	
-	private void deleteToken(String mobileNo) {
+	private String getToken(String user) {
+		String token = "";
+		String query = "select Token from authorization where User = '" + user + "'";
 		try {
-			String query = "delete from authorization where User = '" + mobileNo + "'";
-			stmt.executeUpdate(query);
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				token = rs.getString("Token");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return token;
 	}
 	
 	private String issueToken(String username) {
