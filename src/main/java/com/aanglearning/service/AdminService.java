@@ -33,8 +33,8 @@ public class AdminService {
 			token = getToken(credentials.getUsername());
 			if(token.equals("")) {
 				token = issueToken(credentials.getUsername());
+				saveToken(credentials.getUsername(), token);
 			}
-			saveToken(credentials.getUsername(), token);
 			School school = schoolService.getSchoolByUserName(credentials.getUsername());
 			auth = new AuthResponse(school.getId(), school.getSchoolName(), token);
 			return Response.ok(auth).build();

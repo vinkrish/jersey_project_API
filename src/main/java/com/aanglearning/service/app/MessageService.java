@@ -8,8 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.aanglearning.model.app.Message;
 import com.aanglearning.service.DatabaseUtil;
+import com.aanglearning.service.FCMPost;
 
 public class MessageService {
 	Connection connection;
@@ -36,7 +39,6 @@ public class MessageService {
 	    	preparedStatement.setString(7, message.getMessageType());
 	    	preparedStatement.setString(8, message.getMessageBody());
 	    	preparedStatement.setString(9, message.getImageUrl());
-	        //Timestamp timeStamp = new Timestamp(message.getCreatedAt().getMillis());
 	    	preparedStatement.setString(10, message.getCreatedAt());
 	    	preparedStatement.executeUpdate();
 		    
@@ -47,21 +49,82 @@ public class MessageService {
 			}
 			message.setId(pk);
 			
-			/*if(message.getGroupId() == 0) {
-				String sql = "insert into message_recipient(RecipientId, Role, MessageId) values(?,?,?)";
-				PreparedStatement statement = connection.prepareStatement(sql);
-				statement.setLong(1, message.getRecipientId());
-				statement.setString(2, message.getRecipientRole());
-		    	statement.setLong(3, message.getId());
-		    	preparedStatement.executeUpdate();
-		    	connection.commit();
-			}*/
+			if(message.getGroupId() == 0) {
+				String username = "";
+				if(message.getRecipientRole().equals("teacher") 
+						|| message.getRecipientRole().equals("principal") 
+						|| message.getRecipientRole().equals("admin")) {
+					username = getUsername("teacher", message.getRecipientId());
+				} else if(message.getRecipientRole().equals("student")) {
+					username = getUsername("student", message.getRecipientId());
+				}
+				
+				if(!username.equals("")) {
+					JSONObject msg = new JSONObject();
+					msg.put("message", "You have new message");
+					
+					JSONObject notification = new JSONObject();
+					notification.put("title", "Notification");
+					notification.put("body", "You have new message");
+					
+				    JSONObject fcm = new JSONObject();
+				    fcm.put("to", getFCMToken(username));
+				    fcm.put("notification", notification);
+				    fcm.put("data", msg);
+				    fcm.put("time_to_live", 43200);
+				    
+				    FCMPost fcmPost = new FCMPost();
+				    switch(message.getRecipientRole()){
+				    case "teacher":
+				    	fcmPost.post(fcm.toString(), "AAAA_yeO7iY:APA91bFLcSMNj8TbaHs6wJcKViRnRSGiCBhkai3zxvsekMQ5taBCUPgXvGsq-7PsbNuqGZ7Bh0iKre-NWhcmM2rwFd3-kaFTsPCgHvGtfrPl5ZiQ6CWNuikRRKEkpZXLFtDNb3Hy7R9J");
+				    	break;
+				    case "student":
+				    	fcmPost.post(fcm.toString(), "AAAAN54dwVg:APA91bG8KE77LmQ3Fe-LJrkDVST6HDe-keM32Qrx6bhKFAgarh5Fl0SktXQKF2ytsqXVIicZ5-eef07hApRzYew9ZU0rQCJjGaPRnh8novM0tB3AeuutO2GVPJ83GD-sFTCFow1x_pDe");
+				    	break;
+				    case "principal":
+				    	fcmPost.post(fcm.toString(), "AAAAdr2uwq8:APA91bEvgBP86EcOXDY4kBEeKxeS7YQTftS6UkrC973pDohHR9UyEKIpkHsYno94KVPqZj1YyvdoTwZF3uwL1pEI3GJUPV2TKJywP9SzDp5_H8Evo5nrsPJ-b7jOLOr8GMAKHMKbGX8p");
+				    	break;
+				    default:
+				    	break;
+				    }
+				}
+				
+			}
 			
 		} catch(Exception e) {
 		    e.printStackTrace();
 		}
 		
 		return message;
+	}
+	
+	private String getUsername(String table, long id) {
+		String username = "";
+		String query = "select Username from " + table + " where Id = " + id;
+		try {
+			ResultSet rs = connection.createStatement().executeQuery(query);
+			if (rs.next()) {
+				username = rs.getString("Username");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return username;
+	}
+
+	
+	private String getFCMToken(String user) {
+		String fcmToken = "";
+		String query = "select FcmToken from authorization where User = '" + user + "'";
+		try {
+			ResultSet rs = connection.createStatement().executeQuery(query);
+			if (rs.next()) {
+				fcmToken = rs.getString("FcmToken");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fcmToken;
 	}
 	
 	public List<Message> getMessages(long senderId, String senderRole, long recipientId, String recipientRole) {

@@ -37,8 +37,8 @@ public class TeacherLoginService {
 				token = getToken(credentials.getUsername());
 				if(token.equals("")) {
 					token = issueToken(credentials.getUsername());
+					saveToken(credentials.getUsername(), token);
 				}
-				saveToken(credentials.getUsername(), token);
 				teacherCredentials = new TeacherCredentials();
 				teacherCredentials.setAuthToken(token);
 				Teacher teacher = teacherService.getTeacher(credentials.getUsername());
@@ -63,8 +63,8 @@ public class TeacherLoginService {
 				token = getToken(credentials.getUsername());
 				if(token.equals("")) {
 					token = issueToken(credentials.getUsername());
+					saveToken(credentials.getUsername(), token);
 				}
-				saveToken(credentials.getUsername(), token);
 				teacherCredentials = new TeacherCredentials();
 				teacherCredentials.setAuthToken(token);
 				Teacher teacher = teacherService.getTeacher(credentials.getUsername());

@@ -49,7 +49,7 @@ public class ChatService {
 	}
 	
 	public List<Chat> getChatParents(long teacherId) {
-		String query = "select * from chat where TeacherId=? and CreatorRole='teacher' order by Id";
+		String query = "select * from chat where TeacherId=? and (CreatorRole='teacher' || CreatorRole='principal') order by Id";
 		List<Chat> chats = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);

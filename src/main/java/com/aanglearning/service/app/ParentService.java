@@ -34,8 +34,8 @@ public class ParentService {
 				token = getToken(credentials.getUsername());
 				if(token.equals("")) {
 					token = issueToken(credentials.getUsername());
+					saveToken(credentials.getUsername(), token);
 				}
-				saveToken(credentials.getUsername(), token);
 				parentCredentials = new ParentCredentials();
 				parentCredentials.setAuthToken(token);
 				parentCredentials.setInfo(getChildInfo(credentials.getUsername()));
