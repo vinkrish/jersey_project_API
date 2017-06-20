@@ -27,7 +27,7 @@ public class TeacherService {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				teacher.setId(rs.getLong("Id"));
-				teacher.setTeacherName(rs.getString("TeacherName"));
+				teacher.setName(rs.getString("Name"));
 				teacher.setImage(rs.getString("Image"));
 				teacher.setSchoolId(rs.getLong("SchoolId"));
 				teacher.setDateOfBirth(rs.getString("DateOfBirth"));
@@ -78,7 +78,7 @@ public class TeacherService {
 			while (rs.next()) {
 				Teacher teacher = new Teacher ();
 				teacher.setId(rs.getLong("Id"));
-				teacher.setTeacherName(rs.getString("TeacherName"));
+				teacher.setName(rs.getString("Name"));
 				teacher.setImage(rs.getString("Image"));
 				teacher.setUsername(rs.getString("Username"));
 				teacher.setPassword(rs.getString("Password"));
@@ -99,11 +99,11 @@ public class TeacherService {
 	
 	public Teacher add(Teacher teacher) {
 		try {
-			String query = "insert into teacher(Id, TeacherName, Image, Username, Password, SchoolId, "
+			String query = "insert into teacher(Id, Name, Image, Username, Password, SchoolId, "
 					+ "DateOfBirth, Mobile, Qualification, DateOfJoining, Gender, Email) "
 					+ "values ("
 					+ teacher.getId() + ",'" 
-					+ teacher.getTeacherName() + "','"
+					+ teacher.getName() + "','"
 					+ teacher.getImage() + "','"
 					+ teacher.getUsername() + "','"
 					+ teacher.getPassword() + "',"
@@ -124,7 +124,7 @@ public class TeacherService {
 	
 	public void update(Teacher teacher) {
 		try {
-			String query = "update teacher set TeacherName = '" + teacher.getTeacherName() 
+			String query = "update teacher set Name = '" + teacher.getName() 
 			+ "', Username = '" + teacher.getUsername() 
 			+ "', Password = '" + teacher.getPassword() 
 			+ "', DateOfBirth = '" + teacher.getDateOfBirth() 

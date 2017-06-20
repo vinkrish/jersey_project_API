@@ -44,7 +44,7 @@ public class AttendanceService {
 			att.setId(0);
 			att.setSectionId(sectionId);
 			att.setStudentId(student.getId());
-			att.setStudentName(student.getStudentName());
+			att.setStudentName(student.getName());
 			att.setSubjectId(0);
 			att.setType("Daily");
 			att.setSession(0);
@@ -96,7 +96,7 @@ public class AttendanceService {
 			att.setId(0);
 			att.setSectionId(sectionId);
 			att.setStudentId(student.getId());
-			att.setStudentName(student.getStudentName());
+			att.setStudentName(student.getName());
 			att.setSubjectId(0);
 			att.setType(attendanceType);
 			att.setSession(session);

@@ -29,19 +29,23 @@ public class MessageResource {
 	
 	@Secured
 	@GET
+	@Path("{senderRole}/{senderId}/{recipientRole}/{recipientId}/messagesUp/{messageId}")
+	public List<Message> getMessagesAboveId(@PathParam("senderId") long senderId,
+			@PathParam("senderRole") String senderRole,
+			@PathParam("recipientId") long recipientId,
+			@PathParam("recipientRole") String recipientRole,
+			@PathParam("messageId") long messageId) {
+		return service.getMessagesAboveId(senderId, senderRole, recipientId, recipientRole, messageId);
+	}
+	
+	@Secured
+	@GET
 	@Path("{senderRole}/{senderId}/{recipientRole}/{recipientId}")
 	public List<Message> getMessages(@PathParam("senderId") long senderId,
 			@PathParam("senderRole") String senderRole,
 			@PathParam("recipientId") long recipientId,
 			@PathParam("recipientRole") String recipientRole) {
 		return service.getMessages(senderId, senderRole, recipientId, recipientRole);
-	}
-	
-	@Secured
-	@GET
-	@Path("group/{groupId}")
-	public List<Message> getGroupMessages(@PathParam("groupId") long groupId) {
-		return service.getGroupMessages(groupId);
 	}
 	
 	@Secured
@@ -53,6 +57,13 @@ public class MessageResource {
 			@PathParam("recipientRole") String recipientRole,
 			@PathParam("messageId") long messageId) {
 		return service.getMessagesFromId(senderId, senderRole, recipientId, recipientRole, messageId);
+	}
+	
+	@Secured
+	@GET
+	@Path("group/{groupId}")
+	public List<Message> getGroupMessages(@PathParam("groupId") long groupId) {
+		return service.getGroupMessages(groupId);
 	}
 	
 	@Secured

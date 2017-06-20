@@ -49,7 +49,7 @@ public class StudentService {
 			while (rs.next()){
 				Student student = new Student();
 				student.setId(rs.getLong("Id"));
-				student.setStudentName(rs.getString("StudentName"));
+				student.setName(rs.getString("Name"));
 				student.setSchoolId(rs.getLong("SchoolId"));
 				student.setClassId(rs.getLong("ClassId"));
 				student.setSectionId(rs.getLong("SectionId"));
@@ -80,12 +80,12 @@ public class StudentService {
 	
 	public Student add(Student student) {
 		try {
-			String query = "insert into student(StudentId, StudentName, SchoolId, ClassId, SectionId, "
+			String query = "insert into student(StudentId, Name, SchoolId, ClassId, SectionId, "
 					+ "AdmissionNo, RollNo, Username, Password, Image, FatherName, MotherName, DateOfBirth, "
 					+ "Gender, Email, Mobile1, Mobile2, Street, City, District, State, Pincode) "
 					+ "values (" 
 					+ student.getId() + ",'" 
-					+ student.getStudentName() + "',"
+					+ student.getName() + "',"
 					+ student.getSchoolId() + ","
 					+ student.getClassId()  + ","
 					+ student.getSectionId()  + ",'"
@@ -116,7 +116,7 @@ public class StudentService {
 	
 	public void update(Student student) {
 		try {
-			String query = "update student set  StudentName = '" + student.getStudentName() 
+			String query = "update student set Name = '" + student.getName() 
 			+ "', AdmissionNo = '" + student.getAdmissionNo() 
 			+ "', RollNo = " + student.getRollNo() 
 			+ ", Username = '" + student.getUsername() 

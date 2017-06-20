@@ -50,22 +50,37 @@ public class MessageService {
 			message.setId(pk);
 			
 			if(message.getGroupId() == 0) {
+				String name = "";
 				String username = "";
+				String table = "";
 				if(message.getRecipientRole().equals("teacher") 
 						|| message.getRecipientRole().equals("principal") 
 						|| message.getRecipientRole().equals("admin")) {
-					username = getUsername("teacher", message.getRecipientId());
+					table = "teacher";
 				} else if(message.getRecipientRole().equals("student")) {
-					username = getUsername("student", message.getRecipientId());
+					table = "student";
+				}
+				
+				String query_search = "select Name, Username from " + table + " where Id = " + message.getRecipientId();
+				try {
+					ResultSet resultSet = connection.createStatement().executeQuery(query_search);
+					if (resultSet.next()) {
+						name = resultSet.getString("Name");
+						username = resultSet.getString("Username");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
 				
 				if(!username.equals("")) {
 					JSONObject msg = new JSONObject();
-					msg.put("message", "You have new message");
+					msg.put("sender_id", message.getSenderId());
+					msg.put("sender_name", name);
+					msg.put("message", message.getMessageBody());
 					
 					JSONObject notification = new JSONObject();
-					notification.put("title", "Notification");
-					notification.put("body", "You have new message");
+					notification.put("title", name);
+					notification.put("body", message.getMessageBody());
 					
 				    JSONObject fcm = new JSONObject();
 				    fcm.put("to", getFCMToken(username));
@@ -98,21 +113,6 @@ public class MessageService {
 		return message;
 	}
 	
-	private String getUsername(String table, long id) {
-		String username = "";
-		String query = "select Username from " + table + " where Id = " + id;
-		try {
-			ResultSet rs = connection.createStatement().executeQuery(query);
-			if (rs.next()) {
-				username = rs.getString("Username");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return username;
-	}
-
-	
 	private String getFCMToken(String user) {
 		String fcmToken = "";
 		String query = "select FcmToken from authorization where User = '" + user + "'";
@@ -125,6 +125,43 @@ public class MessageService {
 			e.printStackTrace();
 		}
 		return fcmToken;
+	}
+	
+	public List<Message> getMessagesAboveId(long senderId, String senderRole, long recipientId, String recipientRole, long messageId) {
+		String query = "select * from message where "
+				+ "((SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?) or (SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?)) "
+				+ "and Id>? order by Id desc";
+		List<Message> messages = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, senderId);
+			preparedStatement.setString(2, senderRole);
+			preparedStatement.setLong(3, recipientId);
+			preparedStatement.setString(4, recipientRole);
+			preparedStatement.setLong(5, recipientId);
+			preparedStatement.setString(6, recipientRole);
+			preparedStatement.setLong(7, senderId);
+			preparedStatement.setString(8, senderRole);
+			preparedStatement.setLong(9, messageId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				Message message = new Message();
+				message.setId(rs.getLong("Id"));
+				message.setSenderId(rs.getLong("SenderId"));
+				message.setSenderRole(rs.getString("SenderRole"));
+				message.setRecipientId(rs.getLong("RecipientId"));
+				message.setRecipientRole(rs.getString("RecipientRole"));
+				message.setGroupId(rs.getLong("GroupId"));
+				message.setMessageType(rs.getString("MessageType"));
+				message.setMessageBody(rs.getString("MessageBody"));
+				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setCreatedAt(rs.getString("CreatedAt"));
+				messages.add(message);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return messages;
 	}
 	
 	public List<Message> getMessages(long senderId, String senderRole, long recipientId, String recipientRole) {
