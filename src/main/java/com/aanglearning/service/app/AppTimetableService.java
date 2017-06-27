@@ -28,8 +28,8 @@ public class AppTimetableService {
 	}
 
 	public List<TeacherTimetable> getTeacherTimetable(long teacherId) {
-		String query = "select t.*, s.SubjectName, s.TeacherName from timetable t, subject_teacher s "
-				+ "where s.TeacherId = " + teacherId + " and t.SectionId = s.SectionId and t.SubjectId = s.SubjectId";
+		/*String query = "select t.*, s.SubjectName, s.TeacherName from timetable t, subject_teacher s "
+				+ "where s.TeacherId = " + teacherId + " and t.SectionId = s.SectionId and t.SubjectId = s.SubjectId";*/
 		String sql = "select t.*, c.ClassName, s.SectionName, st.SubjectName, st.TeacherName "
 				+ "from timetable t, class c, section s, subject_teacher st "
 				+ "where s.Id = t.SectionId and st.TeacherId = " + teacherId + " and t.SectionId = st.SectionId and t.SubjectId = st.SubjectId "

@@ -72,7 +72,7 @@ public class ParentService {
 	}
 	
 	private ArrayList<ChildInfo> getChildInfo(String mobile) {
-		String query = "select A.SchoolId, A.SectionId, A.Name, A.Id, B.SchoolName, C.SectionName, D.Id, D.ClassName "
+		String query = "select A.SchoolId, A.SectionId, A.Name, A.Image, A.Id, B.SchoolName, C.SectionName, D.Id, D.ClassName "
 				+ "from student A, school B, section C, class D  "
 				+ "where A.Mobile1 = '" + mobile + "' and A.SchoolId = B.Id and A.SectionId = C.Id and C.ClassId = D.Id";
 		ArrayList<ChildInfo> infos = new ArrayList<>();
@@ -88,6 +88,7 @@ public class ParentService {
 				info.setSectionName(rs.getString("C.SectionName"));
 				info.setStudentId(rs.getLong("A.Id"));
 				info.setName(rs.getString("A.Name"));
+				info.setImage(rs.getString("A.Image"));
 				info.setService(servicesService.getService(rs.getLong("A.SchoolId")));
 				infos.add(info);
 			}

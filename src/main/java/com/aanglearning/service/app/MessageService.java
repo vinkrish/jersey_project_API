@@ -84,7 +84,7 @@ public class MessageService {
 					
 				    JSONObject fcm = new JSONObject();
 				    fcm.put("to", getFCMToken(username));
-				    fcm.put("notification", notification);
+				    //fcm.put("notification", notification);
 				    fcm.put("data", msg);
 				    fcm.put("time_to_live", 43200);
 				    
@@ -237,8 +237,37 @@ public class MessageService {
 		return messages;
 	}
 	
+	public List<Message> getGroupMessagesAboveId(long groupId, long messageId) {
+		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id>? order by A.Id desc";
+		List<Message> messages = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.setLong(2, messageId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				Message message = new Message();
+				message.setId(rs.getLong("Id"));
+				message.setSenderId(rs.getLong("SenderId"));
+				message.setSenderRole(rs.getString("SenderRole"));
+				message.setSenderName(rs.getString("Name"));
+				message.setRecipientId(rs.getLong("RecipientId"));
+				message.setRecipientRole(rs.getString("RecipientRole"));
+				message.setGroupId(rs.getLong("GroupId"));
+				message.setMessageType(rs.getString("MessageType"));
+				message.setMessageBody(rs.getString("MessageBody"));
+				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setCreatedAt(rs.getString("CreatedAt"));
+				messages.add(message);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return messages;
+	}
+	
 	public List<Message> getGroupMessages(long groupId) {
-		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc limit 100";
+		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc limit 50";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -249,7 +278,7 @@ public class MessageService {
 				message.setId(rs.getLong("Id"));
 				message.setSenderId(rs.getLong("SenderId"));
 				message.setSenderRole(rs.getString("SenderRole"));
-				message.setSenderName(rs.getString("TeacherName"));
+				message.setSenderName(rs.getString("Name"));
 				message.setRecipientId(rs.getLong("RecipientId"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				message.setGroupId(rs.getLong("GroupId"));
@@ -266,7 +295,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessagesFromId(long groupId, long messageId) {
-		String query = "select A.*, B.TeacherName from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc limit 100";
+		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc limit 50";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -278,7 +307,7 @@ public class MessageService {
 				message.setId(rs.getLong("Id"));
 				message.setSenderId(rs.getLong("SenderId"));
 				message.setSenderRole(rs.getString("SenderRole"));
-				message.setSenderName(rs.getString("TeacherName"));
+				message.setSenderName(rs.getString("Name"));
 				message.setRecipientId(rs.getLong("RecipientId"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				message.setGroupId(rs.getLong("GroupId"));
@@ -286,7 +315,6 @@ public class MessageService {
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
-				//message.setCreatedAt(new DateTime(rs.getTimestamp("CreatedAt")));
 				messages.add(message);
 			}
 		} catch (SQLException e) {

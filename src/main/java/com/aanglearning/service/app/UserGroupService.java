@@ -53,9 +53,9 @@ public class UserGroupService {
 	}
 
 	public List<UserGroup> getUserGroups(long groupId) {
-		String query1 = "select A.*, B.StudentName as Name from user_group A, student B "
+		String query1 = "select A.*, B.Name as Name from user_group A, student B "
 				+ "where A.GroupId=? and A.Role='student' and A.UserId=B.Id";
-		String query2 = "select A.*, B.TeacherName as Name from user_group A, teacher B "
+		String query2 = "select A.*, B.Name as Name from user_group A, teacher B "
 				+ "where A.GroupId=? and (A.Role='admin' or A.Role='teacher') and  A.UserId=B.Id";
 		
 		List<UserGroup> userGroups = new ArrayList<>();

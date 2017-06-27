@@ -25,6 +25,13 @@ public class StudentResource {
 
 	@Secured
 	@GET
+	@Path("class/{classId}")
+	public List<Student> getStudentClass(@PathParam("classId") long classId) {
+		return studentService.getStudentClass(classId);
+	}
+	
+	@Secured
+	@GET
 	@Path("section/{sectionId}")
 	public List<Student> getStudentSection(@PathParam("sectionId") long sectionId) {
 		return studentService.getStudentSection(sectionId);
@@ -32,9 +39,9 @@ public class StudentResource {
 	
 	@Secured
 	@GET
-	@Path("class/{classId}")
-	public List<Student> getStudentClass(@PathParam("classId") long classId) {
-		return studentService.getStudentClass(classId);
+	@Path("{studentId}")
+	public Student getStudent(@PathParam("studentId") long studentId) {
+		return studentService.getStudent(studentId);
 	}
 	
 	@Secured

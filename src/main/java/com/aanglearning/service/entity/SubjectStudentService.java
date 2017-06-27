@@ -112,7 +112,6 @@ public class SubjectStudentService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

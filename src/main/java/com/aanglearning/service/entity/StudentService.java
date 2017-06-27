@@ -20,6 +20,41 @@ public class StudentService {
 		}
 	}
 	
+	public Student getStudent(long studentId) {
+		String query = "select * from student where Id = " + studentId;
+		Student student = new Student();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				student.setId(rs.getLong("Id"));
+				student.setName(rs.getString("Name"));
+				student.setSchoolId(rs.getLong("SchoolId"));
+				student.setClassId(rs.getLong("ClassId"));
+				student.setSectionId(rs.getLong("SectionId"));
+				student.setAdmissionNo(rs.getString("AdmissionNo"));
+				student.setRollNo(rs.getInt("RollNo"));
+				student.setUsername(rs.getString("Username"));
+				student.setPassword(rs.getString("Password"));
+				student.setImage(rs.getString("Image"));
+				student.setFatherName(rs.getString("FatherName"));
+				student.setMotherName(rs.getString("MotherName"));
+				student.setDateOfBirth(rs.getString("DateOfBirth"));
+				student.setGender(rs.getString("Gender"));
+				student.setEmail(rs.getString("Email"));
+				student.setMobile1(rs.getString("Mobile1"));
+				student.setMobile2(rs.getString("Mobile2"));
+				student.setStreet(rs.getString("Street"));
+				student.setCity(rs.getString("City"));
+				student.setDistrict(rs.getString("District"));
+				student.setState(rs.getString("State"));
+				student.setPincode(rs.getString("Pincode"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return student;
+	}
+	
 	public List<Student> getStudentSection(long sectionId) {
 		String query = "select * from student where SectionId = " + sectionId + " order by RollNo";
 		return getStudentList(query);

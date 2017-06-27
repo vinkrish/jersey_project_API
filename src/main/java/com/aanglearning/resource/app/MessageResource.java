@@ -61,6 +61,14 @@ public class MessageResource {
 	
 	@Secured
 	@GET
+	@Path("group/{groupId}/messagesUp/{messageId}")
+	public List<Message> getGroupMessagesAboveId(@PathParam("groupId") long groupId,
+			@PathParam("messageId") long messageId) {
+		return service.getGroupMessagesAboveId(groupId, messageId);
+	}
+	
+	@Secured
+	@GET
 	@Path("group/{groupId}")
 	public List<Message> getGroupMessages(@PathParam("groupId") long groupId) {
 		return service.getGroupMessages(groupId);
