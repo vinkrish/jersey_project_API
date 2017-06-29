@@ -50,9 +50,9 @@ public class MessageService {
 			message.setId(pk);
 			
 			if(message.getGroupId() == 0) {
-				String name = "";
 				String username = "";
 				String table = "";
+				String recipientName = "";
 				if(message.getRecipientRole().equals("teacher") 
 						|| message.getRecipientRole().equals("principal") 
 						|| message.getRecipientRole().equals("admin")) {
@@ -65,7 +65,7 @@ public class MessageService {
 				try {
 					ResultSet resultSet = connection.createStatement().executeQuery(query_search);
 					if (resultSet.next()) {
-						name = resultSet.getString("Name");
+						recipientName = resultSet.getString("Name");
 						username = resultSet.getString("Username");
 					}
 				} catch (SQLException e) {
@@ -75,11 +75,13 @@ public class MessageService {
 				if(!username.equals("")) {
 					JSONObject msg = new JSONObject();
 					msg.put("sender_id", message.getSenderId());
-					msg.put("sender_name", name);
+					msg.put("sender_name", message.getSenderName());
+					msg.put("sender_role", message.getSenderRole());
 					msg.put("message", message.getMessageBody());
+					msg.put("recipient_name", recipientName);
 					
 					JSONObject notification = new JSONObject();
-					notification.put("title", name);
+					notification.put("title", message.getSenderName());
 					notification.put("body", message.getMessageBody());
 					
 				    JSONObject fcm = new JSONObject();
