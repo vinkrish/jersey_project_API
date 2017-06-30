@@ -43,6 +43,10 @@ public class TeacherService {
 		return teacher;
 	}
 	
+	public List<Teacher> getTeacherById(long id) {
+		return getTeacherList("select * from teacher where Id = " + id);
+	}
+	
 	public List<Teacher> getSchoolTeachers(long schoolId) {
 		String query = "select * from teacher where SchoolId = " + schoolId;
 		return getTeacherList(query);
