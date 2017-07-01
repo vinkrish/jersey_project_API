@@ -1,9 +1,8 @@
 package com.aanglearning.resource.app;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -18,37 +17,37 @@ public class PasswordResource {
 	PasswordService service = new PasswordService();
 	
 	@Secured
-	@GET
-	@Path("class/{classId}")
-	public void updateClassPswd(@PathParam("classId") long classId) {
+	@POST
+	@Path("class")
+	public void updateClassPswd(long classId) {
 		service.updateClassPswd(classId);
 	}
 	
 	@Secured
-	@GET
-	@Path("section/{sectionId}")
-	public void updateSectionPswd(@PathParam("sectionId") long sectionId) {
+	@POST
+	@Path("section")
+	public void updateSectionPswd(long sectionId) {
 		service.updateSectionPswd(sectionId);
 	}
 	
 	@Secured
-	@GET
-	@Path("student/{studentId}")
-	public void updateStudentPswd(@PathParam("studentId") long studentId) {
+	@POST
+	@Path("student")
+	public void updateStudentPswd(long studentId) {
 		service.updateStudentPswd(studentId);
 	}
 	
 	@Secured
-	@GET
-	@Path("teachers/{schoolId}")
-	public void updateTeachersPswd(@PathParam("schoolId") long schoolId) {
+	@POST
+	@Path("teachers/school")
+	public void updateTeachersPswd(long schoolId) {
 		service.updateTeachersPswd(schoolId);
 	}
 	
 	@Secured
-	@GET
-	@Path("teacher/{teacherId}")
-	public void updateTeacherPswd(@PathParam("teacherId") long teacherId) {
+	@POST
+	@Path("teacher")
+	public void updateTeacherPswd(long teacherId) {
 		service.updateTeacherPswd(teacherId);
 	}
 }

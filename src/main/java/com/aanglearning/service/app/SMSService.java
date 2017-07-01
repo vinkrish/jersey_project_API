@@ -14,14 +14,13 @@ import com.aanglearning.model.entity.Teacher;
 import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.resource.entity.TeacherResource;
 import com.aanglearning.service.DatabaseUtil;
-import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.AmazonSNSClientBuilder;
+import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 
 public class SMSService {
-	AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
+	AmazonSNSClient snsClient = new AmazonSNSClient();
 	Map<String, MessageAttributeValue> smsAttributes = 
             new HashMap<String, MessageAttributeValue>();
 	
@@ -52,10 +51,15 @@ public class SMSService {
 		sendStudentsPswd(students);
 	}
 	
-	private void sendStudentsPswd(List<Student> students){
-		for(Student student: students) {
-			sendSMSMessage("Your password for Shikshitha Parent App is " + student.getPassword(), "+91" + student.getUsername(), smsAttributes);
-		}
+	private void sendStudentsPswd(final List<Student> students){
+		new Thread(new Runnable() {
+			  @Override
+			  public void run() {
+				  for(Student student: students) {
+						sendSMSMessage("Your password for Shikshitha Parent App is " + student.getPassword(), "+91" + student.getUsername());
+					}
+			  }
+			}).start();
 	}
 	
 	public void sendStudentUserPassword(String username) {
@@ -73,10 +77,15 @@ public class SMSService {
 		sendTeacherPassword(teachers);
 	}
 	
-	private void sendTeacherPassword(List<Teacher> teachers) {
-		for(Teacher teacher: teachers) {
-			sendSMSMessage("Your password for Shikshitha Teacher App is " + teacher.getPassword(), "+91" + teacher.getUsername(), smsAttributes);
-		}
+	private void sendTeacherPassword(final List<Teacher> teachers) {
+		new Thread(new Runnable() {
+			  @Override
+			  public void run() {
+				  for(Teacher teacher: teachers) {
+						sendSMSMessage("Your password for Shikshitha Teacher App is " + teacher.getPassword(), "+91" + teacher.getUsername());
+					}
+			  }
+			}).start();
 	}
 	
 	public void sendTeacherUserPassword(String username) {
@@ -84,29 +93,38 @@ public class SMSService {
 		sendTeacherPassword(Arrays.asList(teacher));
 	}
 	
-	public void sendPrincipalUserPassword(String username) {
-		String query = "select AdminPassword from school where Mobile1 = '" + username + "' or Mobile2 = '" + username + "'" ;
-		String adminPassword = "";
+	public void sendPrincipalUserPassword(final String username) {
+		String query = "select AdminPassword from school where Mobile1 = ? or Mobile2 = ?" ;
+		final String[] adminPassword = new String[1];
+		adminPassword[0] = "";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, username);
+			preparedStatement.setString(2, username);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
-				adminPassword = rs.getString("AdminPassword");
+				adminPassword[0] = rs.getString("AdminPassword");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		sendSMSMessage("Your password for Shikshitha Principal App is " + adminPassword, "+91" +username, smsAttributes);
+		new Thread(new Runnable() {
+			  @Override
+			  public void run() {
+				  sendSMSMessage("Your password for Shikshitha Principal App is " + adminPassword[0], "+91" +username);
+			  }
+			}).start();
 	}
 	
-	public void sendSMSMessage(String message, 
-			String phoneNumber, Map<String, MessageAttributeValue> smsAttributes) {
-	        PublishResult result = snsClient.publish(new PublishRequest()
-	                        .withMessage(message)
-	                        .withPhoneNumber(phoneNumber)
-	                        .withMessageAttributes(smsAttributes));
-	        System.out.println(result); // Prints the message ID.
+	public void sendSMSMessage(String message, String phoneNumber) {
+		smsAttributes.put("AWS.SNS.SMS.SMSType", 
+				new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+		
+        PublishResult result = snsClient.publish(new PublishRequest()
+                        .withMessage(message)
+                        .withPhoneNumber(phoneNumber)
+                        .withMessageAttributes(smsAttributes));
+        System.out.println(result); // Prints the message ID.
 	}
 
 }

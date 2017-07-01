@@ -1,7 +1,7 @@
 package com.aanglearning.resource.app;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,54 +18,54 @@ public class SMSResource {
 	SMSService service = new SMSService();
 	
 	@Secured
-	@GET
-	@Path("class/{classId}")
-	public void sendClassPswd(@PathParam("classId") long classId) {
+	@POST
+	@Path("class")
+	public void sendClassPswd(long classId) {
 		service.sendClassPswd(classId);
 	}
 	
 	@Secured
-	@GET
-	@Path("section/{sectionId}")
-	public void sendSectionPswd(@PathParam("sectionId") long sectionId) {
+	@POST
+	@Path("section")
+	public void sendSectionPswd(long sectionId) {
 		service.sendSectionPswd(sectionId);
 	}
 	
 	@Secured
-	@GET
-	@Path("student/{studentId}")
-	public void sendStudentPswd(@PathParam("studentId") long studentId) {
+	@POST
+	@Path("student")
+	public void sendStudentPswd(long studentId) {
 		service.sendStudentPswd(studentId);
 	}
 	
-	@GET
-	@Path("student/user/{username}")
+	@POST
+	@Path("student/{username}")
 	public void sendStudentUserPswd(@PathParam("username") String username) {
 		service.sendStudentUserPassword(username);
 	}
 	
 	@Secured
-	@GET
-	@Path("teachers/{schoolId}")
-	public void sendTeachersPswd(@PathParam("schoolId") long schoolId) {
+	@POST
+	@Path("teachers/school")
+	public void sendTeachersPswd(long schoolId) {
 		service.sendTeachersPswd(schoolId);
 	}
 	
 	@Secured
-	@GET
-	@Path("teacher/{teacherId}")
-	public void sendTeacherPswd(@PathParam("teacherId") long teacherId) {
+	@POST
+	@Path("teacher")
+	public void sendTeacherPswd(long teacherId) {
 		service.sendTeacherPswd(teacherId);
 	}
 	
-	@GET
-	@Path("teacher/user/{username}")
+	@POST
+	@Path("teacher/{username}")
 	public void sendTeacherUserPswd(@PathParam("username") String username) {
 		service.sendTeacherUserPassword(username);
 	}
 	
-	@GET
-	@Path("principal/user/{username}")
+	@POST
+	@Path("principal/{username}")
 	public void sendPrincipalUserPswd(@PathParam("username") String username) {
 		service.sendPrincipalUserPassword(username);
 	}

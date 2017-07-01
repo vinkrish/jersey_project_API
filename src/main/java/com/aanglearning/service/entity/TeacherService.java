@@ -29,6 +29,7 @@ public class TeacherService {
 				teacher.setId(rs.getLong("Id"));
 				teacher.setName(rs.getString("Name"));
 				teacher.setImage(rs.getString("Image"));
+				teacher.setUsername(rs.getString("Username"));
 				teacher.setPassword(rs.getString("Password"));
 				teacher.setSchoolId(rs.getLong("SchoolId"));
 				teacher.setDateOfBirth(rs.getString("DateOfBirth"));
