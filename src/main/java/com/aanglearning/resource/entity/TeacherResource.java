@@ -68,7 +68,7 @@ public class TeacherResource {
 		return teacherService.getTeacher(username);
 	}
 	
-	public List<Teacher>  getTeacherById(long id) {
+	public List<Teacher> getTeacherById(long id) {
 		return teacherService.getTeacherById(id);
 	}
 	

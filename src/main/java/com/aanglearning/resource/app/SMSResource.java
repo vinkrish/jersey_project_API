@@ -38,6 +38,12 @@ public class SMSResource {
 		service.sendStudentPswd(studentId);
 	}
 	
+	@GET
+	@Path("student/user/{username}")
+	public void sendStudentUserPswd(@PathParam("username") String username) {
+		service.sendStudentUserPassword(username);
+	}
+	
 	@Secured
 	@GET
 	@Path("teachers/{schoolId}")
@@ -50,6 +56,18 @@ public class SMSResource {
 	@Path("teacher/{teacherId}")
 	public void sendTeacherPswd(@PathParam("teacherId") long teacherId) {
 		service.sendTeacherPswd(teacherId);
+	}
+	
+	@GET
+	@Path("teacher/user/{username}")
+	public void sendTeacherUserPswd(@PathParam("username") String username) {
+		service.sendTeacherUserPassword(username);
+	}
+	
+	@GET
+	@Path("principal/user/{username}")
+	public void sendPrincipalUserPswd(@PathParam("username") String username) {
+		service.sendPrincipalUserPassword(username);
 	}
 
 }
