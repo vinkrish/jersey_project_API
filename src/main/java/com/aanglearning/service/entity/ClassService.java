@@ -36,8 +36,10 @@ public class ClassService {
 		String query1 = "select * from class where Id in (select ClassId from section where Id in "
 				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId))";
 		String query2 = "select * from class where Id in (select ClassId from section where TeacherId = " + teacherId + ")";
+		String query3 = "select * from class where TeacherId = " + teacherId;
 		Set<Clas> set = new HashSet<Clas>(getClasses(query1));
 		set.addAll(getClasses(query2));
+		set.addAll(getClasses(query3));
 		return new ArrayList<Clas>(set);
 	}
 	

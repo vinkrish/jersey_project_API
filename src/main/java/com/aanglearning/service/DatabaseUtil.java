@@ -8,16 +8,16 @@ public class DatabaseUtil {
 	
 	private static Connection connection = null;
 	private final static String ADDRESS = "jdbc:mysql://localhost";
-	private final static String DATABASE = "thyreportdb";
+	private final static String DATABASE = "shikshithadb";
 	private final static String USER = "root";
 	private final static String PASSWORD = "thisisntfunmysql";
 	private final static String PORT = "3306";
 	private final static String DRIVER = "com.mysql.jdbc.Driver";
 
-	private final static String RDS_USERNAME = "thyreportmaster";
-	private final static String RDS_PASSWORD = "thyreportmasterpassword";
-	private final static String RDS_HOSTNAME = "jdbc:mysql://aa1pdu7coqe6qol.cfgwfijr5mxp.us-west-2.rds.amazonaws.com";
-	private final static String RDS_DB_NAME = "ebdb";
+	private final static String RDS_USERNAME = "shikshithamaster";
+	private final static String RDS_PASSWORD = "thisisntfunmaster";
+	private final static String RDS_HOSTNAME = "jdbc:mysql://shikshitha-identifier.cfgwfijr5mxp.us-west-2.rds.amazonaws.com";
+	private final static String RDS_DB_NAME = "shikshithadb";
 
 	private static void loadDriver() {
 		try {
@@ -43,7 +43,7 @@ public class DatabaseUtil {
 		return RDS_HOSTNAME + ":" + PORT + "/" + RDS_DB_NAME;
 	}
 
-	public static Connection getRemoteConnection() {
+	public static Connection getRemoteConnection() throws SQLException {
 		if (System.getenv("RDS_HOSTNAME") != null && connection != null) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -57,8 +57,6 @@ public class DatabaseUtil {
 				return connection;
 			} catch (ClassNotFoundException e) {
 				errorHandler("Class Not Found Exception", e);
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
 		}
 		return null;

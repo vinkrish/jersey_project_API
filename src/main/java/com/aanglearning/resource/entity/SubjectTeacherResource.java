@@ -38,7 +38,7 @@ public class SubjectTeacherResource {
 	
 	@Secured
 	@PUT
-	@Path("/{classId}")
+	@Path("/{teacherId}")
 	public void update(SubjectTeacher subjectTeacher) {
 		subjectTeacherService.update(subjectTeacher);
 	}
