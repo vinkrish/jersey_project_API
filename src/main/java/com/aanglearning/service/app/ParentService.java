@@ -36,6 +36,7 @@ public class ParentService {
 					token = issueToken(credentials.getUsername());
 					saveToken(credentials.getUsername(), token);
 				}
+				updateLoggedIn(credentials.getUsername());
 				parentCredentials = new ParentCredentials();
 				parentCredentials.setAuthToken(token);
 				parentCredentials.setInfo(getChildInfo(credentials.getUsername()));
@@ -68,6 +69,18 @@ public class ParentService {
 			return true;
 		} else {
 			throw new Exception();
+		}
+	}
+	
+	public void updateLoggedIn(String mobile) {
+		try {
+			String query = "UPDATE student AS a " +	
+							"INNER JOIN student AS b ON a.Id = b.Id " +
+							"SET a.IsLogged = 1 " +
+							"WHERE (b.Mobile1='"+mobile+"' or b.Mobile2='"+mobile+"');";
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	

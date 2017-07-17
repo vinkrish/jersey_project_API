@@ -10,6 +10,7 @@ public class Student {
 	private int rollNo;
 	private String username;
 	private String password;
+	private boolean isLogged;
 	private String image;
 	private String fatherName;
 	private String motherName;
@@ -94,6 +95,14 @@ public class Student {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean getIsLogged() {
+		return isLogged;
+	}
+
+	public void setIsLogged(boolean isLogged) {
+		this.isLogged = isLogged;
 	}
 
 	public String getImage() {

@@ -38,15 +38,29 @@ public class GroupsResource {
 	
 	@Secured
 	@GET
+	@Path("principal/teacher/{id}")
+	public List<Groups> getPrincipalGroups(@PathParam("id") long id) {
+		return service.getPrincipalGroups(id);
+	}
+	
+	@Secured
+	@GET
 	@Path("principal/{schoolId}")
-	public List<Groups> getPrincipalGroups(@PathParam("schoolId") long schoolId) {
-		return service.getPrincipalGroups(schoolId);
+	public List<Groups> getAllGroups(@PathParam("schoolId") long schoolId) {
+		return service.getAllGroups(schoolId);
 	}
 	
 	@Secured
 	@POST
 	public Groups add(Groups group) {
 		return service.add(group);
+	}
+	
+	@Secured
+	@POST
+	@Path("principal/school")
+	public Groups addSchoolUserGroup(Groups group) {
+		return service.addSchoolUserGroup(group);
 	}
 	
 	@Secured

@@ -35,6 +35,7 @@ public class StudentService {
 				student.setRollNo(rs.getInt("RollNo"));
 				student.setUsername(rs.getString("Username"));
 				student.setPassword(rs.getString("Password"));
+				student.setIsLogged(rs.getBoolean("IsLogged"));
 				student.setImage(rs.getString("Image"));
 				student.setFatherName(rs.getString("FatherName"));
 				student.setMotherName(rs.getString("MotherName"));
@@ -92,6 +93,7 @@ public class StudentService {
 				student.setRollNo(rs.getInt("RollNo"));
 				student.setUsername(rs.getString("Username"));
 				student.setPassword(rs.getString("Password"));
+				student.setIsLogged(rs.getBoolean("IsLogged"));
 				student.setImage(rs.getString("Image"));
 				student.setFatherName(rs.getString("FatherName"));
 				student.setMotherName(rs.getString("MotherName"));
