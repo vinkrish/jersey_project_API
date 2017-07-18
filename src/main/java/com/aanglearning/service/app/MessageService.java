@@ -93,13 +93,13 @@ public class MessageService {
 				    FCMPost fcmPost = new FCMPost();
 				    switch(message.getRecipientRole()){
 				    case "teacher":
-				    	fcmPost.post(fcm.toString(), "AAAA_yeO7iY:APA91bFLcSMNj8TbaHs6wJcKViRnRSGiCBhkai3zxvsekMQ5taBCUPgXvGsq-7PsbNuqGZ7Bh0iKre-NWhcmM2rwFd3-kaFTsPCgHvGtfrPl5ZiQ6CWNuikRRKEkpZXLFtDNb3Hy7R9J");
+				    	fcmPost.post(fcm.toString(), "AAAAsv0q3Fk:APA91bEhQTIbIB8fmY4YG2P5zq5KxsE3c_oCsuYnYaM6C_vGkan5lTmOM9-S2lavGy8K10p9SLJ2V3j4WMDXD7FQX9TVT1fRSmY8f0IV01TKYWVHONJk2tnd1TBLqiZ2fgnv7HGuwRvR");
 				    	break;
 				    case "student":
-				    	fcmPost.post(fcm.toString(), "AAAAN54dwVg:APA91bG8KE77LmQ3Fe-LJrkDVST6HDe-keM32Qrx6bhKFAgarh5Fl0SktXQKF2ytsqXVIicZ5-eef07hApRzYew9ZU0rQCJjGaPRnh8novM0tB3AeuutO2GVPJ83GD-sFTCFow1x_pDe");
+				    	fcmPost.post(fcm.toString(), "AAAANtOFq98:APA91bGLAt-wCJDBhzomz_GmlVW8TXyshKdR6NOzuKTOk0NgM29Ww7-tZzjxCjT0siEua6AQY7stUxRTnkf_8cD5QgypjWfOTn1UYnzOQOP6uAB7bR_SA0SkSlOmPi9gPp6iHJL4xAzw");
 				    	break;
 				    case "principal":
-				    	fcmPost.post(fcm.toString(), "AAAAdr2uwq8:APA91bEvgBP86EcOXDY4kBEeKxeS7YQTftS6UkrC973pDohHR9UyEKIpkHsYno94KVPqZj1YyvdoTwZF3uwL1pEI3GJUPV2TKJywP9SzDp5_H8Evo5nrsPJ-b7jOLOr8GMAKHMKbGX8p");
+				    	fcmPost.post(fcm.toString(), "AAAApEO4pXs:APA91bFmJ__dGwm6LW1k2CJyn7vBkbclBMuMWDhPhH_WP-1RXKMcS66deLGOiYcY1dsCw-hfg3tBs5xDwYcrijcOMEkAmrvyKGbMhY4tFgIIev6SMvLi5TLnGw6zvvitezwl1LirdKqY");
 				    	break;
 				    default:
 				    	break;

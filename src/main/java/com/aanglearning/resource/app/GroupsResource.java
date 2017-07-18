@@ -57,13 +57,6 @@ public class GroupsResource {
 	}
 	
 	@Secured
-	@POST
-	@Path("principal/school")
-	public Groups addSchoolUserGroup(Groups group) {
-		return service.addSchoolUserGroup(group);
-	}
-	
-	@Secured
 	@PUT
 	public void update(Groups group) {
 		service.update(group);

@@ -24,7 +24,7 @@ public class GroupsService {
 		}
 	}
 	
-	public Groups add(Groups group) {
+	public Groups add(final Groups group) {
 		try {
 			String query = "insert into groups(Id, Name, IsSchool, SectionId, IsSection, ClassId, IsClass, CreatedBy, CreatorName, CreatorRole, CreatedDate, IsActive) "
 					+ "values ("
@@ -46,57 +46,13 @@ public class GroupsService {
 			if (rs.next()){
 			    pk = rs.getLong(1);
 			}
-			group.setId(pk);
-			
-			UserGroup userGroup = new UserGroup();
-			userGroup.setActive(true);
-			userGroup.setGroupId(pk);
-			userGroup.setRole("admin");
-			userGroup.setUserId(group.getCreatedBy());
-			
-			String query2 = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values ("
-					+ userGroup.getId() + "," 
-					+ userGroup.getUserId() + ",'"
-					+ userGroup.getRole() + "',"
-					+ userGroup.getGroupId() + ","
-					+ userGroup.isActive() + ")";
-			stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return group;
-	}
-	
-	public Groups addSchoolUserGroup(Groups group) {
-		try {
-			String query = "insert into groups(Id, Name, IsSchool, SectionId, IsSection, ClassId, IsClass, CreatedBy, CreatorName, CreatorRole, CreatedDate, IsActive) "
-					+ "values ("
-					+ group.getId() + ",'" 
-					+ group.getName() + "',"
-					+ group.isSchool() + ","
-					+ group.getSectionId() + ","
-					+ group.isSection() + ","
-					+ group.getClassId() + ","
-					+ group.isClas() + ","
-					+ group.getCreatedBy() + ",'"
-					+ group.getCreatorName() + "','"
-					+ group.getCreatorRole() + "','"
-					+ group.getCreatedDate() + "',"
-					+ group.isActive() + ")";
-			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-			
-			ResultSet resultSet = stmt.getGeneratedKeys();
-			if (resultSet.next()){
-			    pk = resultSet.getLong(1);
-			}
-			group.setId(pk);
+			//group.setId(pk);
 			final long groupId = pk;
 			
 			UserGroup userGroup = new UserGroup();
 			userGroup.setActive(true);
 			userGroup.setGroupId(pk);
-			userGroup.setRole("principal");
+			userGroup.setRole(group.getCreatorRole());
 			userGroup.setUserId(group.getCreatedBy());
 			
 			String query2 = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values ("
@@ -110,7 +66,13 @@ public class GroupsService {
 			new Thread(new Runnable() {
 				  @Override
 				  public void run() {
-					  insertUserGroup(groupId);
+					  if(group.isClas()) {
+						  insertUserGroup(groupId, "select Id from student where ClassId = " + group.getClassId());
+					  } else if(group.isSection()) {
+						  insertUserGroup(groupId, "select Id from student where SectionId = " + group.getSectionId());
+					  } else if(group.isSchool()) {
+						  insertUserGroup(groupId, "select Id from student");
+					  }
 				  }
 				}).start();
 			
@@ -120,34 +82,13 @@ public class GroupsService {
 		return group;
 	}
 	
-	private void insertUserGroup(long groupId) {
+	private void insertUserGroup(long groupId, String query) {
 		List<Student> studentList = new ArrayList<Student>();
 		try {
-			ResultSet rs = stmt.executeQuery("select * from student");
+			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()){
 				Student student = new Student();
 				student.setId(rs.getLong("Id"));
-				student.setName(rs.getString("Name"));
-				student.setSchoolId(rs.getLong("SchoolId"));
-				student.setClassId(rs.getLong("ClassId"));
-				student.setSectionId(rs.getLong("SectionId"));
-				student.setAdmissionNo(rs.getString("AdmissionNo"));
-				student.setRollNo(rs.getInt("RollNo"));
-				student.setUsername(rs.getString("Username"));
-				student.setPassword(rs.getString("Password"));
-				student.setImage(rs.getString("Image"));
-				student.setFatherName(rs.getString("FatherName"));
-				student.setMotherName(rs.getString("MotherName"));
-				student.setDateOfBirth(rs.getString("DateOfBirth"));
-				student.setGender(rs.getString("Gender"));
-				student.setEmail(rs.getString("Email"));
-				student.setMobile1(rs.getString("Mobile1"));
-				student.setMobile2(rs.getString("Mobile2"));
-				student.setStreet(rs.getString("Street"));
-				student.setCity(rs.getString("City"));
-				student.setDistrict(rs.getString("District"));
-				student.setState(rs.getString("State"));
-				student.setPincode(rs.getString("Pincode"));
 				studentList.add(student);
 			}
 		} catch (SQLException e) {
@@ -161,10 +102,10 @@ public class GroupsService {
 			e.printStackTrace();
 		}
 		
-		String query = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
+		String sql = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
 		try{
 		    connection.setAutoCommit(false);
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		    for(Student student: studentList) {
 		    	preparedStatement.setLong(1, 0);
 		    	preparedStatement.setLong(2, student.getId());
