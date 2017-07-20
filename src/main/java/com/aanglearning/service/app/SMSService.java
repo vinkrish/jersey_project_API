@@ -4,27 +4,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import com.aanglearning.model.entity.Section;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.model.entity.Teacher;
 import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.resource.entity.TeacherResource;
 import com.aanglearning.service.DatabaseUtil;
 import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.CreateTopicRequest;
+import com.amazonaws.services.sns.model.CreateTopicResult;
 import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
+import com.amazonaws.services.sns.model.SubscribeRequest;
 
 public class SMSService {
 	AmazonSNSClient snsClient = new AmazonSNSClient();
+	
 	Map<String, MessageAttributeValue> smsAttributes = 
             new HashMap<String, MessageAttributeValue>();
 	
 	Connection connection;
+	Statement stmt;
 	StudentResource studentResource = new StudentResource();
 	TeacherResource teacherResource = new TeacherResource();
 	
@@ -124,7 +136,87 @@ public class SMSService {
                         .withMessage(message)
                         .withPhoneNumber(phoneNumber)
                         .withMessageAttributes(smsAttributes));
-        System.out.println(result); // Prints the message ID.
+        System.out.println(result);
 	}
+	
+	public String createSNSTopic(AmazonSNSClient snsClient) {
+	    CreateTopicRequest createTopic = new CreateTopicRequest("mySNSTopic");
+	    CreateTopicResult result = snsClient.createTopic(createTopic);
+	    System.out.println("Create topic request: " + 
+	        snsClient.getCachedResponseMetadata(createTopic));
+	    System.out.println("Create topic result: " + result);
+	    return result.getTopicArn();
+	}
+	
+	public void sendSchoolHomework(final long schoolId, final String homeworkDate) {
+		
+		new Thread(new Runnable() {
+			  @Override
+			  public void run() {
+				  String topicArn = createSNSTopic(snsClient);
+					StringBuilder homeworkMessage = new StringBuilder("Homework : on ("+getDisplayFormattedDate(homeworkDate)+") \n");
+					
+					try {
+						stmt = connection.createStatement();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					
+					List<Section> sectionList = new ArrayList<Section>();
+					try {
+						ResultSet rs = stmt.executeQuery("select Id from section where SchoolId = " + schoolId);
+						while (rs.next()){
+							Section section = new Section();
+							section.setId(rs.getLong("Id"));
+							sectionList.add(section);
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					
+					for(Section section: sectionList) {
+						try {
+							ResultSet rs = stmt.executeQuery("select * from homework where SectionId = " + section.getId() + " and HomeworkDate = '" + homeworkDate + "'");
+							while (rs.next()) {
+								homeworkMessage.append(rs.getString("SubjectName") + " - " + rs.getString("HomeworkMessage")).append("\n");
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+						
+						try {
+							ResultSet rs = stmt.executeQuery("select Name, Mobile1 from student where SectionId = " + section.getId() + " and IsLogged = 0");
+							while (rs.next()){
+								snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Mobile1")));
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+						
+						smsAttributes.put("AWS.SNS.SMS.SMSType", 
+								new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+						
+						snsClient.publish(new PublishRequest()
+			                    .withTopicArn(topicArn)
+			                    .withMessage(homeworkMessage.toString())
+			                    .withMessageAttributes(smsAttributes));
+						
+					}
+			  }
+			}).start();
+		
+	}
+	
+	public String getDisplayFormattedDate(String dateString) {
+        SimpleDateFormat displayFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+        SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date = new Date();
+        try {
+            date = defaultFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return displayFormat.format(date);
+    }
 
 }
