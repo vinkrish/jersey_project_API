@@ -8,6 +8,7 @@ public class ExamSubject {
 	private String type;
 	private float maximumMark;
 	private float failMark;
+	private int calculation;
 	private float percentage;
 	private int orders;
 
@@ -57,6 +58,14 @@ public class ExamSubject {
 
 	public void setFailMark(float failMark) {
 		this.failMark = failMark;
+	}
+
+	public int getCalculation() {
+		return calculation;
+	}
+
+	public void setCalculation(int calculation) {
+		this.calculation = calculation;
 	}
 
 	public float getPercentage() {

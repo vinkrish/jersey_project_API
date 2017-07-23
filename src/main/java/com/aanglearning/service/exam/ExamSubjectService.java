@@ -34,6 +34,7 @@ public class ExamSubjectService {
 				examSubject.setType(rs.getString("Type"));
 				examSubject.setMaximumMark(rs.getFloat("MaximumMark"));
 				examSubject.setFailMark(rs.getFloat("FailMark"));
+				examSubject.setCalculation(rs.getInt("Calculation"));
 				examSubject.setPercentage(rs.getFloat("Percentage"));
 				examSubject.setOrders(rs.getInt("Orders"));
 				examSubjects.add(examSubject);
@@ -46,7 +47,7 @@ public class ExamSubjectService {
 	
 	public ExamSubject add(ExamSubject examSubject) {
 		try {
-			String query = "insert into exam_subject(Id, ExamId, SubjectId, SubjectName, Type, MaximumMark, FailMark, Percentage, Orders) "
+			String query = "insert into exam_subject(Id, ExamId, SubjectId, SubjectName, Type, MaximumMark, FailMark, Calculation, Percentage, Orders) "
 					+ "values ("
 					+ examSubject.getId() + "," 
 					+ examSubject.getExamId() + ","
@@ -55,6 +56,7 @@ public class ExamSubjectService {
 					+ examSubject.getType() + "',"
 					+ examSubject.getMaximumMark() + ","
 					+ examSubject.getFailMark() + ","
+					+ examSubject.getCalculation() + ","
 					+ examSubject.getPercentage() + ","
 					+ examSubject.getOrders() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -71,7 +73,8 @@ public class ExamSubjectService {
 					+ "Type = '" + examSubject.getType()
 					+ "', MaximumMark = " +examSubject.getMaximumMark() 
 					+ ", FailMark = " + examSubject.getFailMark() 
-					+ ", Percentage = " +examSubject.getPercentage() 
+					+ ", Calculation = " + examSubject.getCalculation() 
+					+ ", Percentage = " + examSubject.getPercentage() 
 					+ ", Orders = " + examSubject.getOrders()
 					+ " where Id = " + examSubject.getId();
 			stmt.executeUpdate(query);

@@ -7,7 +7,6 @@ public class SubActivity {
 	private String type;
 	private float maximumMark;
 	private float weightage;
-	private int calculation;
 	private float subActivityAvg;
 	private int orders;
 
@@ -49,14 +48,6 @@ public class SubActivity {
 
 	public void setWeightage(float weightage) {
 		this.weightage = weightage;
-	}
-
-	public int getCalculation() {
-		return calculation;
-	}
-
-	public void setCalculation(int calculation) {
-		this.calculation = calculation;
 	}
 
 	public float getSubActivityAvg() {

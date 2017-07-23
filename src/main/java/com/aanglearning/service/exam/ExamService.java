@@ -32,6 +32,7 @@ public class ExamService {
 				exam.setClassId(rs.getLong("ClassId"));
 				exam.setTerm(rs.getInt("Term"));
 				exam.setType(rs.getString("Type"));
+				exam.setCalculation(rs.getInt("Calculation"));
 				exam.setPercentage(rs.getFloat("Percentage"));
 				examList.add(exam);
 			}
@@ -43,13 +44,14 @@ public class ExamService {
 	
 	public Exam add(Exam exam) {
 		try {
-			String query = "insert into exam(Id, ExamName, ClassId, Term, Type, Percentage) "
+			String query = "insert into exam(Id, ExamName, ClassId, Term, Type, Calculation, Percentage) "
 					+ "values ("
 					+ exam.getId() + ",'" 
 					+ exam.getExamName() + "',"
 					+ exam.getClassId() + ","
 					+ exam.getTerm() + ",'"
 					+ exam.getType() + "',"
+					+ exam.getCalculation() + ","
 					+ exam.getPercentage() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			exam.setId(pk);
@@ -61,8 +63,8 @@ public class ExamService {
 	
 	public void update(Exam exam) {
 		try {
-			String query = "update exam set ExamName='"+exam.getExamName()+ "', Type='"+ exam.getType()+ "', Percentage="+exam.getPercentage() 
-			+ " where Id=" + exam.getId();
+			String query = "update exam set ExamName = '" +exam.getExamName() + "', Type='" + exam.getType() + 
+					"', Calculation = " + exam.getCalculation() +", Percentage=" + exam.getPercentage() + " where Id=" + exam.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

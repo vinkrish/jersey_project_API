@@ -6,6 +6,7 @@ public class Exam {
 	private long classId;
 	private int term;
 	private String type;
+	private int calculation;
 	private float percentage;
 
 	public long getId() {
@@ -46,6 +47,14 @@ public class Exam {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public int getCalculation() {
+		return calculation;
+	}
+
+	public void setCalculation(int calculation) {
+		this.calculation = calculation;
 	}
 
 	public float getPercentage() {
