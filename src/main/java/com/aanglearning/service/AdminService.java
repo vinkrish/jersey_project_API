@@ -6,6 +6,8 @@ import java.sql.Statement;
 
 import javax.ws.rs.core.Response;
 
+import org.json.JSONObject;
+
 import com.aanglearning.authentication.TokenGenerator;
 import com.aanglearning.model.AuthResponse;
 import com.aanglearning.model.Credentials;
@@ -43,6 +45,21 @@ public class AdminService {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}      
 	}
+	
+	public Response authenticateSuperAdmin(Credentials credentials) {
+		try {
+			authenticateSuperAdmin(credentials.getUsername(), credentials.getPassword());
+			String token = getToken(credentials.getUsername());
+			if(token.equals("")) {
+				token = issueToken(credentials.getUsername());
+				saveToken(credentials.getUsername(), token);
+			}
+			AuthResponse auth = new AuthResponse(token);
+			return Response.ok(auth).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
 		
 	private void authenticate(String username, String password) throws Exception {
 		String query = "select AdminPassword from school where AdminUsername = '" + username + "'";
@@ -56,6 +73,12 @@ public class AdminService {
 			e.printStackTrace();
 		}
 		if (!password.equals(validatedPasswrod)) {
+			throw new Exception();
+		}
+	}
+	
+	private void authenticateSuperAdmin(String username, String password) throws Exception {
+		if (!password.equals("superadminpass")) {
 			throw new Exception();
 		}
 	}

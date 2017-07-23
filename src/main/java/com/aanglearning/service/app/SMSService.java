@@ -37,7 +37,6 @@ public class SMSService {
 	
 	Connection connection;
 	Statement stmt;
-	StudentResource studentResource = new StudentResource();
 	TeacherResource teacherResource = new TeacherResource();
 	
 	public SMSService() {
@@ -48,18 +47,28 @@ public class SMSService {
 		}
 	}
 	
+	public void sendSchoolPswd(long schoolId) {
+		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId);
+		sendStudentsPswd(students);
+	}
+	
 	public void sendClassPswd(long classId) {
-		List<Student> students = studentResource.getStudents("select * from student where ClassId = " + classId);
+		List<Student> students = getStudents("select Username, Password from student where ClassId = " + classId);
 		sendStudentsPswd(students);
 	}
 	
 	public void sendSectionPswd(long sectionId) {
-		List<Student> students = studentResource.getStudents("select * from student where SectionId = " + sectionId);
+		List<Student> students = getStudents("select Username, Password from student where SectionId = " + sectionId);
 		sendStudentsPswd(students);
 	}
 	
 	public void sendStudentPswd(long studentId) {
-		List<Student> students = studentResource.getStudents("select * from student where Id = " + studentId);
+		List<Student> students = getStudents("select Username, Password from student where Id = " + studentId);
+		sendStudentsPswd(students);
+	}
+	
+	public void sendStudentUserPassword(String username) {
+		List<Student> students = getStudents("select Username, Password from student where Username = '" + username + "'");
 		sendStudentsPswd(students);
 	}
 	
@@ -74,9 +83,20 @@ public class SMSService {
 			}).start();
 	}
 	
-	public void sendStudentUserPassword(String username) {
-		List<Student> students = studentResource.getStudents("select * from student where Username = '" + username + "'");
-		sendStudentsPswd(students);
+	private List<Student> getStudents(String query) {
+		List<Student> studentList = new ArrayList<Student>();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				Student student = new Student();
+				student.setUsername(rs.getString("Username"));
+				student.setPassword(rs.getString("Password"));
+				studentList.add(student);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return studentList;
 	}
 	
 	public void sendTeacherPswd(long teacherId) {

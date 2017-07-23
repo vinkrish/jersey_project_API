@@ -52,14 +52,14 @@ public class StudentResource {
 	
 	@Secured
 	@PUT
-	@Path("/{studentId}")
+	@Path("{studentId}")
 	public void update(Student student) {
 		studentService.update(student);
 	}
 	
 	@Secured
 	@DELETE
-	@Path("/{studentId}")
+	@Path("{studentId}")
 	public void delete(@PathParam("studentId") long studentId) {
 		studentService.delete(studentId);
 	}

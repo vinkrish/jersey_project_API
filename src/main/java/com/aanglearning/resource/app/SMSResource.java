@@ -19,22 +19,29 @@ public class SMSResource {
 	
 	@Secured
 	@POST
-	@Path("class")
-	public void sendClassPswd(long classId) {
+	@Path("school/{schoolId}")
+	public void sendSchoolPswd(@PathParam("schoolId") long schoolId) {
+		service.sendSchoolPswd(schoolId);
+	}
+	
+	@Secured
+	@POST
+	@Path("class/{classId}")
+	public void sendClassPswd(@PathParam("classId") long classId) {
 		service.sendClassPswd(classId);
 	}
 	
 	@Secured
 	@POST
-	@Path("section")
-	public void sendSectionPswd(long sectionId) {
+	@Path("section/{sectionId}")
+	public void sendSectionPswd(@PathParam("sectionId") long sectionId) {
 		service.sendSectionPswd(sectionId);
 	}
 	
 	@Secured
 	@POST
-	@Path("student")
-	public void sendStudentPswd(long studentId) {
+	@Path("student/id/{studentId}")
+	public void sendStudentPswd(@PathParam("studentId") long studentId) {
 		service.sendStudentPswd(studentId);
 	}
 	
@@ -46,15 +53,15 @@ public class SMSResource {
 	
 	@Secured
 	@POST
-	@Path("teachers/school")
-	public void sendTeachersPswd(long schoolId) {
+	@Path("teachers/school/{schoolId}")
+	public void sendTeachersPswd(@PathParam("schoolId") long schoolId) {
 		service.sendTeachersPswd(schoolId);
 	}
 	
 	@Secured
 	@POST
-	@Path("teacher")
-	public void sendTeacherPswd(long teacherId) {
+	@Path("teacher/id/{teacherId}")
+	public void sendTeacherPswd(@PathParam("teacherId") long teacherId) {
 		service.sendTeacherPswd(teacherId);
 	}
 	
@@ -68,6 +75,14 @@ public class SMSResource {
 	@Path("principal/{username}")
 	public void sendPrincipalUserPswd(@PathParam("username") String username) {
 		service.sendPrincipalUserPassword(username);
+	}
+	
+	@Secured
+	@POST
+	@Path("{schoolId}/{homeworkDate}")
+	public void sendHomeworkSMS(@PathParam("schoolId") long schoolId, 
+			@PathParam("homeworkDate") String homeworkDate) {
+		service.sendSchoolHomework(schoolId, homeworkDate);
 	}
 
 }

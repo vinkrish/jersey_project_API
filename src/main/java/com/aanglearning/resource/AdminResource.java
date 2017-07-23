@@ -15,12 +15,17 @@ import com.aanglearning.service.AdminService;
 @Produces(MediaType.APPLICATION_JSON)
 public class AdminResource {
 	
-	AdminService adminService = new AdminService();
+	AdminService service = new AdminService();
 	
 	@POST
-	@Produces("application/json")
 	public Response authenticate(Credentials credentials) {
-		return adminService.authenticateUser(credentials);
+		return service.authenticateUser(credentials);
+	}
+	
+	@POST
+	@Path("admin")
+	public Response teacherLogin(Credentials credentials) {
+		return service.authenticateSuperAdmin(credentials);
 	}
 	
 }

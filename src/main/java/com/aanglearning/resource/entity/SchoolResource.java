@@ -35,6 +35,12 @@ public class SchoolResource {
 		return service.getSchools(adminPassword);
 	}
 	
+	@Secured
+	@GET
+	public List<School> getSchoolList() {
+		return service.getSchoolList();
+	}
+	
 	public School getSchoolByUsername(String username) {
 		return service.getSchoolByUserName(username);
 	}

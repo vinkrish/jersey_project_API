@@ -7,6 +7,10 @@ public class AuthResponse {
 
 	public AuthResponse() {
 	}
+	
+	public AuthResponse(String token) {
+		this.token = token;
+	}
 
 	public AuthResponse(long schoolId, String schoolName, String token) {
 		this.schoolId = schoolId;

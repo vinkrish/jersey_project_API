@@ -29,9 +29,14 @@ public class SchoolService {
 	}
 	
 	public List<School> getSchools(String adminPassword) {
+		if(adminPassword.equals("mysecretadminpassword")) {
+			return getSchoolList();
+		} else return null;
+	}
+	
+	public List<School> getSchoolList() {
 		String query = "select * from school";
 		List<School> schools = new ArrayList<School>();
-		if(adminPassword.equals("mysecretadminpassword")) {
 			try {
 				ResultSet rs = stmt.executeQuery(query);
 				while (rs.next()) {
@@ -59,7 +64,6 @@ public class SchoolService {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
 		return schools;
 	}
 
