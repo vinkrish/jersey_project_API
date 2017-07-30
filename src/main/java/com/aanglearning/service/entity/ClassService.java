@@ -82,7 +82,7 @@ public class ClassService {
 	public void update(Clas clas) {
 		try {
 			String query = "update class set ClassName='"+clas.getClassName() + "', AttendanceType='" + clas.getAttendanceType() 
-			+ "' where Id=" + clas.getId();
+			+ "', TeacherId = " + clas.getTeacherId() + " where Id = " + clas.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

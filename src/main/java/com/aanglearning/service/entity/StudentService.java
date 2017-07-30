@@ -117,7 +117,7 @@ public class StudentService {
 	
 	public Student add(Student student) {
 		try {
-			String query = "insert into student(StudentId, Name, SchoolId, ClassId, SectionId, "
+			String query = "insert into student(Id, Name, SchoolId, ClassId, SectionId, "
 					+ "AdmissionNo, RollNo, Username, Password, Image, FatherName, MotherName, DateOfBirth, "
 					+ "Gender, Email, Mobile1, Mobile2, Street, City, District, State, Pincode) "
 					+ "values (" 

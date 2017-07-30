@@ -14,7 +14,7 @@ import com.aanglearning.model.entity.Student;
 import com.aanglearning.service.DatabaseUtil;
 
 public class GroupsService {
-	Statement stmt = null;
+	Statement stmt;
 
 	public GroupsService() {
 		try {
@@ -46,7 +46,7 @@ public class GroupsService {
 			if (rs.next()){
 			    pk = rs.getLong(1);
 			}
-			//group.setId(pk);
+			group.setId(pk);
 			final long groupId = pk;
 			
 			UserGroup userGroup = new UserGroup();

@@ -6,10 +6,10 @@
 	<groupId>com.aanglearning</groupId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>aanglearning</name>
+	<name>shikshitha</name>
 
 	<build>
-		<finalName>aanglearning</finalName>
+		<finalName>shikshitha</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -97,5 +97,5 @@
 		<jersey.version>2.16</jersey.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<artifactId>ThyWard</artifactId>
+	<artifactId>Shikshitha</artifactId>
 </project>
