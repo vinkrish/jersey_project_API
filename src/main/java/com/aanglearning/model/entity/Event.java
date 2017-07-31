@@ -10,9 +10,9 @@ public class Event {
 	private long startTime;
 	private long endTime;
 	private int noOfDays;
-	private boolean continuousDays;
-	private boolean fullDayEvent;
-	private boolean recurring;
+	private boolean isContinuousDays;
+	private boolean isFullDayEvent;
+	private boolean isRecurring;
 	private String createdBy;
 	private String createdDate;
 	private int parentEventId;
@@ -71,23 +71,23 @@ public class Event {
 	public void setNoOfDays(int noOfDays) {
 		this.noOfDays = noOfDays;
 	}
-	public boolean isContinuousDays() {
-		return continuousDays;
+	public boolean getIsContinuousDays() {
+		return isContinuousDays;
 	}
-	public void setContinuousDays(boolean continuousDays) {
-		this.continuousDays = continuousDays;
+	public void setIsContinuousDays(boolean isContinuousDays) {
+		this.isContinuousDays = isContinuousDays;
 	}
-	public boolean isFullDayEvent() {
-		return fullDayEvent;
+	public boolean getIsFullDayEvent() {
+		return isFullDayEvent;
 	}
-	public void setFullDayEvent(boolean fullDayEvent) {
-		this.fullDayEvent = fullDayEvent;
+	public void setIsFullDayEvent(boolean isFullDayEvent) {
+		this.isFullDayEvent = isFullDayEvent;
 	}
-	public boolean isRecurring() {
-		return recurring;
+	public boolean getIsRecurring() {
+		return isRecurring;
 	}
-	public void setRecurring(boolean recurring) {
-		this.recurring = recurring;
+	public void setIsRecurring(boolean isRecurring) {
+		this.isRecurring = isRecurring;
 	}
 	public String getCreatedBy() {
 		return createdBy;
