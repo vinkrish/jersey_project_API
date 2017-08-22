@@ -6,8 +6,6 @@ import java.sql.Statement;
 
 import javax.ws.rs.core.Response;
 
-import org.json.JSONObject;
-
 import com.aanglearning.authentication.TokenGenerator;
 import com.aanglearning.model.AuthResponse;
 import com.aanglearning.model.Credentials;
@@ -26,6 +24,14 @@ public class AdminService {
 			e.printStackTrace();
 		}
 	}	
+	
+	public Response keepServerUp() {
+		try {
+			return Response.ok().build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		} 
+	}
 	
 	public Response authenticateUser(Credentials credentials) {
 		AuthResponse auth = null;

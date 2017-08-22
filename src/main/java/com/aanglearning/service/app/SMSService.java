@@ -18,7 +18,6 @@ import java.util.Map;
 import com.aanglearning.model.entity.Section;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.model.entity.Teacher;
-import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.resource.entity.TeacherResource;
 import com.aanglearning.service.DatabaseUtil;
 import com.amazonaws.services.sns.AmazonSNSClient;
@@ -86,6 +85,7 @@ public class SMSService {
 	private List<Student> getStudents(String query) {
 		List<Student> studentList = new ArrayList<Student>();
 		try {
+			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()){
 				Student student = new Student();

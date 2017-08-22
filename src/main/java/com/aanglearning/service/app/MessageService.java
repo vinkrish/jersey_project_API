@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.aanglearning.model.app.Message;
@@ -26,8 +27,8 @@ public class MessageService {
 	}
 	
 	public Message add(Message message) {
-		String query = "insert into message(Id, SenderId, SenderRole, RecipientId, RecipientRole, GroupId, MessageType, MessageBody, ImageUrl, CreatedAt) "
-				+ "values (?,?,?,?,?,?,?,?,?,?)";
+		String query = "insert into message(Id, SenderId, SenderRole, RecipientId, RecipientRole, GroupId, MessageType, MessageBody, ImageUrl, VideoUrl, CreatedAt) "
+				+ "values (?,?,?,?,?,?,?,?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	    	preparedStatement.setLong(1, message.getId());
@@ -39,7 +40,8 @@ public class MessageService {
 	    	preparedStatement.setString(7, message.getMessageType());
 	    	preparedStatement.setString(8, message.getMessageBody());
 	    	preparedStatement.setString(9, message.getImageUrl());
-	    	preparedStatement.setString(10, message.getCreatedAt());
+	    	preparedStatement.setString(10, message.getVideoUrl());
+	    	preparedStatement.setString(11, message.getCreatedAt());
 	    	preparedStatement.executeUpdate();
 		    
 		    ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -74,6 +76,7 @@ public class MessageService {
 				
 				if(!username.equals("")) {
 					JSONObject msg = new JSONObject();
+					msg.put("is_group", "false");
 					msg.put("sender_id", message.getSenderId());
 					msg.put("sender_name", message.getSenderName());
 					msg.put("sender_role", message.getSenderRole());
@@ -101,10 +104,56 @@ public class MessageService {
 				    case "principal":
 				    	fcmPost.post(fcm.toString(), "AAAApEO4pXs:APA91bFmJ__dGwm6LW1k2CJyn7vBkbclBMuMWDhPhH_WP-1RXKMcS66deLGOiYcY1dsCw-hfg3tBs5xDwYcrijcOMEkAmrvyKGbMhY4tFgIIev6SMvLi5TLnGw6zvvitezwl1LirdKqY");
 				    	break;
+				    case "admin":
+				    	fcmPost.post(fcm.toString(), "AAAAaAXsuro:APA91bEk9zwtEyDPrQNuoHi_XyTrZo_T-kwXgwA9mzxT4SOscjqUzfEosIAytF-OlCnmo9R2HbJ7tu0KTS-UxFnXJVr01ma8nqnPtapn_WnCdxPudiFu4ByIg3GsrDTnGgogq_enR2BQ");
+				    	break;
 				    default:
 				    	break;
 				    }
 				}
+			} else {
+				String groupName = "";
+				String q = "select Name from groups where Id = " + message.getGroupId();
+				try {
+					ResultSet r = connection.createStatement().executeQuery(q);
+					while (r.next()){
+						groupName = r.getString("Name");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+				JSONObject msg = new JSONObject();
+				msg.put("group_name", groupName);
+				msg.put("is_group", "true");
+				msg.put("group_id", message.getGroupId());
+				
+				FCMPost fcmPost = new FCMPost();
+				switch(message.getSenderRole()){
+			    case "teacher":
+			    	JSONObject fcm = new JSONObject();
+				    fcm.put("registration_ids", getParentFCMToken(message.getGroupId()));
+				    fcm.put("data", msg);
+				    fcm.put("time_to_live", 43200);
+				    fcmPost.post(fcm.toString(), "AAAANtOFq98:APA91bGLAt-wCJDBhzomz_GmlVW8TXyshKdR6NOzuKTOk0NgM29Ww7-tZzjxCjT0siEua6AQY7stUxRTnkf_8cD5QgypjWfOTn1UYnzOQOP6uAB7bR_SA0SkSlOmPi9gPp6iHJL4xAzw");
+			    	break;
+			    case "admin":
+			    	JSONObject fcm2 = new JSONObject();
+				    fcm2.put("registration_ids", getParentFCMToken(message.getGroupId()));
+				    fcm2.put("data", msg);
+				    fcm2.put("time_to_live", 43200);
+				    fcmPost.post(fcm2.toString(), "AAAANtOFq98:APA91bGLAt-wCJDBhzomz_GmlVW8TXyshKdR6NOzuKTOk0NgM29Ww7-tZzjxCjT0siEua6AQY7stUxRTnkf_8cD5QgypjWfOTn1UYnzOQOP6uAB7bR_SA0SkSlOmPi9gPp6iHJL4xAzw");
+				    
+				    JSONObject fcm3 = new JSONObject();
+				    fcm3.put("registration_ids", getTeacherFCMToken(message.getGroupId()));
+				    fcm3.put("data", msg);
+				    fcm3.put("time_to_live", 43200);
+				    fcmPost.post(fcm3.toString(), "AAAAsv0q3Fk:APA91bEhQTIbIB8fmY4YG2P5zq5KxsE3c_oCsuYnYaM6C_vGkan5lTmOM9-S2lavGy8K10p9SLJ2V3j4WMDXD7FQX9TVT1fRSmY8f0IV01TKYWVHONJk2tnd1TBLqiZ2fgnv7HGuwRvR");
+				    
+			    	break;
+			    default:
+			    	break;
+			    }
 				
 			}
 			
@@ -127,6 +176,48 @@ public class MessageService {
 			e.printStackTrace();
 		}
 		return fcmToken;
+	}
+	
+	private JSONArray getParentFCMToken(long groupId) {
+		JSONArray fcmTokenArray = new JSONArray();
+		String query = "select FcmToken from authorization where User in (select Username from student where Id in (select UserId from user_group where GroupId = " + groupId + "))";
+		try {
+			ResultSet rs = connection.createStatement().executeQuery(query);
+			if (rs.next()) {
+				fcmTokenArray.put(rs.getString("FcmToken"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fcmTokenArray;
+	}
+	
+	private JSONArray getTeacherFCMToken(long groupId) {
+		JSONArray fcmTokenArray = new JSONArray();
+		String query = "select FcmToken from authorization where User in (select Username from teacher where Id in (select UserId from user_group where GroupId = " + groupId + "))";
+		try {
+			ResultSet rs = connection.createStatement().executeQuery(query);
+			if (rs.next()) {
+				fcmTokenArray.put(rs.getString("FcmToken"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fcmTokenArray;
+	}
+	
+	private JSONArray getTeacherFCMToken(long groupId, long teacherId) {
+		JSONArray fcmTokenArray = new JSONArray();
+		String query = "select FcmToken from authorization where User in (select Username from teacher where Id in (select UserId from user_group where GroupId = " + groupId + "))";
+		try {
+			ResultSet rs = connection.createStatement().executeQuery(query);
+			if (rs.next()) {
+				fcmTokenArray.put(rs.getString("FcmToken"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fcmTokenArray;
 	}
 	
 	public List<Message> getMessagesAboveId(long senderId, String senderRole, long recipientId, String recipientRole, long messageId) {
@@ -157,6 +248,7 @@ public class MessageService {
 				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setVideoUrl(rs.getString("VideoUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
 				messages.add(message);
 			}
@@ -193,6 +285,7 @@ public class MessageService {
 				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setVideoUrl(rs.getString("VideoUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
 				messages.add(message);
 			}
@@ -230,6 +323,7 @@ public class MessageService {
 				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setVideoUrl(rs.getString("VideoUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
 				messages.add(message);
 			}
@@ -259,6 +353,7 @@ public class MessageService {
 				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setVideoUrl(rs.getString("VideoUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
 				messages.add(message);
 			}
@@ -287,6 +382,7 @@ public class MessageService {
 				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setVideoUrl(rs.getString("VideoUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
 				messages.add(message);
 			}
@@ -316,6 +412,7 @@ public class MessageService {
 				message.setMessageType(rs.getString("MessageType"));
 				message.setMessageBody(rs.getString("MessageBody"));
 				message.setImageUrl(rs.getString("ImageUrl"));
+				message.setVideoUrl(rs.getString("VideoUrl"));
 				message.setCreatedAt(rs.getString("CreatedAt"));
 				messages.add(message);
 			}
