@@ -26,7 +26,7 @@ public class GroupsService {
 	
 	public Groups add(final Groups group) {
 		try {
-			String query = "insert into groups(Id, Name, IsSchool, SectionId, IsSection, ClassId, IsClass, CreatedBy, CreatorName, CreatorRole, CreatedDate, IsActive) "
+			String query = "insert into groups(Id, Name, IsSchool, SectionId, IsSection, ClassId, IsClass, CreatedBy, CreatorName, CreatorRole, CreatedDate, IsActive, SchoolId) "
 					+ "values ("
 					+ group.getId() + ",'" 
 					+ group.getName() + "',"
@@ -39,7 +39,8 @@ public class GroupsService {
 					+ group.getCreatorName() + "','"
 					+ group.getCreatorRole() + "','"
 					+ group.getCreatedDate() + "',"
-					+ group.isActive() + ")";
+					+ group.isActive() + ","
+					+ group.getSchoolId() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -70,8 +71,6 @@ public class GroupsService {
 						  insertUserGroup(groupId, "select Id from student where ClassId = " + group.getClassId());
 					  } else if(group.isSection()) {
 						  insertUserGroup(groupId, "select Id from student where SectionId = " + group.getSectionId());
-					  } else if(group.isSchool()) {
-						  insertUserGroup(groupId, "select Id from student");
 					  }
 				  }
 				}).start();
@@ -142,6 +141,7 @@ public class GroupsService {
 				groups.setCreatorRole(rs.getString("CreatorRole"));
 				groups.setCreatedDate(rs.getString("CreatedDate"));
 				groups.setActive(rs.getBoolean("IsActive"));
+				groups.setSchoolId(rs.getLong("SchoolId"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,9 +150,15 @@ public class GroupsService {
 	}
 	
 	public List<Groups> getStudentGroups(long userId) {
-		String query = "select * from groups where "
+		String query1 = "select * from groups where "
 				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='student')";
-		return getGroups(query);
+		
+		String query2 = "select * from groups where IsSchool = 1 and SchoolId = (select SchoolId from student where Id = " + userId + ")";
+		
+		List<Groups> groups = new ArrayList<>();
+		groups.addAll(getGroups(query1));
+		groups.addAll(getGroups(query2));
+		return groups;
 	}
 	
 	public List<Groups> getTeacherGroups(long userId) {
@@ -164,7 +170,7 @@ public class GroupsService {
 	public List<Groups> getPrincipalGroups(long userId) {
 		String query = "select * from groups where "
 				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='principal')";
-		String sql = "select * from groups where CreatorRole = 'principal'";
+		String sql = "select * from groups where CreatorRole = 'principal' and CreatedBy = " + userId;
 		return getGroups(sql);
 	}
 	
@@ -192,6 +198,7 @@ public class GroupsService {
 				group.setCreatorRole(rs.getString("CreatorRole"));
 				group.setCreatedDate(rs.getString("CreatedDate"));
 				group.setActive(rs.getBoolean("IsActive"));
+				group.setSchoolId(rs.getLong("SchoolId"));
 				groups.add(group);
 			}
 		} catch (SQLException e) {

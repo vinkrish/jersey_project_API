@@ -3,10 +3,12 @@ package com.aanglearning.model.app;
 public class MessageRecipient {
 	private long id;
 	private long recipientId;
+	private String recipientName;
 	private String role;
 	private long groupId;
 	private long messageId;
-	private boolean isRead;
+	private boolean read;
+	private long readAt;
 
 	public long getId() {
 		return id;
@@ -49,11 +51,27 @@ public class MessageRecipient {
 	}
 
 	public boolean isRead() {
-		return isRead;
+		return read;
 	}
 
-	public void setRead(boolean isRead) {
-		this.isRead = isRead;
+	public void setRead(boolean read) {
+		this.read = read;
+	}
+
+	public String getRecipientName() {
+		return recipientName;
+	}
+
+	public void setRecipientName(String recipientName) {
+		this.recipientName = recipientName;
+	}
+
+	public long getReadAt() {
+		return readAt;
+	}
+
+	public void setReadAt(long readAt) {
+		this.readAt = readAt;
 	}
 
 }
