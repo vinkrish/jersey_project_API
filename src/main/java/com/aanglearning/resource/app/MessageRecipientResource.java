@@ -22,15 +22,23 @@ public class MessageRecipientResource {
 	
 	@Secured
 	@POST
-	public MessageRecipient add(MessageRecipient messageRecipient) {
-		return service.add(messageRecipient);
+	public List<MessageRecipient> add(List<MessageRecipient> mrList) {
+		return service.add(mrList);
 	}
 	
 	@Secured
 	@GET
-	@Path("{id}")
-	public List<MessageRecipient> getMessageRecipients(@PathParam("id") long id) {
-		return service.getMessageRecipients(id);
+	@Path("{groupId}/{groupMessageId}")
+	public List<MessageRecipient> getMessageRecipients(@PathParam("groupId") long groupId,
+			@PathParam("groupMessageId") long groupMessageId) {
+		return service.getMessageRecipients(groupId, groupMessageId);
+	}
+	
+	@Secured
+	@GET
+	@Path("{recipientId}")
+	public List<MessageRecipient> getAllMessageRecipients(@PathParam("recipientId") long recipientId) {
+		return service.getAllMessageRecipients(recipientId);
 	}
 
 }

@@ -7,7 +7,7 @@ public class MessageRecipient {
 	private String role;
 	private long groupId;
 	private long messageId;
-	private boolean read;
+	private boolean isRead;
 	private long readAt;
 
 	public long getId() {
@@ -49,13 +49,12 @@ public class MessageRecipient {
 	public void setMessageId(long messageId) {
 		this.messageId = messageId;
 	}
-
-	public boolean isRead() {
-		return read;
+	
+	public boolean getIsRead() {
+		return isRead;
 	}
-
-	public void setRead(boolean read) {
-		this.read = read;
+	public void setIsRead(boolean isRead) {
+		this.isRead = isRead;
 	}
 
 	public String getRecipientName() {

@@ -261,7 +261,7 @@ public class MessageService {
 	public List<Message> getMessages(long senderId, String senderRole, long recipientId, String recipientRole) {
 		String query = "select * from message where "
 				+ "((SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?) or (SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?)) "
-				+ "order by Id desc limit 100";
+				+ "order by Id desc";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -298,7 +298,7 @@ public class MessageService {
 	public List<Message> getMessagesFromId(long senderId, String senderRole, long recipientId, String recipientRole, long messageId) {
 		String query = "select * from message where "
 				+ "((SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?) or (SenderId=? and SenderRole=? and RecipientId=? and RecipientRole=?)) "
-				+ "and Id<? order by Id desc limit 100";
+				+ "and Id<? order by Id desc";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -364,7 +364,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessages(long groupId) {
-		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc limit 50";
+		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id order by A.Id desc";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -393,7 +393,7 @@ public class MessageService {
 	}
 	
 	public List<Message> getGroupMessagesFromId(long groupId, long messageId) {
-		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc limit 50";
+		String query = "select A.*, B.Name from message A, teacher B where GroupId=? and A.SenderId=B.Id and A.Id<? order by A.Id desc";
 		List<Message> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
