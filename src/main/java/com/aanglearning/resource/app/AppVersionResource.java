@@ -29,7 +29,6 @@ public class AppVersionResource {
 		return service.getAppVersions();
 	}
 	
-	@Secured
 	@GET
 	@Path("{versionId}/{appName}")
 	public AppVersion getAppVersion(@PathParam("versionId") int versionId,

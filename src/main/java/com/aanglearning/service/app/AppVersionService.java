@@ -22,7 +22,7 @@ public class AppVersionService {
 	}
 	
 	public List<AppVersion> getAppVersions() {
-		String query = "select * from app_version group by AppName";
+		String query = "select * from app_version group by AppName, VersionId";
 		List<AppVersion> appVersions = new ArrayList<>();
 		try {
 			ResultSet rs = connection.prepareStatement(query).executeQuery();

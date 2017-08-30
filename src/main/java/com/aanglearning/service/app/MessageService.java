@@ -76,7 +76,7 @@ public class MessageService {
 				
 				if(!username.equals("")) {
 					JSONObject msg = new JSONObject();
-					msg.put("is_group", "false");
+					msg.put("type", "chat");
 					msg.put("sender_id", message.getSenderId());
 					msg.put("sender_name", message.getSenderName());
 					msg.put("sender_role", message.getSenderRole());
@@ -125,7 +125,7 @@ public class MessageService {
 				
 				JSONObject msg = new JSONObject();
 				msg.put("group_name", groupName);
-				msg.put("is_group", "true");
+				msg.put("type", "group_message");
 				msg.put("group_id", message.getGroupId());
 				
 				FCMPost fcmPost = new FCMPost();

@@ -160,7 +160,7 @@ public class SMSService {
 	}
 	
 	public String createSNSTopic(AmazonSNSClient snsClient) {
-	    CreateTopicRequest createTopic = new CreateTopicRequest("mySNSTopic");
+	    CreateTopicRequest createTopic = new CreateTopicRequest("shikshithaTopic");
 	    CreateTopicResult result = snsClient.createTopic(createTopic);
 	    System.out.println("Create topic request: " + 
 	        snsClient.getCachedResponseMetadata(createTopic));
@@ -184,7 +184,7 @@ public class SMSService {
 					
 					List<Section> sectionList = new ArrayList<Section>();
 					try {
-						ResultSet rs = stmt.executeQuery("select Id from section where SchoolId = " + schoolId);
+						ResultSet rs = stmt.executeQuery("select Id from section where ClassId in (select Id from class where SchoolId = " + schoolId + ")");
 						while (rs.next()){
 							Section section = new Section();
 							section.setId(rs.getLong("Id"));
@@ -195,17 +195,20 @@ public class SMSService {
 					}
 					
 					for(Section section: sectionList) {
+						boolean isHomework = false;
+						StringBuilder sectionHomework = new StringBuilder(homeworkMessage);
 						try {
 							ResultSet rs = stmt.executeQuery("select * from homework where SectionId = " + section.getId() + " and HomeworkDate = '" + homeworkDate + "'");
 							while (rs.next()) {
-								homeworkMessage.append(rs.getString("SubjectName") + " - " + rs.getString("HomeworkMessage")).append("\n");
+								isHomework = true;
+								sectionHomework.append(rs.getString("SubjectName") + " - " + rs.getString("HomeworkMessage")).append("\n");
 							}
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
 						
 						try {
-							ResultSet rs = stmt.executeQuery("select Name, Mobile1 from student where SectionId = " + section.getId() + " and IsLogged = 0");
+							ResultSet rs = stmt.executeQuery("select Name, Mobile1 from student where SectionId = " + section.getId() + " and IsLogged = 0 and Mobile1 != ''");
 							while (rs.next()){
 								snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Mobile1")));
 							}
@@ -213,13 +216,15 @@ public class SMSService {
 							e.printStackTrace();
 						}
 						
-						smsAttributes.put("AWS.SNS.SMS.SMSType", 
-								new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
-						
-						snsClient.publish(new PublishRequest()
-			                    .withTopicArn(topicArn)
-			                    .withMessage(homeworkMessage.toString())
-			                    .withMessageAttributes(smsAttributes));
+						if(isHomework) {
+							smsAttributes.put("AWS.SNS.SMS.SMSType", 
+									new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+							
+							snsClient.publish(new PublishRequest()
+				                    .withTopicArn(topicArn)
+				                    .withMessage(sectionHomework.toString())
+				                    .withMessageAttributes(smsAttributes));
+						}
 						
 					}
 			  }
