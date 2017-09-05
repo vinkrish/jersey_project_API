@@ -173,7 +173,6 @@ public class SMSService {
 		new Thread(new Runnable() {
 			  @Override
 			  public void run() {
-				  String topicArn = createSNSTopic(snsClient);
 					StringBuilder homeworkMessage = new StringBuilder("Homework : on ("+getDisplayFormattedDate(homeworkDate)+") \n");
 					
 					try {
@@ -195,6 +194,7 @@ public class SMSService {
 					}
 					
 					for(Section section: sectionList) {
+						String topicArn = createSNSTopic(snsClient);
 						boolean isHomework = false;
 						StringBuilder sectionHomework = new StringBuilder(homeworkMessage);
 						try {

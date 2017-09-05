@@ -45,6 +45,30 @@ public class TimetableResource {
 	}
 	
 	@Secured
+	@POST
+	@Path("day/{classId}/{sectionId}")
+	public void addWeekDayTimetable(@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId) {
+		timetableService.addWeekDayTimetable(classId, sectionId);
+	}
+	
+	@Secured
+	@POST
+	@Path("week/{classId}/{sectionId}")
+	public void copySectionTimetable(@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId) {
+		timetableService.copySectionTimetable(classId, sectionId);
+	}
+	
+	@Secured
+	@POST
+	@Path("saturday/{classId}/{sectionId}")
+	public void addSaturdayTimetable(@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId) {
+		timetableService.addSaturdayTimetable(classId, sectionId);
+	}
+	
+	@Secured
 	@PUT
 	@Path("{timetableId}")
 	public void update(Timetable timetable){
