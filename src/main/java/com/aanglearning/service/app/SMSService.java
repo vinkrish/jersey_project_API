@@ -1,5 +1,6 @@
 package com.aanglearning.service.app;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,11 +16,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.aanglearning.model.entity.Section;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.model.entity.Teacher;
 import com.aanglearning.resource.entity.TeacherResource;
 import com.aanglearning.service.DatabaseUtil;
+import com.aanglearning.service.FCMPost;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.CreateTopicRequest;
 import com.amazonaws.services.sns.model.CreateTopicResult;
@@ -173,7 +178,8 @@ public class SMSService {
 		new Thread(new Runnable() {
 			  @Override
 			  public void run() {
-					StringBuilder homeworkMessage = new StringBuilder("Homework : on ("+getDisplayFormattedDate(homeworkDate)+") \n");
+				  String formattedDate = getDisplayFormattedDate(homeworkDate);
+					StringBuilder homeworkMessage = new StringBuilder("Homework : on ("+formattedDate+") \n");
 					
 					try {
 						stmt = connection.createStatement();
@@ -208,9 +214,9 @@ public class SMSService {
 						}
 						
 						try {
-							ResultSet rs = stmt.executeQuery("select Name, Mobile1 from student where SectionId = " + section.getId() + " and IsLogged = 0 and Mobile1 != ''");
+							ResultSet rs = stmt.executeQuery("select Name, Username from student where SectionId = " + section.getId() + " and IsLogged = 0 and Username != ''");
 							while (rs.next()){
-								snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Mobile1")));
+								snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
 							}
 						} catch (SQLException e) {
 							e.printStackTrace();
@@ -224,12 +230,43 @@ public class SMSService {
 				                    .withTopicArn(topicArn)
 				                    .withMessage(sectionHomework.toString())
 				                    .withMessageAttributes(smsAttributes));
+							
+							JSONObject msg = new JSONObject();
+							msg.put("section_id", section.getId());
+							msg.put("date", formattedDate);
+							msg.put("type", "homework");
+							
+							JSONObject fcm = new JSONObject();
+						    fcm.put("registration_ids", getParentFCMToken(section.getId()));
+						    fcm.put("data", msg);
+						    fcm.put("time_to_live", 22200);
+						    FCMPost fcmPost = new FCMPost();
+						    try {
+								fcmPost.post(fcm.toString(), "AAAANtOFq98:APA91bGLAt-wCJDBhzomz_GmlVW8TXyshKdR6NOzuKTOk0NgM29Ww7-tZzjxCjT0siEua6AQY7stUxRTnkf_8cD5QgypjWfOTn1UYnzOQOP6uAB7bR_SA0SkSlOmPi9gPp6iHJL4xAzw");
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+					    	break;
 						}
 						
 					}
 			  }
 			}).start();
 		
+	}
+	
+	private JSONArray getParentFCMToken(long sectionId) {
+		JSONArray fcmTokenArray = new JSONArray();
+		String query = "select FcmToken from authorization where User in (select Username from student where SectionId = " + sectionId + ")";
+		try {
+			ResultSet rs = connection.createStatement().executeQuery(query);
+			if (rs.next()) {
+				fcmTokenArray.put(rs.getString("FcmToken"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fcmTokenArray;
 	}
 	
 	public String getDisplayFormattedDate(String dateString) {
