@@ -47,12 +47,11 @@ public class SubjectTeacherService {
 	
 	public SubjectTeacher add(SubjectTeacher subjectTeacher) {
 		try {
-			String query = "insert into subject_teacher(Id, SectionId, SubjectId, TeacherId) "
+			String query = "insert into subject_teacher(SectionId, SubjectId, TeacherId) "
 					+ "values (" 
-					+ subjectTeacher.getId() + "," 
 					+ subjectTeacher.getSectionId() + ","
 					+ subjectTeacher.getSubjectId() + ","
-					+ subjectTeacher.getTeacherId() + ")";
+					+ 0 + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			subjectTeacher.setId(pk);
 		} catch (SQLException e) {
@@ -72,6 +71,22 @@ public class SubjectTeacherService {
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void updateList(List<SubjectTeacher> subjectTeachers) {
+		for(SubjectTeacher subjectTeacher: subjectTeachers) {
+			try {
+				String query = "update subject_teacher set SectionId = " + subjectTeacher.getSectionId() 
+				+ ", TeacherId = " + subjectTeacher.getTeacherId() 
+				+ ", TeacherName = '" + subjectTeacher.getTeacherName()
+				+ "', SubjectId = " + subjectTeacher.getSubjectId() 
+				+ ", SubjectName = '" + subjectTeacher.getSubjectName()
+				+ "' where Id=" + subjectTeacher.getId();
+				stmt.executeUpdate(query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

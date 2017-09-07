@@ -44,6 +44,13 @@ public class SubjectTeacherResource {
 	}
 	
 	@Secured
+	@PUT
+	@Path("update")
+	public void updateList(List<SubjectTeacher> subjectTeachers) {
+		subjectTeacherService.updateList(subjectTeachers);
+	}
+	
+	@Secured
 	@DELETE
 	@Path("/{id}")
 	public void delete(@PathParam("id") long id) {
