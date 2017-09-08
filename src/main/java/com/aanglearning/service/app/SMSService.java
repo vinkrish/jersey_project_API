@@ -131,16 +131,19 @@ public class SMSService {
 	}
 	
 	public void sendPrincipalUserPassword(final String username) {
-		String query = "select AdminPassword from school where Mobile1 = ? or Mobile2 = ?" ;
+		String query = "select t.Password from teacher t, school s where "
+				+ "(s.Mobile1=? and t.Username=?) or (s.Mobile2=? and t.Username=?)" ;
 		final String[] adminPassword = new String[1];
 		adminPassword[0] = "";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, username);
 			preparedStatement.setString(2, username);
+			preparedStatement.setString(3, username);
+			preparedStatement.setString(4, username);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
-				adminPassword[0] = rs.getString("AdminPassword");
+				adminPassword[0] = rs.getString("Password");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

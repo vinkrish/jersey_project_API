@@ -105,13 +105,14 @@ public class TeacherLoginService {
 	}
 	
 	private boolean isPrincipal(String username, String password) throws Exception {
-		String query = "select AdminPassword from school where Mobile1 = '" + username + "' or Mobile2 = '" + username + "'" ;
+		String query = "select t.Username, t.Password from teacher t, school s where "
+				+ "(s.Mobile1 = '" + username + "' and t.Username='" + username + "') or (s.Mobile2 = '" + username + "' and t.Username='" + username + "')" ;
 		String validatedPasswrod = "";
 		boolean validPassword = false;
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()){
-				validatedPasswrod = rs.getString("AdminPassword");
+				validatedPasswrod = rs.getString("Password");
 				if (password.equals(validatedPasswrod)) {
 					validPassword = true;
 					break;

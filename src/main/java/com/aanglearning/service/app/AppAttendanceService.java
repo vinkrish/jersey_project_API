@@ -1,5 +1,6 @@
 package com.aanglearning.service.app;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,17 +13,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import com.aanglearning.model.app.AttendanceSet;
 import com.aanglearning.model.entity.Attendance;
 import com.aanglearning.resource.entity.StudentResource;
 import com.aanglearning.service.DatabaseUtil;
+import com.aanglearning.service.FCMPost;
 import com.amazonaws.services.sns.AmazonSNSClient;
-import com.amazonaws.services.sns.model.CreateTopicRequest;
-import com.amazonaws.services.sns.model.CreateTopicResult;
 import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
-import com.amazonaws.services.sns.model.SubscribeRequest;
 
 public class AppAttendanceService {
 	Statement stmt;
@@ -133,24 +134,79 @@ public class AppAttendanceService {
 	            new HashMap<String, MessageAttributeValue>();
 		
 		for(Attendance attendance: attendanceList) {
+			String session = " ";
 			try {
-				ResultSet rs = stmt.executeQuery("select Name, Mobile1 from student where Id = " + attendance.getStudentId() + " and IsLogged = 0");
+				ResultSet rs = stmt.executeQuery("select Name, Username from student where Id = " + attendance.getStudentId() + " and IsLogged = 0");
 				while (rs.next()){
 					StringBuilder sb = new StringBuilder(rs.getString("Name")).append(" was absent on ").append(getDisplayFormattedDate(attendance.getDateAttendance()));
 					if (attendance.getType().equals("Daily")) {
-						sendSMSMessage(snsClient, smsAttributes, sb.toString(), rs.getString("Mobile1"));
+						sendSMSMessage(snsClient, smsAttributes, sb.toString(), rs.getString("Username"));
 					} else if (attendance.getType().equals("Session")) {
-						String session = attendance.getSession() == 0 ? "morning" : "afternoon";
-						sendSMSMessage(snsClient, smsAttributes, sb.append(" during ").append(session).append(" session").toString(), rs.getString("Mobile1"));
+						session = attendance.getSession() == 0 ? "morning" : "afternoon";
+						sendSMSMessage(snsClient, smsAttributes, sb.append(" during ").append(session).append(" session").toString(), rs.getString("Username"));
 					} else if (attendance.getType().equals("Period")) {
-						sendSMSMessage(snsClient, smsAttributes, sb.append(" during ").append(attendance.getSession()).append(" period").toString(), rs.getString("Mobile1"));
+						session = String.valueOf(attendance.getSession());
+						sendSMSMessage(snsClient, smsAttributes, sb.append(" during ").append(session).append(" period").toString(), rs.getString("Username"));
 					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			String username = "";
+			String query_search = "select Username from student where Id = " + attendance.getStudentId() + " and IsLogged=1 and Username != ''";
+			try {
+				ResultSet resultSet = stmt.executeQuery(query_search);
+				if (resultSet.next()) {
+					username = resultSet.getString("Username");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			if(!username.equals("")) {
+				session = "";
+				if (attendance.getType().equals("Session")) {
+					session = attendance.getSession() == 0 ? "morning" : "afternoon";
+				} else if (attendance.getType().equals("Period")) {
+					session = String.valueOf(attendance.getSession());
+				}
+				
+				JSONObject msg = new JSONObject();
+				msg.put("student_id", attendance.getStudentId());
+				msg.put("date", getDisplayFormattedDate(attendance.getDateAttendance()));
+				msg.put("attendance_type", attendance.getType());
+				msg.put("session", session);
+				msg.put("type", "attendance");
+				
+				JSONObject fcm = new JSONObject();
+			    fcm.put("to", getFCMToken(username));
+			    fcm.put("data", msg);
+			    fcm.put("time_to_live", 22200);
+			    FCMPost fcmPost = new FCMPost();
+			    try {
+					fcmPost.post(fcm.toString(), "AAAANtOFq98:APA91bGLAt-wCJDBhzomz_GmlVW8TXyshKdR6NOzuKTOk0NgM29Ww7-tZzjxCjT0siEua6AQY7stUxRTnkf_8cD5QgypjWfOTn1UYnzOQOP6uAB7bR_SA0SkSlOmPi9gPp6iHJL4xAzw");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
+	}
+	
+	private String getFCMToken(String user) {
+		String fcmToken = "";
+		String query = "select FcmToken from authorization where User = '" + user + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				fcmToken = rs.getString("FcmToken");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fcmToken;
 	}
 	
 	public void sendSMSMessage(AmazonSNSClient snsClient, Map<String, MessageAttributeValue> smsAttributes, String message, String phoneNumber) {

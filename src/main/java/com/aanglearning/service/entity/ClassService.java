@@ -35,12 +35,13 @@ public class ClassService {
 	public List<Clas> getSubjectTeacherClasses(long teacherId) {
 		String query1 = "select * from class where Id in (select ClassId from section where Id in "
 				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId))";
-		String query2 = "select * from class where Id in (select ClassId from section where TeacherId = " + teacherId + ")";
+		/*String query2 = "select * from class where Id in (select ClassId from section where TeacherId = " + teacherId + ")";
 		String query3 = "select * from class where TeacherId = " + teacherId;
 		Set<Clas> set = new HashSet<Clas>(getClasses(query1));
 		set.addAll(getClasses(query2));
 		set.addAll(getClasses(query3));
-		return new ArrayList<Clas>(set);
+		return new ArrayList<Clas>(set);*/
+		return getClasses(query1);
 	}
 	
 	public List<Clas> getClasses(String query) {
