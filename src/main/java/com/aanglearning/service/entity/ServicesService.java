@@ -20,7 +20,7 @@ public class ServicesService {
 	
 	public Service add(Service service) {
 		try {
-			String query = "insert into service(Id, SchoolId, IsMessage, IsSms, IsChat, IsAttendance, IsHomework, IsAttendanceSms, IsHomeworkSms, IsTimetable) "
+			String query = "insert into service(Id, SchoolId, IsMessage, IsSms, IsChat, IsAttendance, IsHomework, IsAttendanceSms, IsHomeworkSms, IsTimetable, IsReport) "
 					+ "values ("
 					+ service.getId() + "," 
 					+ service.getSchoolId() + ","
@@ -31,7 +31,8 @@ public class ServicesService {
 					+ service.getIsHomework() + ","
 					+ service.getIsAttendanceSms() + ","
 					+ service.getIsHomeworkSms() + ","
-					+ service.getIsTimetable() + ")";
+					+ service.getIsTimetable() + ","
+					+ service.getIsReport() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) pk = rs.getLong(1);
@@ -58,6 +59,7 @@ public class ServicesService {
 				service.setIsHomework(rs.getBoolean("IsHomework"));
 				service.setIsHomeworkSms(rs.getBoolean("IsHomeworkSms"));
 				service.setIsTimetable(rs.getBoolean("IsTimetable"));
+				service.setIsReport(rs.getBoolean("IsReport"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -76,6 +78,7 @@ public class ServicesService {
 					+ ", IsHomework = " + service.getIsHomework()
 					+ ", IsHomeworkSms = " + service.getIsHomeworkSms()
 					+ ", IsTimetable = " + service.getIsTimetable()
+					+ ", IsReport = " + service.getIsReport()
 					+ " where Id = " + service.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {

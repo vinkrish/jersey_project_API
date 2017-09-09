@@ -11,6 +11,7 @@ public class Service {
 	private boolean isAttendanceSms;
 	private boolean isHomeworkSms;
 	private boolean isTimetable;
+	private boolean isReport;
 	
 	public long getId() {
 		return id;
@@ -71,5 +72,11 @@ public class Service {
 	}
 	public void setIsTimetable(boolean isTimetable) {
 		this.isTimetable = isTimetable;
+	}
+	public boolean getIsReport() {
+		return isReport;
+	}
+	public void setIsReport(boolean isReport) {
+		this.isReport = isReport;
 	}
 }
