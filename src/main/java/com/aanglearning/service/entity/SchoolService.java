@@ -44,6 +44,7 @@ public class SchoolService {
 					school.setId(rs.getLong("Id"));
 					school.setSchoolName(rs.getString("SchoolName"));
 					school.setWebsite(rs.getString("Website"));
+					school.setLogo(rs.getString("Logo"));
 					school.setShortenedSchoolName(rs.getString("ShortenedSchoolName"));
 					school.setContactPersonName(rs.getString("ContactPersonName"));
 					school.setAdminUsername(rs.getString("AdminUsername"));
@@ -59,6 +60,7 @@ public class SchoolService {
 					school.setPincode(rs.getString("Pincode"));
 					school.setPrincipalId(rs.getLong("PrincipalId"));
 					school.setNumberOfStudents(rs.getInt("NumberOfStudents"));
+					school.setNumberOfSms(rs.getInt("NumberOfSms"));
 					schools.add(school);
 				}
 			} catch (SQLException e) {
@@ -80,6 +82,7 @@ public class SchoolService {
 				school.setId(rs.getLong("Id"));
 				school.setSchoolName(rs.getString("SchoolName"));
 				school.setWebsite(rs.getString("Website"));
+				school.setLogo(rs.getString("Logo"));
 				school.setShortenedSchoolName(rs.getString("ShortenedSchoolName"));
 				school.setContactPersonName(rs.getString("ContactPersonName"));
 				school.setAdminUsername(rs.getString("AdminUsername"));
@@ -95,6 +98,7 @@ public class SchoolService {
 				school.setPincode(rs.getString("Pincode"));
 				school.setPrincipalId(rs.getLong("PrincipalId"));
 				school.setNumberOfStudents(rs.getInt("NumberOfStudents"));
+				school.setNumberOfSms(rs.getInt("NumberOfSms"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,11 +119,12 @@ public class SchoolService {
 		 */
 
 		try {
-			String query = "insert into school(SchoolName, Website, ShortenedSchoolName, ContactPersonName, "
+			String query = "insert into school(SchoolName, Website, Logo, ShortenedSchoolName, ContactPersonName, "
 					+ "AdminUsername, AdminPassword, Landline, Mobile1, Mobile2, Email, Street, City, District, State, "
-					+ "Pincode, PrincipalId, NumberOfStudents) " + "values ("
+					+ "Pincode, PrincipalId, NumberOfStudents, NumberOfSms) " + "values ("
 					+ "'" + school.getSchoolName() 
-					+ "','" + school.getWebsite() 
+					+ "','" + school.getWebsite()
+					+ "','" + school.getLogo()
 					+ "','" + school.getShortenedSchoolName()
 					+ "','" + school.getContactPersonName() 
 					+ "','" + school.getAdminUsername() 
@@ -134,7 +139,8 @@ public class SchoolService {
 					+ "','" + school.getState() 
 					+ "','" + school.getPincode() 
 					+ "'," + school.getPrincipalId() 
-					+ "," + school.getNumberOfStudents() + ")";
+					+ "," + school.getNumberOfStudents()
+					+ "," + school.getNumberOfSms() + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -154,6 +160,25 @@ public class SchoolService {
 	public void update(School school) {
 		try {
 			String query = "update school set"
+					+ " SchoolName = '" + school.getSchoolName()
+					+ "', Website = '" + school.getWebsite()
+					+ "', Logo = '" + school.getLogo()
+					+ "', ShortenedSchoolName = '" + school.getShortenedSchoolName()
+					+ "', ContactPersonName = '" + school.getContactPersonName()
+					+ "', AdminUsername = '" + school.getAdminUsername()
+					+ "', AdminPassword = '" + school.getAdminPassword()
+					+ "', Landline = '" + school.getLandline()
+					+ "', Mobile1 = '" + school.getMobile1()
+					+ "', Mobile2 = '" + school.getMobile2()
+					+ "', Email = '" + school.getEmail()
+					+ "', Street = '" + school.getStreet()
+					+ "', City = '" + school.getCity()
+					+ "', District = '" + school.getDistrict()
+					+ "', State = '" + school.getState()
+					+ "', Pincode = '" + school.getPincode()
+					+ "', PrincipalId = " + school.getPrincipalId()
+					+ ", NumberOfStudents = " + school.getNumberOfStudents()
+					+ ", NumberOfSms = " + school.getNumberOfSms()
 					+ " where Id = " + school.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {

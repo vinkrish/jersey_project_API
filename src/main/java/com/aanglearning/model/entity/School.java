@@ -4,6 +4,7 @@ public class School {
 	private long id;
 	private String schoolName;
 	private String website;
+	private String logo;
 	private String shortenedSchoolName;
 	private String contactPersonName;
 	private String adminUsername;
@@ -19,6 +20,7 @@ public class School {
 	private String pincode;
 	private long principalId;
 	private int numberOfStudents;
+	private int numberOfSms;
 
 	public long getId() {
 		return id;
@@ -42,6 +44,14 @@ public class School {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 	public String getShortenedSchoolName() {
@@ -163,5 +173,14 @@ public class School {
 	public void setNumberOfStudents(int numberOfStudents) {
 		this.numberOfStudents = numberOfStudents;
 	}
+
+	public int getNumberOfSms() {
+		return numberOfSms;
+	}
+
+	public void setNumberOfSms(int numberOfSms) {
+		this.numberOfSms = numberOfSms;
+	}
+	
 
 }
