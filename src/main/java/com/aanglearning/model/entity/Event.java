@@ -16,6 +16,7 @@ public class Event {
 	private String createdBy;
 	private String createdDate;
 	private int parentEventId;
+	private boolean isSchool;
 	
 	public int getId() {
 		return id;
@@ -107,5 +108,10 @@ public class Event {
 	public void setParentEventId(int parentEventId) {
 		this.parentEventId = parentEventId;
 	}
-	
+	public boolean getIsSchool() {
+		return isSchool;
+	}
+	public void setIsSchool(boolean isSchool) {
+		this.isSchool = isSchool;
+	}
 }

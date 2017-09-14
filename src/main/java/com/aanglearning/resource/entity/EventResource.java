@@ -31,6 +31,22 @@ public class EventResource {
 	}
 	
 	@Secured
+	@GET
+	@Path("school/{schoolId}/student/{classId}")
+	public List<Event> getStudentEvents(@PathParam("schoolId") long schoolId,
+			@PathParam("classId") long classId) {
+		return service.getStudentEvents(schoolId, classId);
+	}
+	
+	@Secured
+	@GET
+	@Path("school/{schoolId}/teacher/{teacherId}")
+	public List<Event> getTeacherEvents(@PathParam("schoolId") long schoolId,
+			@PathParam("teacherId") long teacherId) {
+		return service.getTeacherEvents(schoolId, teacherId);
+	}
+	
+	@Secured
 	@POST
 	public Event add(Event event) {
 		return service.add(event);

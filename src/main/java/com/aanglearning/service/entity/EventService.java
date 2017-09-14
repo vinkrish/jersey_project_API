@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aanglearning.model.entity.Event;
 import com.aanglearning.service.DatabaseUtil;
@@ -24,8 +26,8 @@ public class EventService {
 
 	public Event add(Event event) {
 		String query = "insert into event(Id, SchoolId, EventTitle, EventDescription, StartDate, EndDate, StartTime, EndTime, NoOfDays, "
-				+ "IsContinuousDays, IsFullDayEvent, IsRecurring, CreatedBy, CreatedDate, ParentEventId) "
-				+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "IsContinuousDays, IsFullDayEvent, IsRecurring, CreatedBy, CreatedDate, ParentEventId, IsSchool) "
+				+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	    	preparedStatement.setLong(1, event.getId());
@@ -43,6 +45,7 @@ public class EventService {
 	    	preparedStatement.setString(13, event.getCreatedBy());
 	    	preparedStatement.setString(14, event.getCreatedDate());
 	    	preparedStatement.setInt(15, event.getParentEventId());
+	    	preparedStatement.setBoolean(16, event.getIsSchool());
 	    	preparedStatement.executeUpdate();
 		    
 		    ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -60,6 +63,24 @@ public class EventService {
 	public List<Event> getSchoolEvents(long schoolId) {
 		String query = "select * from event where SchoolId = " + schoolId;
 		return getEvents(query);
+	}
+	
+	public List<Event> getStudentEvents(long schoolId, long classId) {
+		String query1 = "select * from event where SchoolId = " + schoolId + " and IsSchool = 1";
+		String query2 = "select * from event where Id in (select EventId from class_event where ClassId = " + classId + ")";
+		Set<Event> set = new HashSet<Event>(getEvents(query1));
+		set.addAll(getEvents(query2));
+		return new ArrayList<Event>(set);
+	}
+	
+	public List<Event> getTeacherEvents(long schoolId, long teacherId) {
+		String query1 = "select * from event where SchoolId = " + schoolId + " and IsSchool = 1";
+		String query2 = "select * from event where Id in (select EventId from class_event where ClassId in "
+				+ "(select * from class where Id in (select ClassId from section where Id in "
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId))))";
+		Set<Event> set = new HashSet<Event>(getEvents(query1));
+		set.addAll(getEvents(query2));
+		return new ArrayList<Event>(set);
 	}
 
 	private List<Event> getEvents(String query) {
@@ -83,6 +104,7 @@ public class EventService {
 				event.setCreatedBy(rs.getString("CreatedBy"));
 				event.setCreatedDate(rs.getString("CreatedDate"));
 				event.setParentEventId(rs.getInt("ParentEventId"));
+				event.setIsSchool(rs.getBoolean("IsSchool"));
 				events.add(event);
 			}
 		} catch (SQLException e) {
@@ -94,7 +116,7 @@ public class EventService {
 	public void update(Event event) {
 		try {
 			String query = "update event set EventTitle = ?, EventDescription = ?, StartDate = ?, EndDate = ?, StartTime = ?, EndTime = ?, "
-					+ "NoOfDays = ?, IsContinuousDays = ?, IsFullDayEvent = ?, IsRecurring = ?, CreatedBy = ?, CreatedDate = ?, ParentEventId = ? "
+					+ "NoOfDays=?, IsContinuousDays=?, IsFullDayEvent=?, IsRecurring=?, CreatedBy=?, CreatedDate=?, ParentEventId=?, IsSchool=? "
 					+ "where Id = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, event.getEventTitle());
@@ -110,7 +132,8 @@ public class EventService {
 	    	preparedStatement.setString(11, event.getCreatedBy());
 	    	preparedStatement.setString(12, event.getCreatedDate());
 	    	preparedStatement.setInt(13, event.getParentEventId());
-	    	preparedStatement.setInt(14, event.getId());
+	    	preparedStatement.setBoolean(14, event.getIsSchool());
+	    	preparedStatement.setInt(15, event.getId());
 			preparedStatement .executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

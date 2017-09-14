@@ -81,7 +81,8 @@ public class SMSService {
 			  @Override
 			  public void run() {
 				  for(Student student: students) {
-						sendSMSMessage("Your password for Shikshitha Parent App is " + student.getPassword(), "+91" + student.getUsername());
+						sendSMSMessage("Your password for Shikshitha Parent App is " + student.getPassword() 
+						+ "\nDownload: https://play.google.com/store/apps/developer?id=Shikshitha+Apps", "+91" + student.getUsername());
 					}
 			  }
 			}).start();
@@ -119,7 +120,8 @@ public class SMSService {
 			  @Override
 			  public void run() {
 				  for(Teacher teacher: teachers) {
-						sendSMSMessage("Your password for Shikshitha Teacher App is " + teacher.getPassword(), "+91" + teacher.getUsername());
+						sendSMSMessage("Your password for Shikshitha Teacher App is " + teacher.getPassword() 
+						+ "\nDownload: https://play.google.com/store/apps/developer?id=Shikshitha+Apps", "+91" + teacher.getUsername());
 					}
 			  }
 			}).start();
@@ -151,7 +153,8 @@ public class SMSService {
 		new Thread(new Runnable() {
 			  @Override
 			  public void run() {
-				  sendSMSMessage("Your password for Shikshitha Principal App is " + adminPassword[0], "+91" +username);
+				  sendSMSMessage("Your password for Shikshitha Principal App is " + adminPassword[0] 
+						  + "\nDownload: https://play.google.com/store/apps/developer?id=Shikshitha+Apps", "+91" +username);
 			  }
 			}).start();
 	}
