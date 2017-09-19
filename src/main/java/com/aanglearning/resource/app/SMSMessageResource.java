@@ -1,20 +1,17 @@
 package com.aanglearning.resource.app;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.app.Sms;
-import com.aanglearning.model.entity.Clas;
-import com.aanglearning.model.entity.Section;
-import com.aanglearning.model.entity.Student;
-import com.aanglearning.model.entity.Teacher;
+import com.aanglearning.model.app.SmsClass;
+import com.aanglearning.model.app.SmsSection;
+import com.aanglearning.model.app.SmsStudent;
+import com.aanglearning.model.app.SmsTeacher;
 import com.aanglearning.service.app.SMSMessageService;
 
 @Path("/smsmessage")
@@ -26,65 +23,65 @@ public class SMSMessageResource {
 	
 	@Secured
 	@POST
-	@Path("school/{schoolId}")
-	public Sms sendSchoolSMS(@PathParam("schoolId") long schoolId, Sms sms) {
-		return service.sendSchoolSMS(schoolId, sms);
+	@Path("school")
+	public Sms sendSchoolSMS(Sms sms) {
+		return service.sendSchoolSMS(sms.getSchoolId(), sms);
 	}
 	
 	@Secured
 	@POST
-	@Path("class/{classId}")
-	public Sms sendClassSMS(@PathParam("classId") long classId, Sms sms) {
-		return service.sendClassSMS(classId, sms);
+	@Path("class")
+	public Sms sendClassSMS(Sms sms) {
+		return service.sendClassSMS(sms.getClassId(), sms);
 	}
 	
 	@Secured
 	@POST
 	@Path("classes")
-	public Sms sendClassesSMS(List<Clas> classes, Sms sms) {
-		return service.sendClassesSMS(classes, sms);
+	public Sms sendClassesSMS(SmsClass smsClass) {
+		return service.sendClassesSMS(smsClass.getClasses(), smsClass.getSms());
 	}
 	
 	@Secured
 	@POST
-	@Path("section/{sectionId}")
-	public Sms sendSectionSMS(@PathParam("sectionId") long sectionId, Sms sms) {
-		return service.sendSectionSMS(sectionId, sms);
+	@Path("section")
+	public Sms sendSectionSMS(Sms sms) {
+		return service.sendSectionSMS(sms.getSectionId(), sms);
 	}
 	
 	@Secured
 	@POST
 	@Path("sections")
-	public Sms sendSectionsSMS(List<Section> sections, Sms sms) {
-		return service.sendSectionsSMS(sections, sms);
+	public Sms sendSectionsSMS(SmsSection smsSection) {
+		return service.sendSectionsSMS(smsSection.getSections(), smsSection.getSms());
 	}
 	
 	@Secured
 	@POST
-	@Path("school/{schoolId}/male")
-	public Sms sendMaleSMS(@PathParam("schoolId") long schoolId, Sms sms) {
-		return service.sendGenderSMS(schoolId, sms, "M");
+	@Path("school/male")
+	public Sms sendMaleSMS(Sms sms) {
+		return service.sendGenderSMS(sms.getSchoolId(), sms, "M");
 	}
 	
 	@Secured
 	@POST
-	@Path("school/{schoolId}/female")
-	public Sms sendFemaleSMS(@PathParam("schoolId") long schoolId, Sms sms) {
-		return service.sendGenderSMS(schoolId, sms, "F");
+	@Path("school/female")
+	public Sms sendFemaleSMS(Sms sms) {
+		return service.sendGenderSMS(sms.getSchoolId(), sms, "F");
 	}
 	
 	@Secured
 	@POST
 	@Path("students")
-	public Sms sendStudentSMS(List<Student> students, Sms sms) {
-		return service.sendStudentSMS(students, sms);
+	public Sms sendStudentSMS(SmsStudent smsStudent) {
+		return service.sendStudentSMS(smsStudent.getStudents(), smsStudent.getSms());
 	}
 	
 	@Secured
 	@POST
 	@Path("teachers")
-	public Sms sendTeacherSMS(List<Teacher> teachers, Sms sms) {
-		return service.sendTeacherSMS(teachers, sms);
+	public Sms sendTeacherSMS(SmsTeacher smsTeacher) {
+		return service.sendTeacherSMS(smsTeacher.getTeachers(), smsTeacher.getSms());
 	}
 
 }

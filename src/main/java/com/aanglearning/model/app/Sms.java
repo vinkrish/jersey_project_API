@@ -3,6 +3,8 @@ package com.aanglearning.model.app;
 public class Sms {
     private long id;
     private long schoolId;
+    private long classId;
+    private long sectionId;
     private long senderId;
     private String senderName;
     private long sentTime;
@@ -25,7 +27,23 @@ public class Sms {
         this.schoolId = schoolId;
     }
 
-    public long getSenderId() {
+    public long getClassId() {
+		return classId;
+	}
+
+	public void setClassId(long classId) {
+		this.classId = classId;
+	}
+
+	public long getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(long sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	public long getSenderId() {
         return senderId;
     }
 

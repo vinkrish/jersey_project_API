@@ -5,14 +5,14 @@ import java.util.List;
 import com.aanglearning.model.entity.Teacher;
 
 public class SmsTeacher {
-	private List<Teacher> teachres;
+	private List<Teacher> teachers;
 	private Sms sms;
 	
-	public List<Teacher> getTeachres() {
-		return teachres;
+	public List<Teacher> getTeachers() {
+		return teachers;
 	}
-	public void setTeachres(List<Teacher> teachres) {
-		this.teachres = teachres;
+	public void setTeachers(List<Teacher> teachers) {
+		this.teachers = teachers;
 	}
 	public Sms getSms() {
 		return sms;

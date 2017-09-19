@@ -40,15 +40,17 @@ public class SMSMessageService {
 	}
 
 	private Sms add(Sms sms) {
-		String query = "insert into sms_info(SchoolId, SenderId, SenderName, SentTime, Message, SentTo) "
-				+ "values (?,?,?,?,?)";
+		String query = "insert into sms_info(SchoolId, ClassId, SectionId, SenderId, SenderName, SentTime, Message, SentTo) "
+				+ "values (?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setLong(1, sms.getSchoolId());
-			preparedStatement.setLong(2, sms.getSenderId());
-			preparedStatement.setString(3, sms.getSenderName());
-			preparedStatement.setLong(4, sms.getSentTime());
-			preparedStatement.setString(5, sms.getSentTo());
+			preparedStatement.setLong(2, sms.getClassId());
+			preparedStatement.setLong(3, sms.getSectionId());
+			preparedStatement.setLong(4, sms.getSenderId());
+			preparedStatement.setString(5, sms.getSenderName());
+			preparedStatement.setLong(6, sms.getSentTime());
+			preparedStatement.setString(7, sms.getSentTo());
 			preparedStatement.executeUpdate();
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			long pk = 0;
