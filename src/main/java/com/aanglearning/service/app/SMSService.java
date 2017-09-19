@@ -167,15 +167,14 @@ public class SMSService {
                         .withMessage(message)
                         .withPhoneNumber(phoneNumber)
                         .withMessageAttributes(smsAttributes));
-        System.out.println(result);
+        //System.out.println(result);
 	}
 	
 	public String createSNSTopic(AmazonSNSClient snsClient) {
 	    CreateTopicRequest createTopic = new CreateTopicRequest("shikshithaTopic");
 	    CreateTopicResult result = snsClient.createTopic(createTopic);
-	    System.out.println("Create topic request: " + 
-	        snsClient.getCachedResponseMetadata(createTopic));
-	    System.out.println("Create topic result: " + result);
+	    //System.out.println("Create topic request: " +  snsClient.getCachedResponseMetadata(createTopic));
+	    //System.out.println("Create topic result: " + result);
 	    return result.getTopicArn();
 	}
 	

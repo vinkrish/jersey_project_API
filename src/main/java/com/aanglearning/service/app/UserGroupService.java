@@ -28,27 +28,21 @@ public class UserGroupService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void add(List<UserGroup> userGroupList) {
 		String query = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
-		try{
-		    connection.setAutoCommit(false);
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    for(UserGroup userGroup: userGroupList) {
-		    	preparedStatement.setLong(1, userGroup.getId());
-		    	preparedStatement.setLong(2, userGroup.getUserId());
-		    	preparedStatement.setString(3, userGroup.getRole());
-		    	preparedStatement.setLong(4, userGroup.getGroupId());
-		    	preparedStatement.setBoolean(5, true);
-		    	preparedStatement.executeUpdate();
-		    }
-		    connection.commit();
-		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			for (UserGroup userGroup : userGroupList) {
+				preparedStatement.setLong(1, userGroup.getId());
+				preparedStatement.setLong(2, userGroup.getUserId());
+				preparedStatement.setString(3, userGroup.getRole());
+				preparedStatement.setLong(4, userGroup.getGroupId());
+				preparedStatement.setBoolean(5, true);
+				preparedStatement.executeUpdate();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -57,13 +51,13 @@ public class UserGroupService {
 				+ "where A.GroupId=? and A.Role='student' and A.UserId=B.Id";
 		String query2 = "select A.*, B.Name as Name from user_group A, teacher B "
 				+ "where A.GroupId=? and (A.Role='admin' or A.Role='teacher') and  A.UserId=B.Id";
-		
+
 		List<UserGroup> userGroups = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query1);
 			preparedStatement.setLong(1, groupId);
 			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()){
+			while (rs.next()) {
 				UserGroup userGroup = new UserGroup();
 				userGroup.setId(rs.getLong("Id"));
 				userGroup.setUserId(rs.getLong("UserId"));
@@ -76,12 +70,12 @@ public class UserGroupService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query2);
 			preparedStatement.setLong(1, groupId);
 			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()){
+			while (rs.next()) {
 				UserGroup userGroup = new UserGroup();
 				userGroup.setId(rs.getLong("Id"));
 				userGroup.setUserId(rs.getLong("UserId"));
@@ -96,66 +90,58 @@ public class UserGroupService {
 		}
 		return userGroups;
 	}
-	
+
 	public GroupUsers getGroupUsers(long groupId) {
 		GroupUsers groupUsers = new GroupUsers();
 		groupUsers.setUserGroupList(getUserGroups(groupId));
 		Groups groups = groupsResource.getGroupById(groupId);
-		if(groups.isClas()) {
+		if (groups.isClas()) {
 			groupUsers.setStudents(studentResource.getClassGroupUsers(groupId, groups.getClassId()));
 			groupUsers.setTeachers(teacherResource.getClassGroupUsers(groupId, groups.getClassId()));
-		} else if(groups.isSection()) {
+		} else if (groups.isSection()) {
 			groupUsers.setStudents(studentResource.getSectionGroupUsers(groupId, groups.getSectionId()));
 			groupUsers.setTeachers(teacherResource.getSectionGroupUsers(groupId, groups.getSectionId()));
 		}
 		return groupUsers;
 	}
-	
+
 	public void delete(long groupId) {
 		String query = "delete from user_group where GroupId=?";
-		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, groupId);
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
-		} catch(Exception e) {
-		    e.printStackTrace();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	public void deleteUsers(List<UserGroup> userGroups) {
 		String query = "delete from user_group where Id=? and GroupId=?";
-		try{
-		    connection.setAutoCommit(false);
-		    for(UserGroup userGroup: userGroups) {
-		    	PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, userGroup.getId());
-		    	preparedStatement.setLong(2, userGroup.getGroupId());
-		    	preparedStatement.executeUpdate();
-		    }
-		    connection.commit();
-		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+		try {
+			for (UserGroup userGroup : userGroups) {
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setLong(1, userGroup.getId());
+				preparedStatement.setLong(2, userGroup.getGroupId());
+				preparedStatement.executeUpdate();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	public void add(UserGroup userGroup) {
 		String query = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
-		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    	preparedStatement.setLong(1, userGroup.getId());
-		    	preparedStatement.setLong(2, userGroup.getUserId());
-		    	preparedStatement.setString(3, userGroup.getRole());
-		    	preparedStatement.setLong(4, userGroup.getGroupId());
-		    	preparedStatement.setBoolean(5,  userGroup.isActive());
-		    	preparedStatement.executeUpdate();
-		    connection.commit();
-		} catch(Exception e) {
-		    e.printStackTrace();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, userGroup.getId());
+			preparedStatement.setLong(2, userGroup.getUserId());
+			preparedStatement.setString(3, userGroup.getRole());
+			preparedStatement.setLong(4, userGroup.getGroupId());
+			preparedStatement.setBoolean(5, userGroup.isActive());
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
