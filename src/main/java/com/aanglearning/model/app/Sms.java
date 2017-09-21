@@ -10,6 +10,7 @@ public class Sms {
     private long sentTime;
     private String message;
     private String sentTo;
+    private String recipientRole;
 
     public long getId() {
         return id;
@@ -82,4 +83,13 @@ public class Sms {
     public void setSentTo(String sentTo) {
         this.sentTo = sentTo;
     }
+
+	public String getRecipientRole() {
+		return recipientRole;
+	}
+
+	public void setRecipientRole(String recipientRole) {
+		this.recipientRole = recipientRole;
+	}
+    
 }

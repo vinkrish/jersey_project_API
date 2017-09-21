@@ -40,8 +40,8 @@ public class SMSMessageService {
 	}
 
 	private Sms add(Sms sms) {
-		String query = "insert into sms_info(SchoolId, ClassId, SectionId, SenderId, SenderName, SentTime, Message, SentTo) "
-				+ "values (?,?,?,?,?,?,?)";
+		String query = "insert into sms_info(SchoolId, ClassId, SectionId, SenderId, SenderName, SentTime, Message, SentTo, RecipientRole) "
+				+ "values (?,?,?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setLong(1, sms.getSchoolId());
@@ -50,7 +50,9 @@ public class SMSMessageService {
 			preparedStatement.setLong(4, sms.getSenderId());
 			preparedStatement.setString(5, sms.getSenderName());
 			preparedStatement.setLong(6, sms.getSentTime());
-			preparedStatement.setString(7, sms.getSentTo());
+			preparedStatement.setString(7, sms.getMessage());
+			preparedStatement.setString(8, sms.getSentTo());
+			preparedStatement.setString(9, sms.getRecipientRole());
 			preparedStatement.executeUpdate();
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			long pk = 0;
@@ -62,6 +64,61 @@ public class SMSMessageService {
 			e.printStackTrace();
 		}
 		return sms;
+	}
+	
+	public List<Sms> getSMSMessagesAboveId(long senderId, long messageId) {
+		String query = "select * from sms_info where SenderId = ? and Id > ? order by Id desc";
+		List<Sms> messages = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, senderId);
+			preparedStatement.setLong(2, messageId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				Sms message = new Sms();
+				message.setId(rs.getLong("Id"));
+				message.setSchoolId(rs.getLong("SchoolId"));
+				message.setClassId(rs.getLong("ClassId"));
+				message.setSectionId(rs.getLong("SectionId"));
+				message.setSenderId(rs.getLong("SenderId"));
+				message.setSenderName(rs.getString("SenderName"));
+				message.setSentTime(rs.getLong("SentTime"));
+				message.setMessage(rs.getString("Message"));
+				message.setSentTo(rs.getString("SentTo"));
+				message.setRecipientRole(rs.getString("RecipientRole"));
+				messages.add(message);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return messages;
+	}
+	
+	public List<Sms> getSMSMessages(long senderId) {
+		String query = "select * from sms_info where SenderId = ? order by Id desc";
+		List<Sms> messages = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, senderId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				Sms message = new Sms();
+				message.setId(rs.getLong("Id"));
+				message.setSchoolId(rs.getLong("SchoolId"));
+				message.setClassId(rs.getLong("ClassId"));
+				message.setSectionId(rs.getLong("SectionId"));
+				message.setSenderId(rs.getLong("SenderId"));
+				message.setSenderName(rs.getString("SenderName"));
+				message.setSentTime(rs.getLong("SentTime"));
+				message.setMessage(rs.getString("Message"));
+				message.setSentTo(rs.getString("SentTo"));
+				message.setRecipientRole(rs.getString("RecipientRole"));
+				messages.add(message);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return messages;
 	}
 
 	public String createSNSTopic(AmazonSNSClient snsClient) {

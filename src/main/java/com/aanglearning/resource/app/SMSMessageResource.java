@@ -1,12 +1,17 @@
 package com.aanglearning.resource.app;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
+import com.aanglearning.model.app.Message;
 import com.aanglearning.model.app.Sms;
 import com.aanglearning.model.app.SmsClass;
 import com.aanglearning.model.app.SmsSection;
@@ -82,6 +87,21 @@ public class SMSMessageResource {
 	@Path("teachers")
 	public Sms sendTeacherSMS(SmsTeacher smsTeacher) {
 		return service.sendTeacherSMS(smsTeacher.getTeachers(), smsTeacher.getSms());
+	}
+	
+	@Secured
+	@GET
+	@Path("sender/{senderId}/messagesUp/{messageId}")
+	public List<Sms> getSMSMessagesAboveId(@PathParam("senderId") long senderId,
+			@PathParam("messageId") long messageId) {
+		return service.getSMSMessagesAboveId(senderId, messageId);
+	}
+	
+	@Secured
+	@GET
+	@Path("sender/{senderId}")
+	public List<Sms> getSMSMessages(@PathParam("senderId") long senderId) {
+		return service.getSMSMessages(senderId);
 	}
 
 }
