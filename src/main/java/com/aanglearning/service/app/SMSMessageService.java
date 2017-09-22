@@ -120,6 +120,40 @@ public class SMSMessageService {
 		}
 		return messages;
 	}
+	
+	private void updateNoOfSms(String query, long schoolId, int count) {
+		int noOfSms = 0;
+		try {
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select NumberOfSms from school where Id = " + schoolId);
+			while (rs.next()) {
+				noOfSms = rs.getInt("NumberOfSms");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(count == 0) {
+			try {
+				ResultSet rs = stmt.executeQuery(query);
+				while (rs.next()) {
+					noOfSms += rs.getInt("count");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			noOfSms += count;
+		}
+		
+		try {
+			String sql = "update school set NumberOfSms = " + noOfSms + " where Id = " + schoolId;
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	public String createSNSTopic(AmazonSNSClient snsClient) {
 		CreateTopicRequest createTopic = new CreateTopicRequest("shikshithaTopic");
@@ -133,6 +167,9 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				String sql = "select count(*) as count from student where SchoolId = " + sms.getSchoolId();
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
+				
 				List<Long> sectionList = new ArrayList<>();
 				try {
 					String query = "select Id from section where ClassId in (select Id from class where SchoolId = ?)";
@@ -179,6 +216,9 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				String sql = "select count(*) as count from student where ClassId = " + sms.getClassId();
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
+				
 				List<Long> sectionList = new ArrayList<>();
 				try {
 					String query = "select Id from section where ClassId = ?";
@@ -226,7 +266,9 @@ public class SMSMessageService {
 			@Override
 			public void run() {
 				List<Long> sectionList = new ArrayList<>();
+				StringBuilder sb = new StringBuilder();
 				for(Clas clas: classes) {
+					sb.append(clas.getId()).append(",");
 					try {
 						String query = "select Id from section where ClassId = ?";
 						PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -239,6 +281,9 @@ public class SMSMessageService {
 						e.printStackTrace();
 					}
 				}
+				
+				String sql = "select count(*) as count from student where ClassId in (" + sb.substring(0, sb.length()-1) + ")";
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
 
 				for (Long section : sectionList) {
 					String topicArn = createSNSTopic(snsClient);
@@ -273,6 +318,9 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				String sql = "select count(*) as count from student where SectionId =  " + sms.getSectionId();
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
+				
 				String topicArn = createSNSTopic(snsClient);
 				try {
 					String query = "select Name, Username from student where SectionId = ? and Username != ''";
@@ -305,8 +353,10 @@ public class SMSMessageService {
 			@Override
 			public void run() {
 				String topicArn = createSNSTopic(snsClient);
-
+				StringBuilder sb = new StringBuilder();
+				
 				for(Section section: sections) {
+					sb.append(section.getId()).append(",");
 					try {
 						String query = "select Name, Username from student where SectionId = ? and Username != ''";
 						PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -325,7 +375,9 @@ public class SMSMessageService {
 					snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
 							.withMessageAttributes(smsAttributes));
 				}
-
+				
+				String sql = "select count(*) as count from student where SectionId in (" + sb.substring(0, sb.length()-1) + ")";
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
 			}
 		}).start();
 
@@ -338,6 +390,10 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				String sql = "select count(*) as count from student where SchoolId = " + sms.getSchoolId() + 
+						" and Gender = '" + gender + "'";
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
+				
 				List<Long> sectionList = new ArrayList<>();
 				try {
 					String query = "select Id from section where ClassId in (select Id from class where SchoolId = ?)";
@@ -385,6 +441,8 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				updateNoOfSms("", sms.getSchoolId(), students.size());
+				
 				String topicArn = createSNSTopic(snsClient);
 				for(Student student: students) {
 					snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + student.getUsername()));
@@ -408,6 +466,8 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				updateNoOfSms("", sms.getSchoolId(), teachers.size());
+				
 				String topicArn = createSNSTopic(snsClient);
 				for(Teacher teacher: teachers) {
 					snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + teacher.getUsername()));
