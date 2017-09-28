@@ -43,8 +43,6 @@ public class MarkService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			//JDBC.closeConnection();
 		}
 		return marks;
 	}
@@ -52,7 +50,6 @@ public class MarkService {
 	public void add(List<Mark> marks) {
 		String query = "insert into mark(Id, ExamId, SubjectId, SectionId, StudentId, Mark, Grade) values (?,?,?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(Mark mark: marks) {
 		    	preparedStatement.setLong(1, mark.getId());
@@ -64,22 +61,14 @@ public class MarkService {
 		    	preparedStatement.setString(7, mark.getGrade());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} finally {
-			//JDBC.closeConnection();
+			e.printStackTrace();
 		}
 	}
 
 	public void update(List<Mark> marks) {
 		String query = "update mark set Mark=?, Grade=? where Id=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(Mark mark: marks) {
 		    	preparedStatement.setFloat(1, mark.getMark());
@@ -87,13 +76,8 @@ public class MarkService {
 		    	preparedStatement.setLong(3, mark.getId());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 		/*finally {
 		    if(connection != null) {

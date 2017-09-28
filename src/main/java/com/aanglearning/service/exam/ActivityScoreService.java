@@ -46,7 +46,6 @@ public class ActivityScoreService {
 	public void add(List<ActivityScore> scores) {
 		String query = "insert into activity_score(Id, ActivityId, StudentId, Mark, Grade) values (?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(ActivityScore score: scores) {
 		    	preparedStatement.setLong(1, score.getId());
@@ -56,20 +55,14 @@ public class ActivityScoreService {
 		    	preparedStatement.setString(5, score.getGrade());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 
 	public void update(List<ActivityScore> scores) {
 		String query = "update activity_score set Mark=?, Grade=? where Id=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(ActivityScore score: scores) {
 		    	preparedStatement.setFloat(1, score.getMark());
@@ -77,13 +70,8 @@ public class ActivityScoreService {
 		    	preparedStatement.setLong(3, score.getId());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+		    e.printStackTrace();
 		}
 	}
 	

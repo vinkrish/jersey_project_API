@@ -54,7 +54,6 @@ public class AspectGradeService {
 		String query = "insert into cce_aspect_grade(Id, SectionId, StudentId, AspectId, Type, Term, Grade, Value, Description) "
 				+ "values (?,?,?,?,?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(CceAspectGrade grade: grades) {
 		    	preparedStatement.setLong(1, grade.getId());
@@ -68,20 +67,14 @@ public class AspectGradeService {
 		    	preparedStatement.setString(9, grade.getDescription());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 
 	public void update(List<CceAspectGrade> grades) {
 		String query = "update cce_aspect_grade set Type=?, Grade=?, Value=?, Description=? where Id=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(CceAspectGrade grade: grades) {
 		    	preparedStatement.setInt(1, grade.getType());
@@ -91,13 +84,8 @@ public class AspectGradeService {
 		    	preparedStatement.setLong(5, grade.getId());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 	

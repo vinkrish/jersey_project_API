@@ -46,7 +46,6 @@ public class SliptestScoreService {
 	public void add(List<SliptestScore> scores) {
 		String query = "insert into sliptest_score(Id, SliptestId, StudentId, Mark, Grade) values (?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(SliptestScore score: scores) {
 		    	preparedStatement.setLong(1, score.getId());
@@ -56,20 +55,14 @@ public class SliptestScoreService {
 		    	preparedStatement.setString(5, score.getGrade());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 
 	public void update(List<SliptestScore> scores) {
 		String query = "update sliptest_score set Mark=?, Grade=? where Id=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(SliptestScore score: scores) {
 		    	preparedStatement.setFloat(1, score.getMark());
@@ -77,13 +70,8 @@ public class SliptestScoreService {
 		    	preparedStatement.setLong(3, score.getId());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 	

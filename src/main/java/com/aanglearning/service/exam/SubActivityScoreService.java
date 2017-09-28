@@ -46,7 +46,6 @@ public class SubActivityScoreService {
 	public void add(List<SubActivityScore> scores) {
 		String query = "insert into subactivity_score(Id, SubActivityId, StudentId, Mark, Grade) values (?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(SubActivityScore score: scores) {
 		    	preparedStatement.setLong(1, score.getId());
@@ -56,20 +55,14 @@ public class SubActivityScoreService {
 		    	preparedStatement.setString(5, score.getGrade());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 
 	public void update(List<SubActivityScore> scores) {
 		String query = "update subactivity_score set Mark=?, Grade=? where Id=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(SubActivityScore score: scores) {
 		    	preparedStatement.setFloat(1, score.getMark());
@@ -77,13 +70,8 @@ public class SubActivityScoreService {
 		    	preparedStatement.setLong(3, score.getId());
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 	

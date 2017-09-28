@@ -60,7 +60,6 @@ public class CceStudentProfileService {
 				+ " Height, Weight, HealthStatus, BloodGroup, VisionLeft, VisionRight, Ailment, OralHygiene)"
 				+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement stmt = connection.prepareStatement(query);
 		    for(CceStudentProfile profile: cceProfiles) {
 		    	stmt.setLong(1, profile.getId());
@@ -81,13 +80,8 @@ public class CceStudentProfileService {
 		    	stmt.setString(16, profile.getOralHygiene());
 		    	stmt.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 
@@ -96,7 +90,6 @@ public class CceStudentProfileService {
 				+ " Height=?, Weight=?, HealthStatus=?, BloodGroup=?, VisionLeft=?, VisionRight=?, Ailment=?, OralHygiene=?"
 				+ " where Id=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement stmt = connection.prepareStatement(query);
 		    for(CceStudentProfile profile: cceProfiles) {
 		    	stmt.setString(1, profile.getFromDate());
@@ -114,31 +107,20 @@ public class CceStudentProfileService {
 		    	stmt.setLong(13, profile.getId());
 		    	stmt.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 	
 	public void delete(long sectionId, int term) {
 		String query = "delete from cce_student_profile where SectionId=? and term=?";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    	preparedStatement.setLong(1, sectionId);
 		    	preparedStatement.setLong(2, term);
 		    	preparedStatement.executeUpdate();
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
 }
