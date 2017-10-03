@@ -119,8 +119,8 @@ public class UserGroupService {
 	public void deleteUsers(List<UserGroup> userGroups) {
 		String query = "delete from user_group where Id=? and GroupId=?";
 		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			for (UserGroup userGroup : userGroups) {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setLong(1, userGroup.getId());
 				preparedStatement.setLong(2, userGroup.getGroupId());
 				preparedStatement.executeUpdate();
