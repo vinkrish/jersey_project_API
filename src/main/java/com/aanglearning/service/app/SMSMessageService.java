@@ -156,7 +156,7 @@ public class SMSMessageService {
 	}
 
 	public String createSNSTopic(AmazonSNSClient snsClient) {
-		CreateTopicRequest createTopic = new CreateTopicRequest("shikshithaTopic");
+		CreateTopicRequest createTopic = new CreateTopicRequest(System.currentTimeMillis() + "");
 		CreateTopicResult result = snsClient.createTopic(createTopic);
 		return result.getTopicArn();
 	}
@@ -169,41 +169,25 @@ public class SMSMessageService {
 			public void run() {
 				String sql = "select count(*) as count from student where SchoolId = " + sms.getSchoolId();
 				updateNoOfSms(sql, sms.getSchoolId(), 0);
-				
-				List<Long> sectionList = new ArrayList<>();
+
+				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Id from section where ClassId in (select Id from class where SchoolId = ?)";
+					String query = "select Name, Username from student where SchoolId = ? and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
-						sectionList.add(rs.getLong("Id"));
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 
-				for (Long section : sectionList) {
-					String topicArn = createSNSTopic(snsClient);
-					try {
-						String query = "select Name, Username from student where SectionId = ? and Username != ''";
-						PreparedStatement preparedStatement = connection.prepareStatement(query);
-						preparedStatement.setLong(1, section);
-						ResultSet rs = preparedStatement.executeQuery();
-						while (rs.next()) {
-							snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+				smsAttributes.put("AWS.SNS.SMS.SMSType",
+						new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
 
-					smsAttributes.put("AWS.SNS.SMS.SMSType",
-							new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
-
-					snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
-							.withMessageAttributes(smsAttributes));
-
-				}
+				snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
+						.withMessageAttributes(smsAttributes));
 			}
 		}).start();
 
@@ -218,41 +202,26 @@ public class SMSMessageService {
 			public void run() {
 				String sql = "select count(*) as count from student where ClassId = " + sms.getClassId();
 				updateNoOfSms(sql, sms.getSchoolId(), 0);
-				
-				List<Long> sectionList = new ArrayList<>();
+
+				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Id from section where ClassId = ?";
+					String query = "select Name, Username from student where ClassId = ? and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, classId);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
-						sectionList.add(rs.getLong("Id"));
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 
-				for (Long section : sectionList) {
-					String topicArn = createSNSTopic(snsClient);
-					try {
-						String query = "select Name, Username from student where SectionId = ? and Username != ''";
-						PreparedStatement preparedStatement = connection.prepareStatement(query);
-						preparedStatement.setLong(1, section);
-						ResultSet rs = preparedStatement.executeQuery();
-						while (rs.next()) {
-							snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+				smsAttributes.put("AWS.SNS.SMS.SMSType",
+						new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
 
-					smsAttributes.put("AWS.SNS.SMS.SMSType",
-							new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
-
-					snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
-							.withMessageAttributes(smsAttributes));
-
-				}
+				snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
+						.withMessageAttributes(smsAttributes));
+				
 			}
 		}).start();
 
@@ -265,47 +234,32 @@ public class SMSMessageService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				List<Long> sectionList = new ArrayList<>();
 				StringBuilder sb = new StringBuilder();
 				for(Clas clas: classes) {
 					sb.append(clas.getId()).append(",");
-					try {
-						String query = "select Id from section where ClassId = ?";
-						PreparedStatement preparedStatement = connection.prepareStatement(query);
-						preparedStatement.setLong(1, clas.getId());
-						ResultSet rs = preparedStatement.executeQuery();
-						while (rs.next()) {
-							sectionList.add(rs.getLong("Id"));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
 				}
 				
 				String sql = "select count(*) as count from student where ClassId in (" + sb.substring(0, sb.length()-1) + ")";
 				updateNoOfSms(sql, sms.getSchoolId(), 0);
 
-				for (Long section : sectionList) {
-					String topicArn = createSNSTopic(snsClient);
-					try {
-						String query = "select Name, Username from student where SectionId = ? and Username != ''";
-						PreparedStatement preparedStatement = connection.prepareStatement(query);
-						preparedStatement.setLong(1, section);
-						ResultSet rs = preparedStatement.executeQuery();
-						while (rs.next()) {
-							snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
+				String topicArn = createSNSTopic(snsClient);
+				try {
+					String query = "select Name, Username from student where ClassId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					ResultSet rs = preparedStatement.executeQuery();
+					while (rs.next()) {
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
 					}
-
-					smsAttributes.put("AWS.SNS.SMS.SMSType",
-							new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
-
-					snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
-							.withMessageAttributes(smsAttributes));
-
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
+
+				smsAttributes.put("AWS.SNS.SMS.SMSType",
+						new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+
+				snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
+						.withMessageAttributes(smsAttributes));
+
 			}
 		}).start();
 
@@ -357,24 +311,24 @@ public class SMSMessageService {
 				
 				for(Section section: sections) {
 					sb.append(section.getId()).append(",");
-					try {
-						String query = "select Name, Username from student where SectionId = ? and Username != ''";
-						PreparedStatement preparedStatement = connection.prepareStatement(query);
-						preparedStatement.setLong(1, section.getId());
-						ResultSet rs = preparedStatement.executeQuery();
-						while (rs.next()) {
-							snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					
-					smsAttributes.put("AWS.SNS.SMS.SMSType",
-							new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
-
-					snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
-							.withMessageAttributes(smsAttributes));
 				}
+				
+				try {
+					String query = "select Name, Username from student where SectionId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					ResultSet rs = preparedStatement.executeQuery();
+					while (rs.next()) {
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+					
+				smsAttributes.put("AWS.SNS.SMS.SMSType",
+						new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+
+				snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
+						.withMessageAttributes(smsAttributes));
 				
 				String sql = "select count(*) as count from student where SectionId in (" + sb.substring(0, sb.length()-1) + ")";
 				updateNoOfSms(sql, sms.getSchoolId(), 0);
@@ -393,42 +347,27 @@ public class SMSMessageService {
 				String sql = "select count(*) as count from student where SchoolId = " + sms.getSchoolId() + 
 						" and Gender = '" + gender + "'";
 				updateNoOfSms(sql, sms.getSchoolId(), 0);
-				
-				List<Long> sectionList = new ArrayList<>();
+
+				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Id from section where ClassId in (select Id from class where SchoolId = ?)";
+					String query = "select Name, Username from student where SchoolId = ? and Username != '' and Gender = ?";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
+					preparedStatement.setString(2, gender);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
-						sectionList.add(rs.getLong("Id"));
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 
-				for (Long section : sectionList) {
-					String topicArn = createSNSTopic(snsClient);
-					try {
-						String query = "select Name, Username from student where SectionId = ? and Username != '' and Gender = ?";
-						PreparedStatement preparedStatement = connection.prepareStatement(query);
-						preparedStatement.setLong(1, section);
-						preparedStatement.setString(2, gender);
-						ResultSet rs = preparedStatement.executeQuery();
-						while (rs.next()) {
-							snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+				smsAttributes.put("AWS.SNS.SMS.SMSType",
+						new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
 
-					smsAttributes.put("AWS.SNS.SMS.SMSType",
-							new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+				snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
+						.withMessageAttributes(smsAttributes));
 
-					snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
-							.withMessageAttributes(smsAttributes));
-
-				}
 			}
 		}).start();
 

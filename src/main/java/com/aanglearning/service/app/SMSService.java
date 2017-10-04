@@ -171,7 +171,7 @@ public class SMSService {
 	}
 	
 	public String createSNSTopic(AmazonSNSClient snsClient) {
-	    CreateTopicRequest createTopic = new CreateTopicRequest("shikshithaTopic");
+	    CreateTopicRequest createTopic = new CreateTopicRequest(System.currentTimeMillis() + "");
 	    CreateTopicResult result = snsClient.createTopic(createTopic);
 	    //System.out.println("Create topic request: " +  snsClient.getCachedResponseMetadata(createTopic));
 	    //System.out.println("Create topic result: " + result);
