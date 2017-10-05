@@ -22,9 +22,9 @@ import org.json.JSONObject;
 import com.aanglearning.model.entity.Section;
 import com.aanglearning.model.entity.Student;
 import com.aanglearning.model.entity.Teacher;
-import com.aanglearning.resource.entity.TeacherResource;
 import com.aanglearning.service.DatabaseUtil;
 import com.aanglearning.service.FCMPost;
+import com.aanglearning.service.entity.TeacherService;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.CreateTopicRequest;
 import com.amazonaws.services.sns.model.CreateTopicResult;
@@ -41,7 +41,7 @@ public class SMSService {
 	
 	Connection connection;
 	Statement stmt;
-	TeacherResource teacherResource = new TeacherResource();
+	TeacherService teacherService = new TeacherService();
 	
 	public SMSService() {
 		try {
@@ -53,6 +53,11 @@ public class SMSService {
 	
 	public void sendSchoolPswd(long schoolId) {
 		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId);
+		sendStudentsPswd(students);
+	}
+	
+	public void sendLoggedOutStudentsPswd(long schoolId) {
+		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId + " and IsLogged = 0");
 		sendStudentsPswd(students);
 	}
 	
@@ -106,12 +111,19 @@ public class SMSService {
 	}
 	
 	public void sendTeacherPswd(long teacherId) {
-		List<Teacher> teachers = teacherResource.getTeacherById(teacherId);
+		List<Teacher> teachers = teacherService.getTeacherById(teacherId);
 		sendTeacherPassword(teachers);
 	}
 	
 	public void sendTeachersPswd(long schoolId) {
-		List<Teacher> teachers = teacherResource.getTeacherList(schoolId);
+		List<Teacher> teachers = teacherService.getSchoolTeachers(schoolId);
+		sendTeacherPassword(teachers);
+	}
+	
+	public void sendLoggedOutTeachersPswd(long schoolId) {
+		List<Teacher> teachers = teacherService.getTeacherList("select * from teacher where Username not in "
+				+ "(select User from authorization where User in (select Username from teacher where SchoolId = " + schoolId 
+				+ ")) and SchoolId = " + schoolId);
 		sendTeacherPassword(teachers);
 	}
 	
@@ -128,7 +140,7 @@ public class SMSService {
 	}
 	
 	public void sendTeacherUserPassword(String username) {
-		Teacher teacher = teacherResource.getTeacher(username);
+		Teacher teacher = teacherService.getTeacher(username);
 		sendTeacherPassword(Arrays.asList(teacher));
 	}
 	

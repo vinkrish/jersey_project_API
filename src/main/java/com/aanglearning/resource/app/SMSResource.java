@@ -26,6 +26,13 @@ public class SMSResource {
 	
 	@Secured
 	@POST
+	@Path("school/{schoolId}/unlogged")
+	public void sendLoggedOutStudentsPswd(@PathParam("schoolId") long schoolId) {
+		service.sendLoggedOutStudentsPswd(schoolId);
+	}
+	
+	@Secured
+	@POST
 	@Path("class/{classId}")
 	public void sendClassPswd(@PathParam("classId") long classId) {
 		service.sendClassPswd(classId);
@@ -56,6 +63,13 @@ public class SMSResource {
 	@Path("teachers/school/{schoolId}")
 	public void sendTeachersPswd(@PathParam("schoolId") long schoolId) {
 		service.sendTeachersPswd(schoolId);
+	}
+	
+	@Secured
+	@POST
+	@Path("teachers/school/{schoolId}/unlogged")
+	public void sendLoggedOutTeachersPswd(@PathParam("schoolId") long schoolId) {
+		service.sendLoggedOutTeachersPswd(schoolId);
 	}
 	
 	@Secured

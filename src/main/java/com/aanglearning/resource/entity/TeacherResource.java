@@ -64,14 +64,6 @@ public class TeacherResource {
 		teacherService.delete(teacherId);
 	}
 	
-	public Teacher getTeacher(String username) {
-		return teacherService.getTeacher(username);
-	}
-	
-	public List<Teacher> getTeacherById(long id) {
-		return teacherService.getTeacherById(id);
-	}
-	
 	public List<Teacher> getSectionGroupUsers(long groupId, long sectionId) {
 		return teacherService.getSectionGroupUsers(groupId, sectionId);
 	}
