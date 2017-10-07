@@ -10,15 +10,16 @@ import java.util.List;
 
 import com.aanglearning.model.app.Groups;
 import com.aanglearning.model.app.UserGroup;
-import com.aanglearning.model.entity.Student;
 import com.aanglearning.service.DatabaseUtil;
 
 public class GroupsService {
 	Statement stmt;
+	Connection connection;
 
 	public GroupsService() {
 		try {
-			stmt = DatabaseUtil.getConnection().createStatement();
+			connection = DatabaseUtil.getConnection();
+			stmt = connection.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +63,7 @@ public class GroupsService {
 					+ userGroup.getRole() + "',"
 					+ userGroup.getGroupId() + ","
 					+ userGroup.isActive() + ")";
-			stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
+			stmt.executeUpdate(query2);
 			
 			new Thread(new Runnable() {
 				  @Override
@@ -71,6 +72,8 @@ public class GroupsService {
 						  insertUserGroup(groupId, "select Id from student where ClassId = " + group.getClassId());
 					  } else if(group.isSection()) {
 						  insertUserGroup(groupId, "select Id from student where SectionId = " + group.getSectionId());
+					  } else if(group.isSchool()) {
+						  insertTeacherUserGroup(groupId, "select Id from teacher where SchoolId = " + group.getSchoolId() + " and Id != " + group.getCreatedBy());
 					  }
 				  }
 				}).start();
@@ -82,44 +85,54 @@ public class GroupsService {
 	}
 	
 	private void insertUserGroup(long groupId, String query) {
-		List<Student> studentList = new ArrayList<Student>();
+		List<Long> studentList = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()){
-				Student student = new Student();
-				student.setId(rs.getLong("Id"));
-				studentList.add(student);
+				studentList.add(rs.getLong("Id"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		Connection connection = null;
-		try {
-			connection = DatabaseUtil.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		String sql = "insert into user_group(Id, UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
+		String sql = "insert into user_group(UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
 		try{
-		    connection.setAutoCommit(false);
 		    PreparedStatement preparedStatement = connection.prepareStatement(sql);
-		    for(Student student: studentList) {
-		    	preparedStatement.setLong(1, 0);
-		    	preparedStatement.setLong(2, student.getId());
-		    	preparedStatement.setString(3, "student");
-		    	preparedStatement.setLong(4, groupId);
-		    	preparedStatement.setBoolean(5, true);
+		    for(Long student: studentList) {
+		    	preparedStatement.setLong(1, student);
+		    	preparedStatement.setString(2, "student");
+		    	preparedStatement.setLong(3, groupId);
+		    	preparedStatement.setBoolean(4, true);
 		    	preparedStatement.executeUpdate();
 		    }
-		    connection.commit();
 		} catch(Exception e) {
-		    try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			e.printStackTrace();
+		}
+	}
+	
+	private void insertTeacherUserGroup(long groupId, String query) {
+		List<Long> teacherList = new ArrayList<>();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				teacherList.add(rs.getLong("Id"));
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		String sql = "insert into user_group(UserId, Role, GroupId, IsActive) values (?,?,?,?)";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		    for(Long teacher: teacherList) {
+		    	preparedStatement.setLong(1, teacher);
+		    	preparedStatement.setString(2, "teacher");
+		    	preparedStatement.setLong(3, groupId);
+		    	preparedStatement.setBoolean(4, true);
+		    	preparedStatement.executeUpdate();
+		    }
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
