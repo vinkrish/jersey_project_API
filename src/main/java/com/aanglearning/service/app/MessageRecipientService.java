@@ -97,6 +97,59 @@ public class MessageRecipientService {
 		return mrList;
 	}
 	
+	public List<MessageRecipient> getSchoolRecipients(long groupId, long groupMessageId) {
+		String query1 = "select * from message_recipient where GroupId = ? and MessageId = ? order by Id desc limit 50";
+		List<MessageRecipient> mrList = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query1);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.setLong(2, groupMessageId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				MessageRecipient mr = new MessageRecipient();
+				mr.setId(rs.getLong("Id"));
+				mr.setRecipientId(rs.getLong("RecipientId"));
+				mr.setRecipientName(rs.getString("RecipientName"));
+				mr.setRole(rs.getString("Role"));
+				mr.setGroupId(rs.getLong("GroupId"));
+				mr.setMessageId(rs.getLong("MessageId"));
+				mr.setIsRead(rs.getBoolean("IsRead"));
+				mr.setReadAt(rs.getLong("ReadAt"));
+				mrList.add(mr);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mrList;
+	}
+	
+	public List<MessageRecipient> getSchoolRecipientsFromId(long groupId, long groupMessageId, long id) {
+		String query1 = "select * from message_recipient where GroupId = ? and MessageId = ? and Id < ? order by Id desc limit 50";
+		List<MessageRecipient> mrList = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query1);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.setLong(2, groupMessageId);
+			preparedStatement.setLong(3, id);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				MessageRecipient mr = new MessageRecipient();
+				mr.setId(rs.getLong("Id"));
+				mr.setRecipientId(rs.getLong("RecipientId"));
+				mr.setRecipientName(rs.getString("RecipientName"));
+				mr.setRole(rs.getString("Role"));
+				mr.setGroupId(rs.getLong("GroupId"));
+				mr.setMessageId(rs.getLong("MessageId"));
+				mr.setIsRead(rs.getBoolean("IsRead"));
+				mr.setReadAt(rs.getLong("ReadAt"));
+				mrList.add(mr);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mrList;
+	}
+	
 	public List<MessageRecipient> getAllMessageRecipients(long recipientId) {
 		String query = "select * from message_recipient where RecipientId = ?";
 		List<MessageRecipient> mrList = new ArrayList<>();

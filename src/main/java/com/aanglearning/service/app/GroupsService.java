@@ -95,7 +95,7 @@ public class GroupsService {
 			e.printStackTrace();
 		}
 		
-		String sql = "insert into user_group(UserId, Role, GroupId, IsActive) values (?,?,?,?,?)";
+		String sql = "insert into user_group(UserId, Role, GroupId, IsActive) values (?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		    for(Long student: studentList) {

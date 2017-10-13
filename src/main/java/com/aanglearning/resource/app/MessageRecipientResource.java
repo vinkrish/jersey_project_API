@@ -36,6 +36,23 @@ public class MessageRecipientResource {
 	
 	@Secured
 	@GET
+	@Path("school/{groupId}/{groupMessageId}")
+	public List<MessageRecipient> getSchoolRecipients(@PathParam("groupId") long groupId,
+			@PathParam("groupMessageId") long groupMessageId) {
+		return service.getSchoolRecipients(groupId, groupMessageId);
+	}
+	
+	@Secured
+	@GET
+	@Path("school/{groupId}/{groupMessageId}/{id}")
+	public List<MessageRecipient> getSchoolRecipientsFromId(@PathParam("groupId") long groupId,
+			@PathParam("groupMessageId") long groupMessageId,
+			@PathParam("id") long id) {
+		return service.getSchoolRecipientsFromId(groupId, groupMessageId, id);
+	}
+	
+	@Secured
+	@GET
 	@Path("{recipientId}")
 	public List<MessageRecipient> getAllMessageRecipients(@PathParam("recipientId") long recipientId) {
 		return service.getAllMessageRecipients(recipientId);

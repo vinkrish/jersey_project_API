@@ -76,7 +76,7 @@ public class EventService {
 	public List<Event> getTeacherEvents(long schoolId, long teacherId) {
 		String query1 = "select * from event where SchoolId = " + schoolId + " and IsSchool = 1";
 		String query2 = "select * from event where Id in (select EventId from class_event where ClassId in "
-				+ "(select * from class where Id in (select ClassId from section where Id in "
+				+ "(select Id from class where Id in (select ClassId from section where Id in "
 				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId))))";
 		Set<Event> set = new HashSet<Event>(getEvents(query1));
 		set.addAll(getEvents(query2));

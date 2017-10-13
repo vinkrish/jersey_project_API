@@ -136,6 +136,13 @@ public class MessageService {
 				    fcm.put("data", msg);
 				    fcm.put("time_to_live", 43200);
 				    fcmPost.post(fcm.toString(), "AAAANtOFq98:APA91bGLAt-wCJDBhzomz_GmlVW8TXyshKdR6NOzuKTOk0NgM29Ww7-tZzjxCjT0siEua6AQY7stUxRTnkf_8cD5QgypjWfOTn1UYnzOQOP6uAB7bR_SA0SkSlOmPi9gPp6iHJL4xAzw");
+				    
+				    JSONObject fcm4 = new JSONObject();
+				    fcm4.put("registration_ids", getTeacherFCMToken(message.getGroupId(), message.getSenderId()));
+				    fcm4.put("data", msg);
+				    fcm4.put("time_to_live", 43200);
+				    fcmPost.post(fcm4.toString(), "AAAAsv0q3Fk:APA91bEhQTIbIB8fmY4YG2P5zq5KxsE3c_oCsuYnYaM6C_vGkan5lTmOM9-S2lavGy8K10p9SLJ2V3j4WMDXD7FQX9TVT1fRSmY8f0IV01TKYWVHONJk2tnd1TBLqiZ2fgnv7HGuwRvR");
+				    
 			    	break;
 			    case "admin":
 			    	JSONObject fcm2 = new JSONObject();
@@ -208,7 +215,8 @@ public class MessageService {
 	
 	private JSONArray getTeacherFCMToken(long groupId, long teacherId) {
 		JSONArray fcmTokenArray = new JSONArray();
-		String query = "select FcmToken from authorization where User in (select Username from teacher where Id in (select UserId from user_group where GroupId = " + groupId + "))";
+		String query = "select FcmToken from authorization where User in (select Username from teacher where Id in "
+				+ "(select UserId from user_group where GroupId = " + groupId + " and Role = 'teacher' and UserId != " + teacherId + "))";
 		try {
 			ResultSet rs = connection.createStatement().executeQuery(query);
 			if (rs.next()) {
