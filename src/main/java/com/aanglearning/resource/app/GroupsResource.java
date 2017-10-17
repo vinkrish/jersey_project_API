@@ -31,9 +31,25 @@ public class GroupsResource {
 	
 	@Secured
 	@GET
+	@Path("student/{studentId}/group/{id}")
+	public List<Groups> getStudentGroupsAboveId(@PathParam("studentId") long studentId,
+			@PathParam("id") long id) {
+		return service.getStudentGroupsAboveId(studentId, id);
+	}
+	
+	@Secured
+	@GET
 	@Path("student/{id}")
 	public List<Groups> getStudentGroups(@PathParam("id") long id) {
 		return service.getStudentGroups(id);
+	}
+	
+	@Secured
+	@GET
+	@Path("teacher/{teacherId}/group/{id}")
+	public List<Groups> getTeacherGroupsAboveId(@PathParam("teacherId") long teacherId,
+			@PathParam("id") long id) {
+		return service.getTeacherGroupsAboveId(teacherId, id);
 	}
 	
 	@Secured
@@ -45,9 +61,25 @@ public class GroupsResource {
 	
 	@Secured
 	@GET
+	@Path("principal/teacher/{teacherId}/group/{id}")
+	public List<Groups> getPrincipalGroupsAboveId(@PathParam("teacherId") long teacherId,
+			@PathParam("id") long id) {
+		return service.getPrincipalGroupsAboveId(teacherId, id);
+	}
+	
+	@Secured
+	@GET
 	@Path("principal/teacher/{id}")
 	public List<Groups> getPrincipalGroups(@PathParam("id") long id) {
 		return service.getPrincipalGroups(id);
+	}
+	
+	@Secured
+	@GET
+	@Path("principal/{schoolId}/group/{id}")
+	public List<Groups> getAllGroupsAboveId(@PathParam("schoolId") long schoolId,
+			@PathParam("id") long id) {
+		return service.getAllGroupsAboveId(schoolId, id);
 	}
 	
 	@Secured

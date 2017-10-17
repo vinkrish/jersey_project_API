@@ -37,9 +37,9 @@ public class DeletedMessageResource {
 	@Secured
 	@GET
 	@Path("{id}/group/{groupId}")
-	public List<DeletedMessage> getGroupDeletedMessagesFromId(@PathParam("groupId") long groupId,
+	public List<DeletedMessage> getGroupDeletedMessagesAboveId(@PathParam("groupId") long groupId,
 			@PathParam("id") long id) {
-		return service.getGroupDeletedMessagesFromId(groupId, id);
+		return service.getGroupDeletedMessagesAboveId(groupId, id);
 	}
 
 }

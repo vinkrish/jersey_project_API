@@ -49,7 +49,7 @@ public class DeletedMessageService {
 	}
 	
 	public List<DeletedMessage> getGroupDeletedMessages(long groupId) {
-		String query = "select * from deleted_message where GroupId=? order by A.Id desc";
+		String query = "select * from deleted_message where GroupId=? order by Id desc";
 		List<DeletedMessage> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -71,8 +71,8 @@ public class DeletedMessageService {
 		return messages;
 	}
 	
-	public List<DeletedMessage> getGroupDeletedMessagesFromId(long groupId, long id) {
-		String query = "select * from deleted_message where GroupId=? and Id<? order by A.Id desc";
+	public List<DeletedMessage> getGroupDeletedMessagesAboveId(long groupId, long id) {
+		String query = "select * from deleted_message where GroupId=? and Id>?";
 		List<DeletedMessage> messages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);

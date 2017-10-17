@@ -174,22 +174,49 @@ public class GroupsService {
 		return groups;
 	}
 	
+	public List<Groups> getStudentGroupsAboveId(long userId, long id) {
+		String query1 = "select * from groups where "
+				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='student') and Id > " + id;
+		
+		String query2 = "select * from groups where IsSchool = 1 and SchoolId = (select SchoolId from student where Id = " + userId + ") and Id > " + id;
+		
+		List<Groups> groups = new ArrayList<>();
+		groups.addAll(getGroups(query1));
+		groups.addAll(getGroups(query2));
+		return groups;
+	}
+	
 	public List<Groups> getTeacherGroups(long userId) {
 		String query = "select * from groups where "
 				+ "Id in (select GroupId from user_group where UserId = " + userId + " and (Role='admin' or Role='teacher'))";
 		return getGroups(query);
 	}
 	
-	public List<Groups> getPrincipalGroups(long userId) {
+	public List<Groups> getTeacherGroupsAboveId(long userId, long id) {
 		String query = "select * from groups where "
-				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='principal')";
+				+ "Id in (select GroupId from user_group where UserId = " + userId + " and (Role='admin' or Role='teacher')) and Id > " + id;
+		return getGroups(query);
+	}
+	
+	public List<Groups> getPrincipalGroups(long userId) {
 		String sql = "select * from groups where CreatorRole = 'principal' and CreatedBy = " + userId;
+		return getGroups(sql);
+	}
+	
+	public List<Groups> getPrincipalGroupsAboveId(long userId, long id) {
+		String sql = "select * from groups where CreatorRole = 'principal' and CreatedBy = " + userId + " and Id > " + id;
 		return getGroups(sql);
 	}
 	
 	public List<Groups> getAllGroups(long schoolId) {
 		String query = "select * from groups where "
 				+ "ClassId in (select Id from class where SchoolId = " + schoolId + ") and CreatorRole != 'principal'";
+		return getGroups(query);
+	}
+	
+	public List<Groups> getAllGroupsAboveId(long schoolId, long id) {
+		String query = "select * from groups where "
+				+ "ClassId in (select Id from class where SchoolId = " + schoolId + ") and CreatorRole != 'principal' and Id > " + id;
 		return getGroups(query);
 	}
 	
@@ -238,7 +265,7 @@ public class GroupsService {
 	
 	public void delete(long id){
 		try {
-			String query = "delete from group where Id=" + id;
+			String query = "delete from groups where Id=" + id;
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
