@@ -31,10 +31,32 @@ public class GroupsResource {
 	
 	@Secured
 	@GET
-	@Path("student/{studentId}/group/{id}")
-	public List<Groups> getStudentGroupsAboveId(@PathParam("studentId") long studentId,
+	@Path("stud/{studentId}/group/{id}")
+	public List<Groups> getStudGroupsAboveId(@PathParam("studentId") long studentId,
 			@PathParam("id") long id) {
-		return service.getStudentGroupsAboveId(studentId, id);
+		return service.getStudGroupsAboveId(studentId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("stud/{studentId}")
+	public List<Groups> getStudGroups(@PathParam("studentId") long studentId) {
+		return service.getStudGroups(studentId);
+	}
+	
+	@Secured
+	@GET
+	@Path("school/{schoolId}/group/{id}")
+	public List<Groups> getSchoolGroupsAboveId(@PathParam("schoolId") long schoolId,
+			@PathParam("id") long id) {
+		return service.getSchoolGroupsAboveId(schoolId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("school/{schoolId}")
+	public List<Groups> getSchoolGroups(@PathParam("schoolId") long schoolId) {
+		return service.getSchoolGroups(schoolId);
 	}
 	
 	@Secured

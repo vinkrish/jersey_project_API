@@ -174,16 +174,26 @@ public class GroupsService {
 		return groups;
 	}
 	
-	public List<Groups> getStudentGroupsAboveId(long userId, long id) {
-		String query1 = "select * from groups where "
+	public List<Groups> getStudGroups(long userId) {
+		String query = "select * from groups where "
+				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='student')";
+		return getGroups(query);
+	}
+	
+	public List<Groups> getStudGroupsAboveId(long userId, long id) {
+		String query = "select * from groups where "
 				+ "Id in (select GroupId from user_group where UserId = " + userId + " and Role='student') and Id > " + id;
-		
-		String query2 = "select * from groups where IsSchool = 1 and SchoolId = (select SchoolId from student where Id = " + userId + ") and Id > " + id;
-		
-		List<Groups> groups = new ArrayList<>();
-		groups.addAll(getGroups(query1));
-		groups.addAll(getGroups(query2));
-		return groups;
+		return getGroups(query);
+	}
+	
+	public List<Groups> getSchoolGroups(long schoolId) {
+		String query = "select * from groups where IsSchool = 1 and SchoolId = " + schoolId;
+		return getGroups(query);
+	}
+	
+	public List<Groups> getSchoolGroupsAboveId(long schoolId, long id) {
+		String query = "select * from groups where IsSchool = 1 and SchoolId = " + schoolId + " and Id > " + id;
+		return getGroups(query);
 	}
 	
 	public List<Groups> getTeacherGroups(long userId) {
