@@ -55,6 +55,33 @@ public class TeacherLoginService {
 		}      
 	}
 	
+	public Response authenticateTeacherCredentials(Credentials credentials, String appName) {
+		TeacherCredentials teacherCredentials = null;
+		String token = "";
+		try {
+			if(authenticate(credentials.getUsername(), credentials.getPassword())) {
+				token = getToken(credentials.getUsername());
+				if(token.equals("")) {
+					token = issueToken(credentials.getUsername());
+					saveToken(credentials.getUsername(), token);
+				}
+				teacherCredentials = new TeacherCredentials();
+				teacherCredentials.setAuthToken(token);
+				Teacher teacher = teacherService.getTeacher(credentials.getUsername());
+				authorize(teacher.getId(), appName);
+				teacherCredentials.setTeacher(teacher);
+				teacherCredentials.setSchoolId(teacher.getSchoolId());
+				teacherCredentials.setSchoolName(schoolService.getSchoolById(teacher.getSchoolId()).getSchoolName());
+				teacherCredentials.setService(servicesService.getService(teacher.getSchoolId()));
+				return Response.ok(teacherCredentials).build();
+			} else {
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			}
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}      
+	}
+	
 	public Response authenticatePrincipal(Credentials credentials) {
 		TeacherCredentials teacherCredentials = null;
 		String token = "";
@@ -102,6 +129,19 @@ public class TeacherLoginService {
 		} else {
 			throw new Exception();
 		}
+	}
+	
+	private boolean authorize(long userId, String appName) throws Exception {
+		String query = "select * from app_user where UserId = " + userId + " and AppName = '" + appName + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		throw new Exception();
 	}
 	
 	private boolean isPrincipal(String username, String password) throws Exception {

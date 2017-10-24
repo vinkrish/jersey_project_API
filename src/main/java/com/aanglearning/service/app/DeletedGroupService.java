@@ -92,9 +92,17 @@ public class DeletedGroupService {
 	}
 	
 	private void delete(long id) {
-		String query = "delete from groups where Id=?";
+		String query1 = "delete from groups where Id=?";
 		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    PreparedStatement preparedStatement = connection.prepareStatement(query1);
+		    preparedStatement.setLong(1, id);
+		    preparedStatement.executeUpdate();
+		} catch(Exception e) {
+		    e.printStackTrace();
+		}
+		String query2 = "delete from user_group where GroupId=?";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query2);
 		    preparedStatement.setLong(1, id);
 		    preparedStatement.executeUpdate();
 		} catch(Exception e) {

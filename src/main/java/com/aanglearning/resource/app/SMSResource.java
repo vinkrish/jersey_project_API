@@ -40,6 +40,13 @@ public class SMSResource {
 	
 	@Secured
 	@POST
+	@Path("class/{classId}/unlogged")
+	public void sendLoggedOutClassPswd(@PathParam("classId") long classId) {
+		service.sendLoggedOutClassPswd(classId);
+	}
+	
+	@Secured
+	@POST
 	@Path("section/{sectionId}")
 	public void sendSectionPswd(@PathParam("sectionId") long sectionId) {
 		service.sendSectionPswd(sectionId);

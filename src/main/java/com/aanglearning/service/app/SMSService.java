@@ -66,6 +66,11 @@ public class SMSService {
 		sendStudentsPswd(students);
 	}
 	
+	public void sendLoggedOutClassPswd(long classId) {
+		List<Student> students = getStudents("select Username, Password from student where ClassId = " + classId + " and IsLogged = 0");
+		sendStudentsPswd(students);
+	}
+	
 	public void sendSectionPswd(long sectionId) {
 		List<Student> students = getStudents("select Username, Password from student where SectionId = " + sectionId);
 		sendStudentsPswd(students);
