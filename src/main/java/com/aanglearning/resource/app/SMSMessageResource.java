@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
-import com.aanglearning.model.app.Message;
 import com.aanglearning.model.app.Sms;
 import com.aanglearning.model.app.SmsClass;
 import com.aanglearning.model.app.SmsSection;
@@ -31,6 +30,13 @@ public class SMSMessageResource {
 	@Path("school")
 	public Sms sendSchoolSMS(Sms sms) {
 		return service.sendSchoolSMS(sms.getSchoolId(), sms);
+	}
+	
+	@Secured
+	@POST
+	@Path("allstudents")
+	public Sms sendAllStudentsSMS(Sms sms) {
+		return service.sendAllStudentsSMS(sms.getSchoolId(), sms);
 	}
 	
 	@Secured

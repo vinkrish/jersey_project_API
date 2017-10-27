@@ -172,7 +172,51 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Name, Username from student where SchoolId = ? and Username != ''";
+					String query = "select Username from student where SchoolId = ? and Username != ''";
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					preparedStatement.setLong(1, schoolId);
+					ResultSet rs = preparedStatement.executeQuery();
+					while (rs.next()) {
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					String query = "select Username from teacher where SchoolId = ? and Username != ''";
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					preparedStatement.setLong(1, schoolId);
+					ResultSet rs = preparedStatement.executeQuery();
+					while (rs.next()) {
+						snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				smsAttributes.put("AWS.SNS.SMS.SMSType",
+						new MessageAttributeValue().withStringValue("Transactional").withDataType("String"));
+
+				snsClient.publish(new PublishRequest().withTopicArn(topicArn).withMessage(sms.getMessage())
+						.withMessageAttributes(smsAttributes));
+			}
+		}).start();
+
+		return savedSms;
+	}
+	
+	public Sms sendAllStudentsSMS(final long schoolId, final Sms sms) {
+		Sms savedSms = add(sms);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				String sql = "select count(*) as count from student where SchoolId = " + sms.getSchoolId();
+				updateNoOfSms(sql, sms.getSchoolId(), 0);
+
+				String topicArn = createSNSTopic(snsClient);
+				try {
+					String query = "select Username from student where SchoolId = ? and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -205,7 +249,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Name, Username from student where ClassId = ? and Username != ''";
+					String query = "select Username from student where ClassId = ? and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, classId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -244,7 +288,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Name, Username from student where ClassId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
+					String query = "select Username from student where ClassId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
@@ -277,7 +321,7 @@ public class SMSMessageService {
 				
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Name, Username from student where SectionId = ? and Username != ''";
+					String query = "select Username from student where SectionId = ? and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, sectionId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -314,7 +358,7 @@ public class SMSMessageService {
 				}
 				
 				try {
-					String query = "select Name, Username from student where SectionId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
+					String query = "select Username from student where SectionId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
