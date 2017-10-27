@@ -46,12 +46,12 @@ Connection connection;
 		return subAlbumImage;
 	}
 	
-	public List<SubAlbumImage> getAlbumImages(long subAlbumId) {
+	public List<SubAlbumImage> getSubAlbumImages(long subAlbumId) {
 		String query = "select * from subalbum_image where SubAlbumId = " + subAlbumId;
 		return getSubAlbumImages(query);
 	}
 	
-	public List<SubAlbumImage> getAlbumImagesAboveId(long subAlbumId, long id) {
+	public List<SubAlbumImage> getSubAlbumImagesAboveId(long subAlbumId, long id) {
 		String query = "select * from subalbum_image where SubAlbumId = " + subAlbumId + " and Id > " + id;
 		return getSubAlbumImages(query);
 	}

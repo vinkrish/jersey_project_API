@@ -46,12 +46,12 @@ public class DeletedSubAlbumImageService {
 		return subAlbumImage;
 	}
 	
-	public List<DeletedSubAlbumImage> getDeletedGroups(long schoolId) {
-		String query = "select * from deleted_subalbum_image where SchoolId=? order by Id desc";
+	public List<DeletedSubAlbumImage> getDeletedSubAlbumImages(long subAlbumId) {
+		String query = "select * from deleted_subalbum_image where SubAlbumId=? order by Id desc";
 		List<DeletedSubAlbumImage> subAlbumImages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setLong(1, schoolId);
+			preparedStatement.setLong(1, subAlbumId);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				DeletedSubAlbumImage subAlbumImage = new DeletedSubAlbumImage();
@@ -68,12 +68,12 @@ public class DeletedSubAlbumImageService {
 		return subAlbumImages;
 	}
 	
-	public List<DeletedSubAlbumImage> getDeletedGroupsAboveId(long schoolId, long id) {
-		String query = "select * from deleted_subalbum_image where SchoolId=? and Id>?";
+	public List<DeletedSubAlbumImage> getDeletedSubAlbumImagesAboveId(long subAlbumId, long id) {
+		String query = "select * from deleted_subalbum_image where SubAlbumId=? and Id>?";
 		List<DeletedSubAlbumImage> subAlbumImages = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setLong(1, schoolId);
+			preparedStatement.setLong(1, subAlbumId);
 			preparedStatement.setLong(2, id);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
