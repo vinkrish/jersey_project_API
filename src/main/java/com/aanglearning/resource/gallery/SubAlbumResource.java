@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -40,6 +41,12 @@ public class SubAlbumResource {
 	@Path("album/{albumId}")
 	public List<SubAlbum> getSubAlbums(@PathParam("albumId") long albumId) {
 		return service.getSubAlbums(albumId);
+	}
+	
+	@Secured
+	@PUT
+	public void update(SubAlbum subAlbum) {
+		service.updateSubAlbum(subAlbum);
 	}
 
 }

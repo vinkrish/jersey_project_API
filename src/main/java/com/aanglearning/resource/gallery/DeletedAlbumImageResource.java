@@ -14,7 +14,7 @@ import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.gallery.DeletedAlbumImage;
 import com.aanglearning.service.gallery.DeletedAlbumImageService;
 
-@Path("/deletedalbumimage")
+@Path("/deletedai")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class DeletedAlbumImageResource {
@@ -23,8 +23,8 @@ public class DeletedAlbumImageResource {
 	
 	@Secured
 	@POST
-	public DeletedAlbumImage add(DeletedAlbumImage deletedAlbum) {
-		return service.add(deletedAlbum);
+	public void add(List<DeletedAlbumImage> deletedAlbumImages) {
+		service.add(deletedAlbumImages);
 	}
 	
 	@Secured

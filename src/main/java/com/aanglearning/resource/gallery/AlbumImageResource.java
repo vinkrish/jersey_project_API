@@ -14,7 +14,7 @@ import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.gallery.AlbumImage;
 import com.aanglearning.service.gallery.AlbumImageService;
 
-@Path("/albumimage")
+@Path("/ai")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class AlbumImageResource {
@@ -23,23 +23,23 @@ public class AlbumImageResource {
 	
 	@Secured
 	@POST
-	public AlbumImage add(AlbumImage albumImage) {
-		return service.add(albumImage);
+	public void add(List<AlbumImage> albumImages) {
+		service.add(albumImages);
 	}
 	
 	@Secured
 	@GET
-	@Path("{id}/school/{schoolId}")
-	public List<AlbumImage> getAlbumImagesAboveId(@PathParam("schoolId") long schoolId, 
+	@Path("{id}/album/{albumId}")
+	public List<AlbumImage> getAlbumImagesAboveId(@PathParam("albumId") long albumId, 
 			@PathParam("id") long id) {
-		return service.getAlbumImagesAboveId(schoolId, id);
+		return service.getAlbumImagesAboveId(albumId, id);
 	}
 	
 	@Secured
 	@GET
-	@Path("school/{schoolId}")
-	public List<AlbumImage> getAlbumImages(@PathParam("schoolId") long schoolId) {
-		return service.getAlbumImages(schoolId);
+	@Path("album/{albumId}")
+	public List<AlbumImage> getAlbumImages(@PathParam("albumId") long albumId) {
+		return service.getAlbumImages(albumId);
 	}
 
 }

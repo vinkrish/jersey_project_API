@@ -23,16 +23,17 @@ Connection connection;
 	}
 	
 	public SubAlbum add(SubAlbum subAlbum) {
-		String query = "insert into sub_album(Name, AlbumId, CreatedBy, CreatorName, CreatorRole, CreatedAt) "
-				+ "values (?,?,?,?,?,?)";
+		String query = "insert into sub_album(Name, CoverPic, AlbumId, CreatedBy, CreatorName, CreatorRole, CreatedAt) "
+				+ "values (?,?,?,?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	    	preparedStatement.setString(1, subAlbum.getName());
-	    	preparedStatement.setLong(2, subAlbum.getAlbumId());
-	    	preparedStatement.setLong(3, subAlbum.getCreatedBy());
-	    	preparedStatement.setString(4, subAlbum.getCreatorName());
-	    	preparedStatement.setString(5, subAlbum.getCreatorRole());
-	    	preparedStatement.setLong(6, subAlbum.getCreatedAt());
+	    	preparedStatement.setString(2, subAlbum.getCoverPic());
+	    	preparedStatement.setLong(3, subAlbum.getAlbumId());
+	    	preparedStatement.setLong(4, subAlbum.getCreatedBy());
+	    	preparedStatement.setString(5, subAlbum.getCreatorName());
+	    	preparedStatement.setString(6, subAlbum.getCreatorRole());
+	    	preparedStatement.setLong(7, subAlbum.getCreatedAt());
 	    	preparedStatement.executeUpdate();
 	    	ResultSet rs = preparedStatement.getGeneratedKeys();
 		    long pk = 0;
@@ -64,6 +65,7 @@ Connection connection;
 				SubAlbum subAlbum = new SubAlbum();
 				subAlbum.setId(rs.getLong("Id"));
 				subAlbum.setName(rs.getString("Name"));
+				subAlbum.setCoverPic(rs.getString("CoverPic"));
 				subAlbum.setAlbumId(rs.getLong("AlbumId"));
 				subAlbum.setCreatedBy(rs.getLong("CreatedBy"));
 				subAlbum.setCreatorName(rs.getString("CreatorName"));
@@ -75,5 +77,17 @@ Connection connection;
 			e.printStackTrace();
 		}
 		return subAlbums;
+	}
+	
+	public void updateSubAlbum(SubAlbum subAlbum) {
+		String query = "update sub_album set CoverPic = '?' where Id = ?";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+	    	preparedStatement.setString(1, subAlbum.getCoverPic());
+	    	preparedStatement.setLong(2, subAlbum.getId());
+	    	preparedStatement.executeUpdate();
+		} catch(Exception e) {
+		    e.printStackTrace();
+		}
 	}
 }

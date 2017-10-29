@@ -24,16 +24,17 @@ Connection connection;
 	}
 	
 	public Album add(Album album) {
-		String query = "insert into album(Name, CreatedBy, CreatorName, CreatorRole, CreatedAt, SchoolId) "
-				+ "values (?,?,?,?,?,?)";
+		String query = "insert into album(Name, CoverPic, CreatedBy, CreatorName, CreatorRole, CreatedAt, SchoolId) "
+				+ "values (?,?,?,?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	    	preparedStatement.setString(1, album.getName());
-	    	preparedStatement.setLong(2, album.getCreatedBy());
-	    	preparedStatement.setString(3, album.getCreatorName());
-	    	preparedStatement.setString(4, album.getCreatorRole());
-	    	preparedStatement.setLong(5, album.getCreatedAt());
-	    	preparedStatement.setLong(6, album.getSchoolId());
+	    	preparedStatement.setString(2, album.getCoverPic());
+	    	preparedStatement.setLong(3, album.getCreatedBy());
+	    	preparedStatement.setString(4, album.getCreatorName());
+	    	preparedStatement.setString(5, album.getCreatorRole());
+	    	preparedStatement.setLong(6, album.getCreatedAt());
+	    	preparedStatement.setLong(7, album.getSchoolId());
 	    	preparedStatement.executeUpdate();
 	    	ResultSet rs = preparedStatement.getGeneratedKeys();
 		    long pk = 0;
@@ -65,6 +66,7 @@ Connection connection;
 				Album album = new Album();
 				album.setId(rs.getLong("Id"));
 				album.setName(rs.getString("Name"));
+				album.setCoverPic(rs.getString("CoverPic"));
 				album.setCreatedBy(rs.getLong("CreatedBy"));
 				album.setCreatorName(rs.getString("CreatorName"));
 				album.setCreatorRole(rs.getString("CreatorRole"));
@@ -76,6 +78,18 @@ Connection connection;
 			e.printStackTrace();
 		}
 		return albums;
+	}
+	
+	public void updateAlbum(Album album) {
+		String query = "update album set CoverPic = '?' where Id = ?";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+	    	preparedStatement.setString(1, album.getCoverPic());
+	    	preparedStatement.setLong(2, album.getId());
+	    	preparedStatement.executeUpdate();
+		} catch(Exception e) {
+		    e.printStackTrace();
+		}
 	}
 
 }

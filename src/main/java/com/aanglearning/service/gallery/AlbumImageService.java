@@ -22,28 +22,23 @@ Connection connection;
 		}
 	}
 	
-	public AlbumImage add(AlbumImage albumImage) {
+	public void add(List<AlbumImage> albumImages) {
 		String query = "insert into album_image(Name, AlbumId, CreatedBy, CreatorName, CreatorRole, CreatedAt) "
 				+ "values (?,?,?,?,?,?)";
-		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-	    	preparedStatement.setString(1, albumImage.getName());
-	    	preparedStatement.setLong(2, albumImage.getAlbumId());
-	    	preparedStatement.setLong(3, albumImage.getCreatedBy());
-	    	preparedStatement.setString(4, albumImage.getCreatorName());
-	    	preparedStatement.setString(5, albumImage.getCreatorRole());
-	    	preparedStatement.setLong(6, albumImage.getCreatedAt());
-	    	preparedStatement.executeUpdate();
-	    	ResultSet rs = preparedStatement.getGeneratedKeys();
-		    long pk = 0;
-			if (rs.next()){
-			    pk = rs.getLong(1);
+		for(AlbumImage albumImage: albumImages) {
+			try{
+			    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    	preparedStatement.setString(1, albumImage.getName());
+		    	preparedStatement.setLong(2, albumImage.getAlbumId());
+		    	preparedStatement.setLong(3, albumImage.getCreatedBy());
+		    	preparedStatement.setString(4, albumImage.getCreatorName());
+		    	preparedStatement.setString(5, albumImage.getCreatorRole());
+		    	preparedStatement.setLong(6, albumImage.getCreatedAt());
+		    	preparedStatement.executeUpdate();
+			} catch(Exception e) {
+			    e.printStackTrace();
 			}
-			albumImage.setId(pk);
-		} catch(Exception e) {
-		    e.printStackTrace();
 		}
-		return albumImage;
 	}
 	
 	public List<AlbumImage> getAlbumImages(long albumId) {

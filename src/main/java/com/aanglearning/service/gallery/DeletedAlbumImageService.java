@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,28 +21,23 @@ public class DeletedAlbumImageService {
 		}
 	}
 	
-	public DeletedAlbumImage add(DeletedAlbumImage albumImage) {
-		delete(albumImage.getAlbumImageId());
+	public void add(List<DeletedAlbumImage> albumImages) {
+		delete(albumImages);
 		
 		String query = "insert into deleted_album_image(SenderId, AlbumId, AlbumImageId, DeletedAt) "
 				+ "values (?,?,?,?)";
-		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-	    	preparedStatement.setLong(1, albumImage.getSenderId());
-	    	preparedStatement.setLong(2, albumImage.getAlbumId());
-	    	preparedStatement.setLong(3, albumImage.getAlbumImageId());
-	    	preparedStatement.setLong(4, albumImage.getDeletedAt());
-	    	preparedStatement.executeUpdate();
-		    ResultSet rs = preparedStatement.getGeneratedKeys();
-		    long pk = 0;
-			if (rs.next()){
-			    pk = rs.getLong(1);
+		for(DeletedAlbumImage albumImage: albumImages) {
+			try{
+			    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    	preparedStatement.setLong(1, albumImage.getSenderId());
+		    	preparedStatement.setLong(2, albumImage.getAlbumId());
+		    	preparedStatement.setLong(3, albumImage.getAlbumImageId());
+		    	preparedStatement.setLong(4, albumImage.getDeletedAt());
+		    	preparedStatement.executeUpdate();
+			} catch(Exception e) {
+				e.printStackTrace();
 			}
-			albumImage.setId(pk);
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
-		return albumImage;
 	}
 	
 	public List<DeletedAlbumImage> getDeletedAlbumImages(long albumId) {
@@ -91,14 +85,16 @@ public class DeletedAlbumImageService {
 		return albumImages;
 	}
 	
-	private void delete(long id) {
+	private void delete(List<DeletedAlbumImage> albumImages) {
 		String query = "delete from album_image where Id=?";
-		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    preparedStatement.setLong(1, id);
-		    preparedStatement.executeUpdate();
-		} catch(Exception e) {
-		    e.printStackTrace();
+		for(DeletedAlbumImage albumImage: albumImages) {
+			try{
+			    PreparedStatement preparedStatement = connection.prepareStatement(query);
+			    preparedStatement.setLong(1, albumImage.getAlbumImageId());
+			    preparedStatement.executeUpdate();
+			} catch(Exception e) {
+			    e.printStackTrace();
+			}
 		}
 	}
 }
