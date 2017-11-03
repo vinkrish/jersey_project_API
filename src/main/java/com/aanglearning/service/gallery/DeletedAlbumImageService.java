@@ -24,15 +24,16 @@ public class DeletedAlbumImageService {
 	public void add(List<DeletedAlbumImage> albumImages) {
 		delete(albumImages);
 		
-		String query = "insert into deleted_album_image(SenderId, AlbumId, AlbumImageId, DeletedAt) "
-				+ "values (?,?,?,?)";
+		String query = "insert into deleted_album_image(SenderId, AlbumImageId, Name, AlbumId, DeletedAt) "
+				+ "values (?,?,?,?,?)";
 		for(DeletedAlbumImage albumImage: albumImages) {
 			try{
 			    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    	preparedStatement.setLong(1, albumImage.getSenderId());
-		    	preparedStatement.setLong(2, albumImage.getAlbumId());
-		    	preparedStatement.setLong(3, albumImage.getAlbumImageId());
-		    	preparedStatement.setLong(4, albumImage.getDeletedAt());
+		    	preparedStatement.setLong(2, albumImage.getAlbumImageId());
+		    	preparedStatement.setString(3, albumImage.getName());
+		    	preparedStatement.setLong(4, albumImage.getAlbumId());
+		    	preparedStatement.setLong(5, albumImage.getDeletedAt());
 		    	preparedStatement.executeUpdate();
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -53,6 +54,7 @@ public class DeletedAlbumImageService {
 				albumImage.setSenderId(rs.getLong("SenderId"));
 				albumImage.setAlbumId(rs.getLong("AlbumId"));
 				albumImage.setAlbumImageId(rs.getLong("AlbumImageId"));
+				albumImage.setName(rs.getString("Name"));
 				albumImage.setDeletedAt(rs.getLong("DeletedAt"));
 				albumImages.add(albumImage);
 			}
@@ -76,6 +78,7 @@ public class DeletedAlbumImageService {
 				albumImage.setSenderId(rs.getLong("SenderId"));
 				albumImage.setAlbumId(rs.getLong("AlbumId"));
 				albumImage.setAlbumImageId(rs.getLong("AlbumImageId"));
+				albumImage.setName(rs.getString("Name"));
 				albumImage.setDeletedAt(rs.getLong("DeletedAt"));
 				albumImages.add(albumImage);
 			}

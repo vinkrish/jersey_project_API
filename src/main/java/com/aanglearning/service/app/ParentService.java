@@ -87,7 +87,8 @@ public class ParentService {
 	private ArrayList<ChildInfo> getChildInfo(String mobile) {
 		String query = "select A.SchoolId, A.SectionId, A.Name, A.Image, A.Id, B.SchoolName, C.SectionName, D.Id, D.ClassName "
 				+ "from student A, school B, section C, class D  "
-				+ "where A.Mobile1 = '" + mobile + "' and A.SchoolId = B.Id and A.SectionId = C.Id and C.ClassId = D.Id";
+				+ "where (A.Mobile1 = '" + mobile + "' or A.Mobile2 = '" + mobile 
+				+ "') and A.SchoolId = B.Id and A.SectionId = C.Id and C.ClassId = D.Id";
 		ArrayList<ChildInfo> infos = new ArrayList<>();
 		try {
 			ResultSet rs = stmt.executeQuery(query);

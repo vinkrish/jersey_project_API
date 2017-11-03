@@ -24,15 +24,16 @@ public class DeletedSubAlbumImageService {
 	public void add(List<DeletedSubAlbumImage> subAlbumImages) {
 		delete(subAlbumImages);
 		
-		String query = "insert into deleted_subalbum_image(SenderId, SubAlbumId, SubAlbumImageId, DeletedAt) "
-				+ "values (?,?,?,?)";
+		String query = "insert into deleted_subalbum_image(SenderId, SubAlbumImageId, Name, SubAlbumId, DeletedAt) "
+				+ "values (?,?,?,?,?)";
 		for(DeletedSubAlbumImage subAlbumImage: subAlbumImages) {
 			try{
 			    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    	preparedStatement.setLong(1, subAlbumImage.getSenderId());
-		    	preparedStatement.setLong(2, subAlbumImage.getSubAlbumId());
-		    	preparedStatement.setLong(3, subAlbumImage.getSubAlbumImageId());
-		    	preparedStatement.setLong(4, subAlbumImage.getDeletedAt());
+		    	preparedStatement.setLong(2, subAlbumImage.getSubAlbumImageId());
+		    	preparedStatement.setString(3, subAlbumImage.getName());
+		    	preparedStatement.setLong(4, subAlbumImage.getSubAlbumId());
+		    	preparedStatement.setLong(5, subAlbumImage.getDeletedAt());
 		    	preparedStatement.executeUpdate();
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -53,6 +54,7 @@ public class DeletedSubAlbumImageService {
 				subAlbumImage.setSenderId(rs.getLong("SenderId"));
 				subAlbumImage.setSubAlbumId(rs.getLong("SubAlbumId"));
 				subAlbumImage.setSubAlbumImageId(rs.getLong("SubAlbumImageId"));
+				subAlbumImage.setName(rs.getString("Name"));
 				subAlbumImage.setDeletedAt(rs.getLong("DeletedAt"));
 				subAlbumImages.add(subAlbumImage);
 			}
@@ -76,6 +78,7 @@ public class DeletedSubAlbumImageService {
 				subAlbumImage.setSenderId(rs.getLong("SenderId"));
 				subAlbumImage.setSubAlbumId(rs.getLong("SubAlbumId"));
 				subAlbumImage.setSubAlbumImageId(rs.getLong("SubAlbumImageId"));
+				subAlbumImage.setName(rs.getString("Name"));
 				subAlbumImage.setDeletedAt(rs.getLong("DeletedAt"));
 				subAlbumImages.add(subAlbumImage);
 			}
