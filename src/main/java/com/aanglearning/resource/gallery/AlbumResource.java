@@ -30,6 +30,13 @@ public class AlbumResource {
 	
 	@Secured
 	@GET
+	@Path("{id}")
+	public Album get(@PathParam("id") long id) {
+		return service.getAlbum(id);
+	}
+	
+	@Secured
+	@GET
 	@Path("{id}/school/{schoolId}")
 	public List<Album> getAlbumsAboveId(@PathParam("schoolId") long schoolId, 
 			@PathParam("id") long id) {

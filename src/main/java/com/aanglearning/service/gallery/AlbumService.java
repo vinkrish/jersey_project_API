@@ -80,8 +80,28 @@ Connection connection;
 		return albums;
 	}
 	
+	public Album getAlbum(long id) {
+		Album album = new Album();
+		try {
+			ResultSet rs = connection.createStatement().executeQuery("select * from album where Id = " + id);
+			while (rs.next()){
+				album.setId(rs.getLong("Id"));
+				album.setName(rs.getString("Name"));
+				album.setCoverPic(rs.getString("CoverPic"));
+				album.setCreatedBy(rs.getLong("CreatedBy"));
+				album.setCreatorName(rs.getString("CreatorName"));
+				album.setCreatorRole(rs.getString("CreatorRole"));
+				album.setCreatedAt(rs.getLong("CreatedAt"));
+				album.setSchoolId(rs.getLong("SchoolId"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return album;
+	}
+	
 	public void updateAlbum(Album album) {
-		String query = "update album set CoverPic = '?' where Id = ?";
+		String query = "update album set CoverPic = ? where Id = ?";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 	    	preparedStatement.setString(1, album.getCoverPic());
