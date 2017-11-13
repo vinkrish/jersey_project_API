@@ -1,5 +1,7 @@
 package com.aanglearning.service.exam;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,21 +12,23 @@ import com.aanglearning.model.exam.ExamSubjectGroup;
 import com.aanglearning.service.DatabaseUtil;
 
 public class ExamSubjectGroupService {
-	Statement stmt;
+	Connection connection;
 
 	public ExamSubjectGroupService() {
 		try {
-			stmt = DatabaseUtil.getConnection().createStatement();
+			connection = DatabaseUtil.getConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public List<ExamSubjectGroup> getExamSubjectGroups(long examId) {
-		String query = "select * from exam_subject_group where ExamId = " + examId;
+		String query = "select * from exam_subject_group where ExamId = ?";
 		List<ExamSubjectGroup> examSubjectGroups = new ArrayList<>();
 		try {
-			ResultSet rs = stmt.executeQuery(query);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, examId);
+			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
 				ExamSubjectGroup esg = new ExamSubjectGroup();
 				esg.setId(rs.getLong("Id"));
@@ -40,27 +44,34 @@ public class ExamSubjectGroupService {
 	}
 	
 	public ExamSubjectGroup add(ExamSubjectGroup esg) {
-		try {
-			String query = "insert into exam_subject_group(Id, ExamId, SubjectGroupId, SubjectGroupName) "
-					+ "values ("
-					+ esg.getId() + "," 
-					+ esg.getExamId() + ","
-					+ esg.getSubjectGroupId() + ",'"
-					+ esg.getSubjectGroupName() + "')"; 
-			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+		String query = "insert into exam_subject_group(ExamId, SubjectGroupId, SubjectGroupName) values (?,?,?)";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+	    	preparedStatement.setLong(1, esg.getExamId());
+	    	preparedStatement.setLong(2, esg.getSubjectGroupId());
+	    	preparedStatement.setString(3, esg.getSubjectGroupName());
+	    	preparedStatement.executeUpdate();
+	    	ResultSet rs = preparedStatement.getGeneratedKeys();
+		    long pk = 0;
+			if (rs.next()){
+			    pk = rs.getLong(1);
+			}
 			esg.setId(pk);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+		    e.printStackTrace();
 		}
+		
 		return esg;
 	}
 	
-	public void delete(long id){
-		try {
-			String query = "delete from exam_subject_group where Id=" + id;
-			stmt.executeUpdate(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public void delete(long id) {
+		String query = "delete from exam_subject_group where Id=?";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    preparedStatement.setLong(1, id);
+		    preparedStatement.executeUpdate();
+		} catch(Exception e) {
+		    e.printStackTrace();
 		}
 	}
 
