@@ -42,6 +42,27 @@ public class ActivityScoreService {
 		}
 		return scores;
 	}
+	
+	public ActivityScore getActivityScore(long activityId, long studentId) {
+		String query = "select * from activity_score where ActivityId=? and StudentId=?";
+		ActivityScore score = new ActivityScore();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, activityId);
+			preparedStatement.setLong(2, studentId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				score.setId(rs.getLong("Id"));
+				score.setActivityId(rs.getLong("ActivityId"));
+				score.setStudentId(rs.getLong("StudentId"));
+				score.setMark(rs.getFloat("Mark"));
+				score.setGrade(rs.getString("Grade"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return score;
+	}
 
 	public void add(List<ActivityScore> scores) {
 		String query = "insert into activity_score(Id, ActivityId, StudentId, Mark, Grade) values (?,?,?,?,?)";

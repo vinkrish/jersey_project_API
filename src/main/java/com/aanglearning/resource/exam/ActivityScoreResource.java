@@ -31,6 +31,14 @@ public class ActivityScoreResource {
 	}
 	
 	@Secured
+	@GET
+	@Path("activity/{activityId}/student/{studentId}")
+	public ActivityScore getActivityScore(@PathParam("activityId") long activityId,
+			@PathParam("student") long studentId) {
+		return scoreService.getActivityScore(activityId, studentId);
+	}
+	
+	@Secured
 	@POST
 	public void add(List<ActivityScore> scores) {
 		scoreService.add(scores);

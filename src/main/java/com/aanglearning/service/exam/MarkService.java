@@ -46,6 +46,31 @@ public class MarkService {
 		}
 		return marks;
 	}
+	
+	public Mark getMark(long examId, long subjectId, long sectionId, long studentId) {
+		String query = "select * from mark where ExamId=? and SubjectId=? and SectionId=? and StudentId=?";
+		Mark mark = new Mark();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, examId);
+	    	preparedStatement.setLong(2, subjectId);
+	    	preparedStatement.setLong(3, sectionId);
+	    	preparedStatement.setLong(4, studentId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()){
+				mark.setId(rs.getLong("Id"));
+				mark.setExamId(rs.getLong("ExamId"));
+				mark.setSubjectId(rs.getLong("SubjectId"));
+				mark.setSectionId(rs.getLong("SectionId"));
+				mark.setStudentId(rs.getLong("StudentId"));
+				mark.setMark(rs.getFloat("Mark"));
+				mark.setGrade(rs.getString("Grade"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mark;
+	}
 
 	public void add(List<Mark> marks) {
 		String query = "insert into mark(Id, ExamId, SubjectId, SectionId, StudentId, Mark, Grade) values (?,?,?,?,?,?,?)";

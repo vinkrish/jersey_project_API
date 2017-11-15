@@ -26,7 +26,7 @@ public class ActivityResource {
 	@Secured
 	@GET
 	@Path("section/{sectionId}/exam/{examId}/subject/{subjectId}")
-	public List<Activity> getExamSubjects(@PathParam("sectionId") long sectionId,
+	public List<Activity> getActivities(@PathParam("sectionId") long sectionId,
 			@PathParam("examId") long examId,
 			@PathParam("subjectId") long subjectId) {
 		return activityService.getActivities(sectionId, examId, subjectId);

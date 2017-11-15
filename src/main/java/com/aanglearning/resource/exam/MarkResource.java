@@ -33,6 +33,16 @@ public class MarkResource {
 	}
 	
 	@Secured
+	@GET
+	@Path("exam/{examId}/subject/{subjectId}/section/{sectionId}/student/{studentId}")
+	public Mark getMark(@PathParam("examId") long examId,
+			@PathParam("subjectId") long subjectId,
+			@PathParam("sectionId") long sectionId,
+			@PathParam("studentId") long studentId) {
+		return markService.getMark(examId, subjectId, sectionId, studentId);
+	}
+	
+	@Secured
 	@POST
 	public void add(List<Mark> marks) {
 		markService.add(marks);

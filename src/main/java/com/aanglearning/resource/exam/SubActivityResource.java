@@ -26,7 +26,7 @@ public class SubActivityResource {
 	@Secured
 	@GET
 	@Path("activity/{activityId}")
-	public List<SubActivity> getExamSubjects(@PathParam("activityId") long activityId) {
+	public List<SubActivity> getSubActivities(@PathParam("activityId") long activityId) {
 		return subActivityService.getSubActivities(activityId);
 	}
 	
