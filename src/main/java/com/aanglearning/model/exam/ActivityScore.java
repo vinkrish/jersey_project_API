@@ -3,7 +3,9 @@ package com.aanglearning.model.exam;
 public class ActivityScore {
 	private long id;
 	private long activityId;
+	private int rollNo;
 	private long studentId;
+	private String studentName;
 	private float mark;
 	private String grade;
 
@@ -22,6 +24,14 @@ public class ActivityScore {
 	public void setActivityId(long activityId) {
 		this.activityId = activityId;
 	}
+	
+	public int getRollNo() {
+		return rollNo;
+	}
+
+	public void setRollNo(int rollNo) {
+		this.rollNo = rollNo;
+	}
 
 	public long getStudentId() {
 		return studentId;
@@ -29,6 +39,14 @@ public class ActivityScore {
 
 	public void setStudentId(long studentId) {
 		this.studentId = studentId;
+	}
+	
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 
 	public float getMark() {

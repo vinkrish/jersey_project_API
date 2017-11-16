@@ -36,7 +36,9 @@ public class MarkService {
 				mark.setExamId(rs.getLong("ExamId"));
 				mark.setSubjectId(rs.getLong("SubjectId"));
 				mark.setSectionId(rs.getLong("SectionId"));
+				mark.setRollNo(rs.getInt("RollNo"));
 				mark.setStudentId(rs.getLong("StudentId"));
+				mark.setStudentName(rs.getString("StudentName"));
 				mark.setMark(rs.getFloat("Mark"));
 				mark.setGrade(rs.getString("Grade"));
 				marks.add(mark);
@@ -62,7 +64,9 @@ public class MarkService {
 				mark.setExamId(rs.getLong("ExamId"));
 				mark.setSubjectId(rs.getLong("SubjectId"));
 				mark.setSectionId(rs.getLong("SectionId"));
+				mark.setRollNo(rs.getInt("RollNo"));
 				mark.setStudentId(rs.getLong("StudentId"));
+				mark.setStudentName(rs.getString("StudentName"));
 				mark.setMark(rs.getFloat("Mark"));
 				mark.setGrade(rs.getString("Grade"));
 			}
@@ -73,7 +77,7 @@ public class MarkService {
 	}
 
 	public void add(List<Mark> marks) {
-		String query = "insert into mark(Id, ExamId, SubjectId, SectionId, StudentId, Mark, Grade) values (?,?,?,?,?,?,?)";
+		String query = "insert into mark(Id, ExamId, SubjectId, SectionId, RollNo, StudentId, StudentName, Mark, Grade) values (?,?,?,?,?,?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(Mark mark: marks) {
@@ -81,9 +85,11 @@ public class MarkService {
 		    	preparedStatement.setLong(2, mark.getExamId());
 		    	preparedStatement.setLong(3, mark.getSubjectId());
 		    	preparedStatement.setLong(4, mark.getSectionId());
-		    	preparedStatement.setLong(5, mark.getStudentId());
-		    	preparedStatement.setFloat(6, mark.getMark());
-		    	preparedStatement.setString(7, mark.getGrade());
+		    	preparedStatement.setInt(5, mark.getRollNo());
+		    	preparedStatement.setLong(6, mark.getStudentId());
+		    	preparedStatement.setString(7, mark.getStudentName());
+		    	preparedStatement.setFloat(8, mark.getMark());
+		    	preparedStatement.setString(9, mark.getGrade());
 		    	preparedStatement.executeUpdate();
 		    }
 		} catch(Exception e) {

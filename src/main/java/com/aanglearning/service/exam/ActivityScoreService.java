@@ -32,7 +32,9 @@ public class ActivityScoreService {
 				ActivityScore score = new ActivityScore();
 				score.setId(rs.getLong("Id"));
 				score.setActivityId(rs.getLong("ActivityId"));
+				score.setRollNo(rs.getInt("RollNo"));
 				score.setStudentId(rs.getLong("StudentId"));
+				score.setStudentName(rs.getString("StudentName"));
 				score.setMark(rs.getFloat("Mark"));
 				score.setGrade(rs.getString("Grade"));
 				scores.add(score);
@@ -54,7 +56,9 @@ public class ActivityScoreService {
 			while (rs.next()){
 				score.setId(rs.getLong("Id"));
 				score.setActivityId(rs.getLong("ActivityId"));
+				score.setRollNo(rs.getInt("RollNo"));
 				score.setStudentId(rs.getLong("StudentId"));
+				score.setStudentName(rs.getString("StudentName"));
 				score.setMark(rs.getFloat("Mark"));
 				score.setGrade(rs.getString("Grade"));
 			}
@@ -65,15 +69,17 @@ public class ActivityScoreService {
 	}
 
 	public void add(List<ActivityScore> scores) {
-		String query = "insert into activity_score(Id, ActivityId, StudentId, Mark, Grade) values (?,?,?,?,?)";
+		String query = "insert into activity_score(Id, ActivityId, RollNo, StudentId, StudentName, Mark, Grade) values (?,?,?,?,?,?,?)";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(query);
 		    for(ActivityScore score: scores) {
 		    	preparedStatement.setLong(1, score.getId());
 		    	preparedStatement.setLong(2, score.getActivityId());
-		    	preparedStatement.setLong(3, score.getStudentId());
-		    	preparedStatement.setFloat(4, score.getMark());
-		    	preparedStatement.setString(5, score.getGrade());
+		    	preparedStatement.setInt(3, score.getRollNo());
+		    	preparedStatement.setLong(4, score.getStudentId());
+		    	preparedStatement.setString(5, score.getStudentName());
+		    	preparedStatement.setFloat(6, score.getMark());
+		    	preparedStatement.setString(7, score.getGrade());
 		    	preparedStatement.executeUpdate();
 		    }
 		} catch(Exception e) {
