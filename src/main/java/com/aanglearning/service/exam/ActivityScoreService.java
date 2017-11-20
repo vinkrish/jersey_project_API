@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aanglearning.model.exam.Activity;
 import com.aanglearning.model.exam.ActivityScore;
+import com.aanglearning.model.exam.StudentScore;
 import com.aanglearning.service.DatabaseUtil;
 
 public class ActivityScoreService {
@@ -45,27 +47,52 @@ public class ActivityScoreService {
 		return scores;
 	}
 	
-	public ActivityScore getActivityScore(long activityId, long studentId) {
+	public List<StudentScore> getStudentScore(long sectionId, long examId, long subjectId, long studentId) {
+		List<Activity> activities = getActivities(sectionId, examId, subjectId);
+		List<StudentScore> studentScores = new ArrayList<>();
+		
 		String query = "select * from activity_score where ActivityId=? and StudentId=?";
-		ActivityScore score = new ActivityScore();
+		for(Activity activity: activities) {
+			StudentScore score = new StudentScore();
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setLong(1, activity.getId());
+				preparedStatement.setLong(2, studentId);
+				ResultSet rs = preparedStatement.executeQuery();
+				while (rs.next()){
+					score.setSchId(activity.getId());
+					score.setSchName(activity.getActivityName());
+					score.setMark(rs.getFloat("Mark"));
+					score.setGrade(rs.getString("Grade"));
+					studentScores.add(score);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return studentScores;
+	}
+	
+	public List<Activity> getActivities(long sectionId, long examId, long subjectId) {
+		String query = "select * from activity where "
+				+ "SectionId = ? and ExamId = ? and SubjectId = ? order by Orders";
+		List<Activity> activities = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setLong(1, activityId);
-			preparedStatement.setLong(2, studentId);
+			preparedStatement.setLong(1, sectionId);
+			preparedStatement.setLong(2, examId);
+			preparedStatement.setLong(3, subjectId);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
-				score.setId(rs.getLong("Id"));
-				score.setActivityId(rs.getLong("ActivityId"));
-				score.setRollNo(rs.getInt("RollNo"));
-				score.setStudentId(rs.getLong("StudentId"));
-				score.setStudentName(rs.getString("StudentName"));
-				score.setMark(rs.getFloat("Mark"));
-				score.setGrade(rs.getString("Grade"));
+				Activity activity = new Activity();
+				activity.setId(rs.getLong("Id"));
+				activity.setActivityName(rs.getString("ActivityName"));
+				activities.add(activity);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return score;
+		return activities;
 	}
 
 	public void add(List<ActivityScore> scores) {

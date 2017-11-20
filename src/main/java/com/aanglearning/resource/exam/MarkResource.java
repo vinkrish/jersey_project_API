@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.exam.Mark;
+import com.aanglearning.model.exam.StudentScore;
 import com.aanglearning.service.exam.MarkService;
 
 @Path("/mark")
@@ -34,12 +35,10 @@ public class MarkResource {
 	
 	@Secured
 	@GET
-	@Path("exam/{examId}/subject/{subjectId}/section/{sectionId}/student/{studentId}")
-	public Mark getMark(@PathParam("examId") long examId,
-			@PathParam("subjectId") long subjectId,
-			@PathParam("sectionId") long sectionId,
+	@Path("exam/{examId}/student/{studentId}")
+	public List<StudentScore> getMark(@PathParam("examId") long examId,
 			@PathParam("studentId") long studentId) {
-		return markService.getMark(examId, subjectId, sectionId, studentId);
+		return markService.getStudentScore(examId, studentId);
 	}
 	
 	@Secured

@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
 import com.aanglearning.model.exam.ActivityScore;
+import com.aanglearning.model.exam.StudentScore;
 import com.aanglearning.service.exam.ActivityScoreService;
 
 @Path("/activityscore")
@@ -32,10 +33,12 @@ public class ActivityScoreResource {
 	
 	@Secured
 	@GET
-	@Path("activity/{activityId}/student/{studentId}")
-	public ActivityScore getActivityScore(@PathParam("activityId") long activityId,
+	@Path("section/{sectionId}/exam/{examId}/subject/{subjectId}/student/{studentId}")
+	public List<StudentScore> getActivityScore(@PathParam("sectionId") long sectionId,
+			@PathParam("examId") long examId,
+			@PathParam("subjectId") long subjectId,
 			@PathParam("student") long studentId) {
-		return scoreService.getActivityScore(activityId, studentId);
+		return scoreService.getStudentScore(sectionId, examId, subjectId, studentId);
 	}
 	
 	@Secured
