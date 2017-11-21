@@ -78,7 +78,7 @@ public class MarkService {
 		return studentScores;
 	}
 	
-	public List<ExamSubject> getExamSubjects(long examId) {
+	private List<ExamSubject> getExamSubjects(long examId) {
 		String query = "select * from exam_subject where ExamId = ? order by Orders";
 		List<ExamSubject> examSubjects = new ArrayList<>();
 		try {

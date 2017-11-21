@@ -73,9 +73,8 @@ public class ActivityScoreService {
 		return studentScores;
 	}
 	
-	public List<Activity> getActivities(long sectionId, long examId, long subjectId) {
-		String query = "select * from activity where "
-				+ "SectionId = ? and ExamId = ? and SubjectId = ? order by Orders";
+	private List<Activity> getActivities(long sectionId, long examId, long subjectId) {
+		String query = "select * from activity where SectionId=? and ExamId=? and SubjectId=? order by Orders";
 		List<Activity> activities = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
