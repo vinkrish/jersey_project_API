@@ -37,7 +37,7 @@ public class ActivityScoreResource {
 	public List<StudentScore> getActivityScore(@PathParam("sectionId") long sectionId,
 			@PathParam("examId") long examId,
 			@PathParam("subjectId") long subjectId,
-			@PathParam("student") long studentId) {
+			@PathParam("studentId") long studentId) {
 		return scoreService.getStudentScore(sectionId, examId, subjectId, studentId);
 	}
 	

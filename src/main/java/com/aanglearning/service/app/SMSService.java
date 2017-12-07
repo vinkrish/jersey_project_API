@@ -52,32 +52,32 @@ public class SMSService {
 	}
 	
 	public void sendSchoolPswd(long schoolId) {
-		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId);
+		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId + " and Username != ' '");
 		sendStudentsPswd(students);
 	}
 	
 	public void sendLoggedOutStudentsPswd(long schoolId) {
-		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId + " and IsLogged = 0");
+		List<Student> students = getStudents("select Username, Password from student where SchoolId = " + schoolId + " and IsLogged = 0 and Username != ' '");
 		sendStudentsPswd(students);
 	}
 	
 	public void sendClassPswd(long classId) {
-		List<Student> students = getStudents("select Username, Password from student where ClassId = " + classId);
+		List<Student> students = getStudents("select Username, Password from student where ClassId = " + classId + " and Username != ' '");
 		sendStudentsPswd(students);
 	}
 	
 	public void sendLoggedOutClassPswd(long classId) {
-		List<Student> students = getStudents("select Username, Password from student where ClassId = " + classId + " and IsLogged = 0");
+		List<Student> students = getStudents("select Username, Password from student where ClassId = " + classId + " and IsLogged = 0 and Username != ' '");
 		sendStudentsPswd(students);
 	}
 	
 	public void sendSectionPswd(long sectionId) {
-		List<Student> students = getStudents("select Username, Password from student where SectionId = " + sectionId);
+		List<Student> students = getStudents("select Username, Password from student where SectionId = " + sectionId + " and Username != ' '");
 		sendStudentsPswd(students);
 	}
 	
 	public void sendStudentPswd(long studentId) {
-		List<Student> students = getStudents("select Username, Password from student where Id = " + studentId);
+		List<Student> students = getStudents("select Username, Password from student where Id = " + studentId + " and Username != ' '");
 		sendStudentsPswd(students);
 	}
 	
@@ -236,7 +236,7 @@ public class SMSService {
 						}
 						
 						try {
-							ResultSet rs = stmt.executeQuery("select Name, Username from student where SectionId = " + section.getId() + " and IsLogged = 0 and Username != ''");
+							ResultSet rs = stmt.executeQuery("select Name, Username from student where SectionId = " + section.getId() + " and IsLogged = 0 and Username != ' '");
 							while (rs.next()){
 								snsClient.subscribe(new SubscribeRequest(topicArn, "sms", "91" + rs.getString("Username")));
 							}

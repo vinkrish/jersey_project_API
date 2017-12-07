@@ -67,6 +67,7 @@ public class MarkService {
 				while (rs.next()){
 					studentScore.setSchId(examSubject.getSubjectId());
 					studentScore.setSchName(examSubject.getSubjectName());
+					studentScore.setMaxMark(examSubject.getMaximumMark());
 					studentScore.setMark(rs.getFloat("Mark"));
 					studentScore.setGrade(rs.getString("Grade"));
 					studentScores.add(studentScore);
@@ -89,6 +90,7 @@ public class MarkService {
 				ExamSubject examSubject = new ExamSubject();
 				examSubject.setSubjectId(rs.getLong("SubjectId"));
 				examSubject.setSubjectName(rs.getString("SubjectName"));
+				examSubject.setMaximumMark(rs.getFloat("MaximumMark"));
 				examSubjects.add(examSubject);
 			}
 		} catch (SQLException e) {

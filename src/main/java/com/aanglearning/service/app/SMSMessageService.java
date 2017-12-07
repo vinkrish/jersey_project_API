@@ -40,8 +40,8 @@ public class SMSMessageService {
 	}
 
 	private Sms add(Sms sms) {
-		String query = "insert into sms_info(SchoolId, ClassId, SectionId, SenderId, SenderName, SentTime, Message, SentTo, RecipientRole) "
-				+ "values (?,?,?,?,?,?,?,?,?)";
+		String query = "insert into sms_info(SchoolId, ClassId, SectionId, SenderId, SenderName, SentTime, Message, SmsCount, SentTo, RecipientRole) "
+				+ "values (?,?,?,?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setLong(1, sms.getSchoolId());
@@ -51,8 +51,9 @@ public class SMSMessageService {
 			preparedStatement.setString(5, sms.getSenderName());
 			preparedStatement.setLong(6, sms.getSentTime());
 			preparedStatement.setString(7, sms.getMessage());
-			preparedStatement.setString(8, sms.getSentTo());
-			preparedStatement.setString(9, sms.getRecipientRole());
+			preparedStatement.setInt(8, sms.getSmsCount());
+			preparedStatement.setString(9, sms.getSentTo());
+			preparedStatement.setString(10, sms.getRecipientRole());
 			preparedStatement.executeUpdate();
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			long pk = 0;
@@ -84,6 +85,7 @@ public class SMSMessageService {
 				message.setSenderName(rs.getString("SenderName"));
 				message.setSentTime(rs.getLong("SentTime"));
 				message.setMessage(rs.getString("Message"));
+				message.setSmsCount(rs.getInt("SmsCount"));
 				message.setSentTo(rs.getString("SentTo"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				messages.add(message);
@@ -111,6 +113,7 @@ public class SMSMessageService {
 				message.setSenderName(rs.getString("SenderName"));
 				message.setSentTime(rs.getLong("SentTime"));
 				message.setMessage(rs.getString("Message"));
+				message.setSmsCount(rs.getInt("SmsCount"));
 				message.setSentTo(rs.getString("SentTo"));
 				message.setRecipientRole(rs.getString("RecipientRole"));
 				messages.add(message);
@@ -172,7 +175,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Username from student where SchoolId = ? and Username != ''";
+					String query = "select Username from student where SchoolId = ? and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -183,7 +186,7 @@ public class SMSMessageService {
 					e.printStackTrace();
 				}
 				try {
-					String query = "select Username from teacher where SchoolId = ? and Username != ''";
+					String query = "select Username from teacher where SchoolId = ? and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -216,7 +219,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Username from student where SchoolId = ? and Username != ''";
+					String query = "select Username from student where SchoolId = ? and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -249,7 +252,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Username from student where ClassId = ? and Username != ''";
+					String query = "select Username from student where ClassId = ? and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, classId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -288,7 +291,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Username from student where ClassId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
+					String query = "select Username from student where ClassId in (" + sb.substring(0, sb.length()-1) + ") and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
@@ -321,7 +324,7 @@ public class SMSMessageService {
 				
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Username from student where SectionId = ? and Username != ''";
+					String query = "select Username from student where SectionId = ? and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, sectionId);
 					ResultSet rs = preparedStatement.executeQuery();
@@ -358,7 +361,7 @@ public class SMSMessageService {
 				}
 				
 				try {
-					String query = "select Username from student where SectionId in (" + sb.substring(0, sb.length()-1) + ") and Username != ''";
+					String query = "select Username from student where SectionId in (" + sb.substring(0, sb.length()-1) + ") and Username != ' '";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					ResultSet rs = preparedStatement.executeQuery();
 					while (rs.next()) {
@@ -394,7 +397,7 @@ public class SMSMessageService {
 
 				String topicArn = createSNSTopic(snsClient);
 				try {
-					String query = "select Name, Username from student where SchoolId = ? and Username != '' and Gender = ?";
+					String query = "select Name, Username from student where SchoolId = ? and Username != ' ' and Gender = ?";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setLong(1, schoolId);
 					preparedStatement.setString(2, gender);

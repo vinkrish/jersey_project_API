@@ -62,6 +62,7 @@ public class ActivityScoreService {
 				while (rs.next()){
 					score.setSchId(activity.getId());
 					score.setSchName(activity.getActivityName());
+					score.setMaxMark(activity.getMaximumMark());
 					score.setMark(rs.getFloat("Mark"));
 					score.setGrade(rs.getString("Grade"));
 					studentScores.add(score);
@@ -86,6 +87,7 @@ public class ActivityScoreService {
 				Activity activity = new Activity();
 				activity.setId(rs.getLong("Id"));
 				activity.setActivityName(rs.getString("ActivityName"));
+				activity.setMaximumMark(rs.getFloat("MaximumMark"));
 				activities.add(activity);
 			}
 		} catch (SQLException e) {
