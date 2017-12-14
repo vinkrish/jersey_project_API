@@ -23,7 +23,7 @@ public class AdminService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 	
 	public Response keepServerUp() {
 		try {
