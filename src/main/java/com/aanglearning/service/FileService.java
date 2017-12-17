@@ -182,13 +182,25 @@ public class FileService {
 		
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Homework");
+        //CellStyle style=null;
         
         int rowNum = 0;
         Row roww = sheet.createRow(rowNum++);
         
+        /*XSSFFont font= workbook.createFont();
+        font.setFontHeightInPoints((short)10);
+        font.setFontName("Arial");
+        font.setColor(IndexedColors.WHITE.getIndex());
+        font.setBold(true);
+        font.setItalic(false);
+
+        style=roww.getRowStyle();
+        style.setFillBackgroundColor(IndexedColors.DARK_BLUE.getIndex());
+        style.setFont(font);*/
+        
         Cell cell0 = roww.createCell(0);
-		cell0.setCellValue("Subjeect");
-		Cell cell1 = roww.createCell(0);
+		cell0.setCellValue("Subject");
+		Cell cell1 = roww.createCell(1);
 		cell1.setCellValue("Homework");
         
 		for(Homework homework: hwList) {

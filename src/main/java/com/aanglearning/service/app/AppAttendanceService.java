@@ -95,6 +95,7 @@ public class AppAttendanceService {
 	}
 	
 	public void saveAttendance(final List<Attendance> attendanceList) {
+		clearNoAbsentees(attendanceList.get(0));
 		try {
 			for(Attendance attendance: attendanceList) {
 				String query = "insert into attendance(Id, SectionId, StudentId, StudentName, "
@@ -115,6 +116,15 @@ public class AppAttendanceService {
 				  sendAttendanceSMS(attendanceList);
 			  }
 			}).start();
+	}
+	
+	private void clearNoAbsentees(Attendance attendance) {
+		try {
+			String query = "delete from attendance where StudentId = 0 and SectionId=" + attendance.getSectionId() + " and Session=" + attendance.getSession() + " and DateAttendance='" + attendance.getDateAttendance()+ "'";
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void deleteAttendance(List<Attendance> attendanceList) {
