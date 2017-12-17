@@ -3,6 +3,7 @@ package com.aanglearning.model.entity;
 public class SubjectTeacher {
 	private long id;
 	private long sectionId;
+	private long classId;
 	private long subjectId;
 	private String subjectName;
 	private long teacherId;
@@ -22,6 +23,14 @@ public class SubjectTeacher {
 
 	public void setSectionId(long sectionId) {
 		this.sectionId = sectionId;
+	}
+
+	public long getClassId() {
+		return classId;
+	}
+
+	public void setClassId(long classId) {
+		this.classId = classId;
 	}
 
 	public long getSubjectId() {

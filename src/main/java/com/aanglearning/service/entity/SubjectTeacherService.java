@@ -33,6 +33,7 @@ public class SubjectTeacherService {
 				SubjectTeacher subjectTeacher = new SubjectTeacher();
 				subjectTeacher.setId(rs.getLong("Id"));
 				subjectTeacher.setSectionId(rs.getLong("SectionId"));
+				subjectTeacher.setClassId(rs.getLong("ClassId"));
 				subjectTeacher.setSubjectId(rs.getLong("SubjectId"));
 				subjectTeacher.setSubjectName(rs.getString("SubjectName"));
 				subjectTeacher.setTeacherId(rs.getLong("TeacherId"));
@@ -47,9 +48,10 @@ public class SubjectTeacherService {
 	
 	public SubjectTeacher add(SubjectTeacher subjectTeacher) {
 		try {
-			String query = "insert into subject_teacher(SectionId, SubjectId, TeacherId) "
+			String query = "insert into subject_teacher(SectionId, ClassId, SubjectId, TeacherId) "
 					+ "values (" 
 					+ subjectTeacher.getSectionId() + ","
+					+ subjectTeacher.getClassId() + ","
 					+ subjectTeacher.getSubjectId() + ","
 					+ 0 + ")";
 			long pk = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);

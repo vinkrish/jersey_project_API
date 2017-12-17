@@ -55,4 +55,42 @@ public class AlbumResource {
 	public void update(Album album) {
 		service.updateAlbum(album);
 	}
+	
+	@Secured
+	@POST
+	@Path("new")
+	public Album addNew(Album album) {
+		return service.add(album);
+	}
+	
+	@Secured
+	@GET
+	@Path("new/{id}")
+	public Album getNew(@PathParam("id") long id) {
+		return service.getAlbum(id);
+	}
+	
+	@Secured
+	@GET
+	@Path("new/{id}/{schoolId}/{classId}/{sectionId}")
+	public List<Album> getAlbumsAboveIdNew(@PathParam("schoolId") long schoolId, 
+			@PathParam("id") long id) {
+		return service.getAlbumsAboveId(schoolId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("new/{schoolId}/{classId}/{sectionId}")
+	public List<Album> getAlbumsNew(@PathParam("schoolId") long schoolId,
+			@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId) {
+		return service.getAlbums(schoolId);
+	}
+	
+	@Secured
+	@PUT
+	@Path("new")
+	public void updateNew(Album album) {
+		service.updateAlbum(album);
+	}
 }

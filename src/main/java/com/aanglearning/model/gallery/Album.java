@@ -9,6 +9,8 @@ public class Album {
 	private String creatorRole;
 	private long createdAt;
 	private long schoolId;
+	private long classId;
+	private long sectionId;
 	
 	public long getId() {
 		return id;
@@ -57,6 +59,18 @@ public class Album {
 	}
 	public void setSchoolId(long schoolId) {
 		this.schoolId = schoolId;
+	}
+	public long getClassId() {
+		return classId;
+	}
+	public void setClassId(long classId) {
+		this.classId = classId;
+	}
+	public long getSectionId() {
+		return sectionId;
+	}
+	public void setSectionId(long sectionId) {
+		this.sectionId = sectionId;
 	}
 	
 }

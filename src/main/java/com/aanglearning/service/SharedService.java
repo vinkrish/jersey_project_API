@@ -31,8 +31,8 @@ public class SharedService {
 				e.printStackTrace();
 			}
 
-			String sql = "insert into subject_teacher(SectionId, SubjectId, SubjectName) "
-					+ "(select A.Id as SectionId, C.SubjectId as SubjectId, C.SubjectName as SubjectName "
+			String sql = "insert into subject_teacher(SectionId, ClassId, SubjectId, SubjectName) "
+					+ "(select A.Id as SectionId, A.ClassId as ClassId, C.SubjectId as SubjectId, C.SubjectName as SubjectName "
 					+ "from section A, class_subject_group B, subject_group_subject C "
 					+ "where A.ClassId = B.ClassId and B.SubjectGroupId = C.SubjectGroupId and A.Id = "
 					+ section.getId() + ")";
