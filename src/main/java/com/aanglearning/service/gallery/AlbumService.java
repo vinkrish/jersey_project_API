@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aanglearning.model.gallery.Album;
 import com.aanglearning.service.DatabaseUtil;
@@ -48,6 +50,33 @@ Connection connection;
 		return album;
 	}
 	
+	public Album addNew(Album album) {
+		String query = "insert into album(Name, CoverPic, CreatedBy, CreatorName, CreatorRole, CreatedAt, SchoolId, ClassId, SectionId) "
+				+ "values (?,?,?,?,?,?,?,?,?)";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+	    	preparedStatement.setString(1, album.getName());
+	    	preparedStatement.setString(2, album.getCoverPic());
+	    	preparedStatement.setLong(3, album.getCreatedBy());
+	    	preparedStatement.setString(4, album.getCreatorName());
+	    	preparedStatement.setString(5, album.getCreatorRole());
+	    	preparedStatement.setLong(6, album.getCreatedAt());
+	    	preparedStatement.setLong(7, album.getSchoolId());
+	    	preparedStatement.setLong(8, album.getClassId());
+	    	preparedStatement.setLong(9, album.getSectionId());
+	    	preparedStatement.executeUpdate();
+	    	ResultSet rs = preparedStatement.getGeneratedKeys();
+		    long pk = 0;
+			if (rs.next()){
+			    pk = rs.getLong(1);
+			}
+			album.setId(pk);
+		} catch(Exception e) {
+		    e.printStackTrace();
+		}
+		return album;
+	}
+	
 	public List<Album> getAlbums(long schoolId) {
 		String query = "select * from album where SchoolId = " + schoolId;
 		return getAlbums(query);
@@ -56,6 +85,49 @@ Connection connection;
 	public List<Album> getAlbumsAboveId(long schoolId, long albumId) {
 		String query = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
 		return getAlbums(query);
+	}
+	
+	public List<Album> getTeacherAlbums(long schoolId, long teacherId) {
+		String query1 = "select * from album where SchoolId = " + schoolId;
+		String query2 = "select * from album where ClassId in (select ClassId from section where Id in "
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId)";
+		String query3 = "select * from album where SectionId in (select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId)";
+		Set<Album> set = new HashSet<Album>(getAlbums(query1));
+		set.addAll(getAlbums(query2));
+		set.addAll(getAlbums(query3));
+		return new ArrayList<Album>(set);
+	}
+	
+	public List<Album> getTeacherAlbumsAboveId(long schoolId, long teacherId, long albumId) {
+		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
+		String query2 = "select * from album where ClassId in (select ClassId from section where Id in "
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId) and Id > " + albumId;
+		String query3 = "select * from album where SectionId in "
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId) and Id > " + albumId;
+		Set<Album> set = new HashSet<Album>(getAlbums(query1));
+		set.addAll(getAlbums(query2));
+		set.addAll(getAlbums(query3));
+		return new ArrayList<Album>(set);
+	}
+	
+	public List<Album> getStudentAlbums(long schoolId, long classId, long sectionId) {
+		String query1 = "select * from album where SchoolId = " + schoolId;
+		String query2 = "select * from album where ClassId = " + classId;
+		String query3 = "select * from album where SectionId = " + sectionId;
+		Set<Album> set = new HashSet<Album>(getAlbums(query1));
+		set.addAll(getAlbums(query2));
+		set.addAll(getAlbums(query3));
+		return new ArrayList<Album>(set);
+	}
+	
+	public List<Album> getStudentAlbumsAboveId(long schoolId, long classId, long sectionId, long albumId) {
+		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
+		String query2 = "select * from album where ClassId = " + classId + " and Id > " + albumId;
+		String query3 = "select * from album where SectionId = " + sectionId + " and Id > " + albumId;
+		Set<Album> set = new HashSet<Album>(getAlbums(query1));
+		set.addAll(getAlbums(query2));
+		set.addAll(getAlbums(query3));
+		return new ArrayList<Album>(set);
 	}
 	
 	private List<Album> getAlbums(String query) {
@@ -93,6 +165,28 @@ Connection connection;
 				album.setCreatorRole(rs.getString("CreatorRole"));
 				album.setCreatedAt(rs.getLong("CreatedAt"));
 				album.setSchoolId(rs.getLong("SchoolId"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return album;
+	}
+	
+	public Album getAlbumNew(long id) {
+		Album album = new Album();
+		try {
+			ResultSet rs = connection.createStatement().executeQuery("select * from album where Id = " + id);
+			while (rs.next()){
+				album.setId(rs.getLong("Id"));
+				album.setName(rs.getString("Name"));
+				album.setCoverPic(rs.getString("CoverPic"));
+				album.setCreatedBy(rs.getLong("CreatedBy"));
+				album.setCreatorName(rs.getString("CreatorName"));
+				album.setCreatorRole(rs.getString("CreatorRole"));
+				album.setCreatedAt(rs.getLong("CreatedAt"));
+				album.setSchoolId(rs.getLong("SchoolId"));
+				album.setClassId(rs.getLong("ClassId"));
+				album.setSectionId(rs.getLong("SectionId"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

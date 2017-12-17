@@ -60,37 +60,50 @@ public class AlbumResource {
 	@POST
 	@Path("new")
 	public Album addNew(Album album) {
-		return service.add(album);
+		return service.addNew(album);
 	}
 	
 	@Secured
 	@GET
 	@Path("new/{id}")
 	public Album getNew(@PathParam("id") long id) {
-		return service.getAlbum(id);
+		return service.getAlbumNew(id);
 	}
 	
 	@Secured
 	@GET
-	@Path("new/{id}/{schoolId}/{classId}/{sectionId}")
-	public List<Album> getAlbumsAboveIdNew(@PathParam("schoolId") long schoolId, 
+	@Path("new/{schoolId}/{teacherId}/{id}")
+	public List<Album> getTeacherAlbumsAboveId(@PathParam("schoolId") long schoolId,
+			@PathParam("teacherId") long teacherId,
 			@PathParam("id") long id) {
-		return service.getAlbumsAboveId(schoolId, id);
+		return service.getTeacherAlbumsAboveId(schoolId, teacherId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("new/{schoolId}/{teacherId}")
+	public List<Album> getTeacherAlbums(@PathParam("schoolId") long schoolId,
+			@PathParam("teacherId") long teacherId) {
+		return service.getTeacherAlbums(schoolId, teacherId);
+	}
+	
+	@Secured
+	@GET
+	@Path("new/{schoolId}/{classId}/{sectionId}/{id}")
+	public List<Album> getStudentAlbumsAboveId(@PathParam("schoolId") long schoolId,
+			@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId,
+			@PathParam("id") long id) {
+		return service.getStudentAlbumsAboveId(schoolId, classId, sectionId, id);
 	}
 	
 	@Secured
 	@GET
 	@Path("new/{schoolId}/{classId}/{sectionId}")
-	public List<Album> getAlbumsNew(@PathParam("schoolId") long schoolId,
+	public List<Album> getStudentAlbums(@PathParam("schoolId") long schoolId,
 			@PathParam("classId") long classId,
 			@PathParam("sectionId") long sectionId) {
-		return service.getAlbums(schoolId);
+		return service.getStudentAlbums(schoolId, classId, sectionId);
 	}
 	
-	@Secured
-	@PUT
-	@Path("new")
-	public void updateNew(Album album) {
-		service.updateAlbum(album);
-	}
 }
