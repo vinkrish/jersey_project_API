@@ -28,6 +28,13 @@ public class DeletedAlbumResource {
 	}
 	
 	@Secured
+	@POST
+	@Path("new")
+	public DeletedAlbum addNew(DeletedAlbum deletedAlbum) {
+		return service.addNew(deletedAlbum);
+	}
+	
+	@Secured
 	@GET
 	@Path("school/{schoolId}")
 	public List<DeletedAlbum> getDeletedAlbums(@PathParam("schoolId") long schoolId) {
@@ -40,6 +47,72 @@ public class DeletedAlbumResource {
 	public List<DeletedAlbum> getDeletedAlbumsAboveId(@PathParam("schoolId") long schoolId,
 			@PathParam("id") long id) {
 		return service.getDeletedAlbumsAboveId(schoolId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("{id}/class/{classId}")
+	public List<DeletedAlbum> getClassDelAlbAboveId(@PathParam("classId") long classId, 
+			@PathParam("id") long id) {
+		return service.getClassDelAlbAboveId(classId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("class/{classId}")
+	public List<DeletedAlbum> getClassDelAlb(@PathParam("classId") long classId) {
+		return service.getClassDelAlb(classId);
+	}
+	
+	@Secured
+	@GET
+	@Path("{id}/section/{sectionId}")
+	public List<DeletedAlbum> getSecDelAlbAboveId(@PathParam("sectionId") long sectionId, 
+			@PathParam("id") long id) {
+		return service.getSecDelAlbAboveId(sectionId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("section/{sectionId}")
+	public List<DeletedAlbum> getSecDelAlb(@PathParam("sectionId") long sectionId) {
+		return service.getSecDelAlb(sectionId);
+	}
+	
+	@Secured
+	@GET
+	@Path("teacher/{schoolId}/{teacherId}/{id}")
+	public List<DeletedAlbum> getTeacherDelAlbAboveId(@PathParam("schoolId") long schoolId,
+			@PathParam("teacherId") long teacherId,
+			@PathParam("id") long id) {
+		return service.getTeacherDelAlbAboveId(schoolId, teacherId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("teacher/{schoolId}/{teacherId}")
+	public List<DeletedAlbum> getTeacherDelAlb(@PathParam("schoolId") long schoolId,
+			@PathParam("teacherId") long teacherId) {
+		return service.getTeacherDelAlb(schoolId, teacherId);
+	}
+	
+	@Secured
+	@GET
+	@Path("student/{schoolId}/{classId}/{sectionId}/{id}")
+	public List<DeletedAlbum> getStudDelAlbAboveId(@PathParam("schoolId") long schoolId,
+			@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId,
+			@PathParam("id") long id) {
+		return service.getStudDelAlbAboveId(schoolId, classId, sectionId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("student/{schoolId}/{classId}/{sectionId}")
+	public List<DeletedAlbum> getStudDelAlb(@PathParam("schoolId") long schoolId,
+			@PathParam("classId") long classId,
+			@PathParam("sectionId") long sectionId) {
+		return service.getStudDelAlb(schoolId, classId, sectionId);
 	}
 
 }

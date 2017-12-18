@@ -51,6 +51,36 @@ public class AlbumResource {
 	}
 	
 	@Secured
+	@GET
+	@Path("{id}/class/{classId}")
+	public List<Album> getClassAlbumsAboveId(@PathParam("classId") long classId, 
+			@PathParam("id") long id) {
+		return service.getClassAlbumsAboveId(classId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("class/{classId}")
+	public List<Album> getClassAlbums(@PathParam("classId") long classId) {
+		return service.getClassAlbums(classId);
+	}
+	
+	@Secured
+	@GET
+	@Path("{id}/section/{sectionId}")
+	public List<Album> getSectionAlbumsAboveId(@PathParam("sectionId") long sectionId, 
+			@PathParam("id") long id) {
+		return service.getSectionAlbumsAboveId(sectionId, id);
+	}
+	
+	@Secured
+	@GET
+	@Path("section/{sectionId}")
+	public List<Album> getSectionAlbums(@PathParam("sectionId") long sectionId) {
+		return service.getSectionAlbums(sectionId);
+	}
+	
+	@Secured
 	@PUT
 	public void update(Album album) {
 		service.updateAlbum(album);
@@ -65,14 +95,7 @@ public class AlbumResource {
 	
 	@Secured
 	@GET
-	@Path("new/{id}")
-	public Album getNew(@PathParam("id") long id) {
-		return service.getAlbumNew(id);
-	}
-	
-	@Secured
-	@GET
-	@Path("new/{schoolId}/{teacherId}/{id}")
+	@Path("teacher/{schoolId}/{teacherId}/{id}")
 	public List<Album> getTeacherAlbumsAboveId(@PathParam("schoolId") long schoolId,
 			@PathParam("teacherId") long teacherId,
 			@PathParam("id") long id) {
@@ -81,7 +104,7 @@ public class AlbumResource {
 	
 	@Secured
 	@GET
-	@Path("new/{schoolId}/{teacherId}")
+	@Path("teacher/{schoolId}/{teacherId}")
 	public List<Album> getTeacherAlbums(@PathParam("schoolId") long schoolId,
 			@PathParam("teacherId") long teacherId) {
 		return service.getTeacherAlbums(schoolId, teacherId);
@@ -89,7 +112,7 @@ public class AlbumResource {
 	
 	@Secured
 	@GET
-	@Path("new/{schoolId}/{classId}/{sectionId}/{id}")
+	@Path("student/{schoolId}/{classId}/{sectionId}/{id}")
 	public List<Album> getStudentAlbumsAboveId(@PathParam("schoolId") long schoolId,
 			@PathParam("classId") long classId,
 			@PathParam("sectionId") long sectionId,
@@ -99,7 +122,7 @@ public class AlbumResource {
 	
 	@Secured
 	@GET
-	@Path("new/{schoolId}/{classId}/{sectionId}")
+	@Path("student/{schoolId}/{classId}/{sectionId}")
 	public List<Album> getStudentAlbums(@PathParam("schoolId") long schoolId,
 			@PathParam("classId") long classId,
 			@PathParam("sectionId") long sectionId) {
