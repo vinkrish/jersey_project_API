@@ -82,24 +82,26 @@ public class DeletedAlbumService {
 		return getDeletedAlbums(query);
 	}
 	
-	public List<DeletedAlbum> getClassDelAlb(long classId) {
-		String query = "select * from deleted_album where ClassId = " + classId;
-		return getDeletedAlbums(query);
+	public List<DeletedAlbum> getAllDelAlb(long schoolId) {
+		String query1 = "select * from deleted_album where SchoolId = " + schoolId;
+		String query2 = "select * from deleted_album where ClassId in (select Id from class where SchoolId="+ schoolId + ")";
+		String query3 = "select * from deleted_album where SectionId in (select Id from section where ClassId in "
+				+ "(select Id from class where SchoolId="+ schoolId + "))";
+		Set<DeletedAlbum> set = new HashSet<DeletedAlbum>(getDeletedAlbums(query1));
+		set.addAll(getDeletedAlbums(query2));
+		set.addAll(getDeletedAlbums(query3));
+		return new ArrayList<DeletedAlbum>(set);
 	}
 	
-	public List<DeletedAlbum> getClassDelAlbAboveId(long classId, long albumId) {
-		String query = "select * from deleted_album where ClassId = " + classId + " and Id > " + albumId;
-		return getDeletedAlbums(query);
-	}
-	
-	public List<DeletedAlbum> getSecDelAlb(long sectionId) {
-		String query = "select * from deleted_album where SectionId = " + sectionId;
-		return getDeletedAlbums(query);
-	}
-	
-	public List<DeletedAlbum> getSecDelAlbAboveId(long sectionId, long albumId) {
-		String query = "select * from deleted_album where SectionId = " + sectionId + " and Id > " + albumId;
-		return getDeletedAlbums(query);
+	public List<DeletedAlbum> getAllDelAlbAboveId(long schoolId, long albumId) {
+		String query1 = "select * from deleted_album where SchoolId = " + schoolId + " and Id > " + albumId;
+		String query2 = "select * from deleted_album where ClassId in (select Id from class where SchoolId="+ schoolId + ") and Id > " + albumId;
+		String query3 = "select * from deleted_album where SectionId in (select Id from section where ClassId in "
+				+ "(select Id from class where SchoolId="+ schoolId + ")) and Id > " + albumId;
+		Set<DeletedAlbum> set = new HashSet<DeletedAlbum>(getDeletedAlbums(query1));
+		set.addAll(getDeletedAlbums(query2));
+		set.addAll(getDeletedAlbums(query3));
+		return new ArrayList<DeletedAlbum>(set);
 	}
 	
 	public List<DeletedAlbum> getTeacherDelAlb(long schoolId, long teacherId) {

@@ -4,7 +4,7 @@ public class DeletedAlbum {
 	private long id;
 	private long senderId;
 	private long albumId;
-	private long SchoolId;
+	private long schoolId;
 	private long classId;
 	private long sectionId;
 	private long deletedAt;
@@ -27,11 +27,12 @@ public class DeletedAlbum {
 	public void setAlbumId(long albumId) {
 		this.albumId = albumId;
 	}
+	
 	public long getSchoolId() {
-		return SchoolId;
+		return schoolId;
 	}
 	public void setSchoolId(long schoolId) {
-		SchoolId = schoolId;
+		this.schoolId = schoolId;
 	}
 	public long getClassId() {
 		return classId;

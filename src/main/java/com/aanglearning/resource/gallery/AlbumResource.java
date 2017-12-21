@@ -52,32 +52,17 @@ public class AlbumResource {
 	
 	@Secured
 	@GET
-	@Path("{id}/class/{classId}")
-	public List<Album> getClassAlbumsAboveId(@PathParam("classId") long classId, 
+	@Path("all/{id}/school/{schoolId}")
+	public List<Album> getAllAlbumsAboveId(@PathParam("schoolId") long schoolId, 
 			@PathParam("id") long id) {
-		return service.getClassAlbumsAboveId(classId, id);
+		return service.getAllAlbumsAboveId(schoolId, id);
 	}
 	
 	@Secured
 	@GET
-	@Path("class/{classId}")
-	public List<Album> getClassAlbums(@PathParam("classId") long classId) {
-		return service.getClassAlbums(classId);
-	}
-	
-	@Secured
-	@GET
-	@Path("{id}/section/{sectionId}")
-	public List<Album> getSectionAlbumsAboveId(@PathParam("sectionId") long sectionId, 
-			@PathParam("id") long id) {
-		return service.getSectionAlbumsAboveId(sectionId, id);
-	}
-	
-	@Secured
-	@GET
-	@Path("section/{sectionId}")
-	public List<Album> getSectionAlbums(@PathParam("sectionId") long sectionId) {
-		return service.getSectionAlbums(sectionId);
+	@Path("all/school/{schoolId}")
+	public List<Album> getAllAlbums(@PathParam("schoolId") long schoolId) {
+		return service.getAllAlbums(schoolId);
 	}
 	
 	@Secured

@@ -51,32 +51,17 @@ public class DeletedAlbumResource {
 	
 	@Secured
 	@GET
-	@Path("{id}/class/{classId}")
-	public List<DeletedAlbum> getClassDelAlbAboveId(@PathParam("classId") long classId, 
+	@Path("all/{id}/school/{school}")
+	public List<DeletedAlbum> getAllDelAlbAboveId(@PathParam("schoolId") long schoolId, 
 			@PathParam("id") long id) {
-		return service.getClassDelAlbAboveId(classId, id);
+		return service.getAllDelAlbAboveId(schoolId, id);
 	}
 	
 	@Secured
 	@GET
-	@Path("class/{classId}")
-	public List<DeletedAlbum> getClassDelAlb(@PathParam("classId") long classId) {
-		return service.getClassDelAlb(classId);
-	}
-	
-	@Secured
-	@GET
-	@Path("{id}/section/{sectionId}")
-	public List<DeletedAlbum> getSecDelAlbAboveId(@PathParam("sectionId") long sectionId, 
-			@PathParam("id") long id) {
-		return service.getSecDelAlbAboveId(sectionId, id);
-	}
-	
-	@Secured
-	@GET
-	@Path("section/{sectionId}")
-	public List<DeletedAlbum> getSecDelAlb(@PathParam("sectionId") long sectionId) {
-		return service.getSecDelAlb(sectionId);
+	@Path("all/school/{schoolId}")
+	public List<DeletedAlbum> getAllDelAlb(@PathParam("schoolId") long schoolId) {
+		return service.getAllDelAlb(schoolId);
 	}
 	
 	@Secured

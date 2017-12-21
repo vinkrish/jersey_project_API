@@ -87,24 +87,26 @@ Connection connection;
 		return getAlbums(query);
 	}
 	
-	public List<Album> getClassAlbums(long classId) {
-		String query = "select * from album where ClassId = " + classId;
-		return getAlbums(query);
+	public List<Album> getAllAlbums(long schoolId) {
+		String query1 = "select * from album where SchoolId = " + schoolId;
+		String query2 = "select * from album where ClassId in (select Id from class where SchoolId="+ schoolId + ")";
+		String query3 = "select * from album where SectionId in (select Id from section where ClassId in "
+				+ "(select Id from class where SchoolId="+ schoolId + "))";
+		Set<Album> set = new HashSet<Album>(getAlbums(query1));
+		set.addAll(getAlbums(query2));
+		set.addAll(getAlbums(query3));
+		return new ArrayList<Album>(set);
 	}
 	
-	public List<Album> getClassAlbumsAboveId(long classId, long albumId) {
-		String query = "select * from album where ClassId = " + classId + " and Id > " + albumId;
-		return getAlbums(query);
-	}
-	
-	public List<Album> getSectionAlbums(long sectionId) {
-		String query = "select * from album where SectionId = " + sectionId;
-		return getAlbums(query);
-	}
-	
-	public List<Album> getSectionAlbumsAboveId(long sectionId, long albumId) {
-		String query = "select * from album where SectionId = " + sectionId + " and Id > " + albumId;
-		return getAlbums(query);
+	public List<Album> getAllAlbumsAboveId(long schoolId, long albumId) {
+		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
+		String query2 = "select * from album where ClassId in (select Id from class where SchoolId="+ schoolId + ") and Id > " + albumId;
+		String query3 = "select * from album where SectionId in (select Id from section where ClassId in "
+				+ "(select Id from class where SchoolId="+ schoolId + ")) and Id > " + albumId;
+		Set<Album> set = new HashSet<Album>(getAlbums(query1));
+		set.addAll(getAlbums(query2));
+		set.addAll(getAlbums(query3));
+		return new ArrayList<Album>(set);
 	}
 	
 	public List<Album> getTeacherAlbums(long schoolId, long teacherId) {
