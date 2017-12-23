@@ -78,20 +78,20 @@ Connection connection;
 	}
 	
 	public List<Album> getAlbums(long schoolId) {
-		String query = "select * from album where SchoolId = " + schoolId;
+		String query = "select * from album where SchoolId = " + schoolId + " order by Id asc";
 		return getAlbums(query);
 	}
 	
 	public List<Album> getAlbumsAboveId(long schoolId, long albumId) {
-		String query = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
+		String query = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId + " order by Id asc";
 		return getAlbums(query);
 	}
 	
 	public List<Album> getAllAlbums(long schoolId) {
-		String query1 = "select * from album where SchoolId = " + schoolId;
-		String query2 = "select * from album where ClassId in (select Id from class where SchoolId="+ schoolId + ")";
+		String query1 = "select * from album where SchoolId = " + schoolId + " order by Id asc";
+		String query2 = "select * from album where ClassId in (select Id from class where SchoolId="+ schoolId + ") order by Id asc";
 		String query3 = "select * from album where SectionId in (select Id from section where ClassId in "
-				+ "(select Id from class where SchoolId="+ schoolId + "))";
+				+ "(select Id from class where SchoolId="+ schoolId + ")) order by Id asc";
 		Set<Album> set = new HashSet<Album>(getAlbums(query1));
 		set.addAll(getAlbums(query2));
 		set.addAll(getAlbums(query3));
@@ -99,10 +99,10 @@ Connection connection;
 	}
 	
 	public List<Album> getAllAlbumsAboveId(long schoolId, long albumId) {
-		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
-		String query2 = "select * from album where ClassId in (select Id from class where SchoolId="+ schoolId + ") and Id > " + albumId;
+		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId + " order by Id asc";
+		String query2 = "select * from album where ClassId in (select Id from class where SchoolId="+ schoolId + ") and Id > " + albumId + " order by Id asc";
 		String query3 = "select * from album where SectionId in (select Id from section where ClassId in "
-				+ "(select Id from class where SchoolId="+ schoolId + ")) and Id > " + albumId;
+				+ "(select Id from class where SchoolId="+ schoolId + ")) and Id > " + albumId + " order by Id asc";
 		Set<Album> set = new HashSet<Album>(getAlbums(query1));
 		set.addAll(getAlbums(query2));
 		set.addAll(getAlbums(query3));
@@ -110,11 +110,11 @@ Connection connection;
 	}
 	
 	public List<Album> getTeacherAlbums(long schoolId, long teacherId) {
-		String query1 = "select * from album where SchoolId = " + schoolId;
+		String query1 = "select * from album where SchoolId = " + schoolId + " order by Id asc";
 		String query2 = "select * from album where ClassId in (select ClassId from section where Id in "
-				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId))";
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId)) order by Id asc";
 		String query3 = "select * from album where SectionId in "
-				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId)";
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId) order by Id asc";
 		Set<Album> set = new HashSet<Album>(getAlbums(query1));
 		set.addAll(getAlbums(query2));
 		set.addAll(getAlbums(query3));
@@ -122,11 +122,11 @@ Connection connection;
 	}
 	
 	public List<Album> getTeacherAlbumsAboveId(long schoolId, long teacherId, long albumId) {
-		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
+		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId + " order by Id asc";
 		String query2 = "select * from album where ClassId in (select ClassId from section where Id in "
-				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId)) and Id > " + albumId;
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId)) and Id > " + albumId + " order by Id asc";
 		String query3 = "select * from album where SectionId in "
-				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId) and Id > " + albumId;
+				+ "(select SectionId from subject_teacher where TeacherId="+teacherId+" group by SectionId) and Id > " + albumId + " order by Id asc";
 		Set<Album> set = new HashSet<Album>(getAlbums(query1));
 		set.addAll(getAlbums(query2));
 		set.addAll(getAlbums(query3));
@@ -134,9 +134,9 @@ Connection connection;
 	}
 	
 	public List<Album> getStudentAlbums(long schoolId, long classId, long sectionId) {
-		String query1 = "select * from album where SchoolId = " + schoolId;
-		String query2 = "select * from album where ClassId = " + classId;
-		String query3 = "select * from album where SectionId = " + sectionId;
+		String query1 = "select * from album where SchoolId = " + schoolId + " order by Id asc";
+		String query2 = "select * from album where ClassId = " + classId + " order by Id asc";
+		String query3 = "select * from album where SectionId = " + sectionId + " order by Id asc";
 		Set<Album> set = new HashSet<Album>(getAlbums(query1));
 		set.addAll(getAlbums(query2));
 		set.addAll(getAlbums(query3));
@@ -144,9 +144,9 @@ Connection connection;
 	}
 	
 	public List<Album> getStudentAlbumsAboveId(long schoolId, long classId, long sectionId, long albumId) {
-		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId;
-		String query2 = "select * from album where ClassId = " + classId + " and Id > " + albumId;
-		String query3 = "select * from album where SectionId = " + sectionId + " and Id > " + albumId;
+		String query1 = "select * from album where SchoolId = " + schoolId + " and Id > " + albumId + " order by Id asc";
+		String query2 = "select * from album where ClassId = " + classId + " and Id > " + albumId + " order by Id asc";
+		String query3 = "select * from album where SectionId = " + sectionId + " and Id > " + albumId + " order by Id asc";
 		Set<Album> set = new HashSet<Album>(getAlbums(query1));
 		set.addAll(getAlbums(query2));
 		set.addAll(getAlbums(query3));
