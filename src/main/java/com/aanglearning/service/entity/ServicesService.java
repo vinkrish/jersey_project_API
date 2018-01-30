@@ -67,6 +67,20 @@ public class ServicesService {
 		return service;
 	}
 	
+	public Service getSpeakService(long schoolId) {
+		String query = "select IsSpeak from service where SchoolId = " + schoolId ;
+		Service service = new Service();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()){
+				service.setIsSpeak(rs.getBoolean("IsSpeak"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return service;
+	}
+	
 	public void update(Service service) {
 		try {
 			String query = "update service set"

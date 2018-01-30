@@ -47,6 +47,13 @@ public class ServiceResource {
 		service.delete(id);
 	}
 	
+	@Secured
+	@GET
+	@Path("speak/school/{id}")
+	public Service getSpeakService(@PathParam("id") long id) {
+		return service.getSpeakService(id);
+	}
+	
 	public void addService(Service srvice) {
 		service.add(srvice);
 	}
