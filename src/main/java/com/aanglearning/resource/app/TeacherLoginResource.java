@@ -26,18 +26,24 @@ TeacherLoginService service = new TeacherLoginService();
 	@POST
 	@Path("admin/login")
 	public Response teacherAdminLogin(Credentials credentials) {
-		return service.authenticateTeacherCredentials(credentials, "admin");
+		return service.authenticateCredentials(credentials, "admin");
 	}
 	
 	@POST
 	@Path("sms/login")
 	public Response teacherSmsLogin(Credentials credentials) {
-		return service.authenticateTeacherCredentials(credentials, "sms");
+		return service.authenticateCredentials(credentials, "sms");
 	}
 	
 	@POST
 	@Path("principal/login")
 	public Response principalLogin(Credentials credentials) {
 		return service.authenticatePrincipal(credentials);
+	}
+	
+	@POST
+	@Path("principal/v2/login")
+	public Response authenticatePrincipal(Credentials credentials) {
+		return service.authenticateCredentials(credentials, "principal");
 	}
 }

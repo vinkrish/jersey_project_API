@@ -55,7 +55,7 @@ public class TeacherLoginService {
 		}      
 	}
 	
-	public Response authenticateTeacherCredentials(Credentials credentials, String appName) {
+	public Response authenticateCredentials(Credentials credentials, String appName) {
 		TeacherCredentials teacherCredentials = null;
 		String token = "";
 		try {
