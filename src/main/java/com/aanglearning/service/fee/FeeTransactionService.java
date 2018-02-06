@@ -70,14 +70,14 @@ public class FeeTransactionService {
 	}
 	
 	public void updateStudentFee(long studentId, int amount, String status) {
-		String query = "select * from fee_student where StudentId=?";
+		String query = "select FeePaid from student where Id=?";
 		int currentPaid = 0;
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, studentId);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()){
-				currentPaid = rs.getInt("Amount");
+				currentPaid = rs.getInt("FeePaid");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -89,7 +89,7 @@ public class FeeTransactionService {
 			currentPaid -= amount;
 		}
 		
-		String sql = "update fee_student set Amount = ? where StudentId = ?";
+		String sql = "update student set FeePaid = ? where Id = ?";
 		try{
 		    PreparedStatement preparedStatement = connection.prepareStatement(sql);
 	    	preparedStatement.setInt(1, currentPaid);
@@ -101,15 +101,6 @@ public class FeeTransactionService {
 	}
 	
 	public void delete(long id) {
-		String query = "delete from fee_transaction where Id=?";
-		try{
-		    PreparedStatement preparedStatement = connection.prepareStatement(query);
-		    preparedStatement.setLong(1, id);
-		    preparedStatement.executeUpdate();
-		} catch(Exception e) {
-		    e.printStackTrace();
-		}
-		
 		String sql = "select * from fee_transaction where Id=?";
 		FeeTransaction feeTransaction = new FeeTransaction();
 		try {
@@ -124,6 +115,15 @@ public class FeeTransactionService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		String query = "delete from fee_transaction where Id=?";
+		try{
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    preparedStatement.setLong(1, id);
+		    preparedStatement.executeUpdate();
+		} catch(Exception e) {
+		    e.printStackTrace();
+		}		
 		
 		updateStudentFee(feeTransaction.getStudentId(), feeTransaction.getPaid(), "minus");
 	}
