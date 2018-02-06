@@ -6,6 +6,8 @@ public class Clas {
 	private long schoolId;
 	private long teacherId;
 	private String attendanceType;
+	private int feeAmount;
+	private String feeType;
 
 	public long getId() {
 		return id;
@@ -46,4 +48,21 @@ public class Clas {
 	public void setAttendanceType(String attendanceType) {
 		this.attendanceType = attendanceType;
 	}
+
+	public int getFeeAmount() {
+		return feeAmount;
+	}
+
+	public void setFeeAmount(int feeAmount) {
+		this.feeAmount = feeAmount;
+	}
+
+	public String getFeeType() {
+		return feeType;
+	}
+
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
+	}
+	
 }

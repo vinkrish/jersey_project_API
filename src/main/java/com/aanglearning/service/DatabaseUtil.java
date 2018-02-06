@@ -65,8 +65,8 @@ public class DatabaseUtil {
 	public static Connection getConnection() throws SQLException {
 		if (connection == null) {
 			loadDriver();
-			//loadConnection(); 
-			loadAwsConnection();
+			loadConnection(); 
+			//loadAwsConnection();
 		}
 		return connection;
 	}

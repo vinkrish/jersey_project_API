@@ -1,4 +1,4 @@
-package com.aanglearning.model.fee;
+package com.aanglearning.model.entity;
 
 public class FeeTransaction {
 	private long id;

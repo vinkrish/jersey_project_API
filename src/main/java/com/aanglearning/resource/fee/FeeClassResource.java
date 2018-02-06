@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
-import com.aanglearning.model.fee.FeeClass;
+import com.aanglearning.model.entity.Clas;
 import com.aanglearning.service.fee.FeeClassService;
 
 @Path("/classfee")
@@ -24,14 +24,14 @@ public class FeeClassResource {
 	@Secured
 	@GET
 	@Path("school/{schoolId}")
-	public List<FeeClass> getClassFees(@PathParam("schoolId") long schoolId) {
+	public List<Clas> getClassFees(@PathParam("schoolId") long schoolId) {
 		return service.getClassFees(schoolId);
 	}
 	
 	@Secured
 	@PUT
 	@Path("{classId}")
-	public void update(FeeClass feeClass) {
+	public void update(Clas feeClass) {
 		service.update(feeClass);
 	}
 

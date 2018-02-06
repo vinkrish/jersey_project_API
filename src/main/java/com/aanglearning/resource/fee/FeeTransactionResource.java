@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.aanglearning.authentication.Secured;
-import com.aanglearning.model.fee.FeeTransaction;
+import com.aanglearning.model.entity.FeeTransaction;
 import com.aanglearning.service.fee.FeeTransactionService;
 
 @Path("/studentfee")

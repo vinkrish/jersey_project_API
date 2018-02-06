@@ -24,6 +24,8 @@ public class Student {
 	private String district;
 	private String state;
 	private String pincode;
+	private int feePaid;
+	private int discount;
 
 	public long getId() {
 		return id;
@@ -207,6 +209,22 @@ public class Student {
 
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
+	}
+
+	public int getFeePaid() {
+		return feePaid;
+	}
+
+	public void setFeePaid(int feePaid) {
+		this.feePaid = feePaid;
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
 	}
 
 }
