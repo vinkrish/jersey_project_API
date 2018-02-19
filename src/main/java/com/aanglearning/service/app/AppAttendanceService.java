@@ -200,7 +200,6 @@ public class AppAttendanceService {
 					e.printStackTrace();
 				}
 			}
-			
 		}
 		
 	}

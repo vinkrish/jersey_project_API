@@ -23,7 +23,7 @@ public class AppTimetableService {
 
 	public List<Timetable> getSectionTimetable(long sectionId) {
 		String query = "select t.*, s.SubjectName, st.TeacherName from timetable t, subject s, subject_teacher st "
-				+ "where t.SectionId = " + sectionId + " and s.Id = t.SubjectId and st.SectionId = t.SectionId and st.SubjectId = t.SubjectId";
+				+ "where t.SectionId = " + sectionId + " and s.Id = t.SubjectId and st.SectionId = t.SectionId and st.SubjectId = t.SubjectId group by Id";
 		return getTimetableList(query);
 	}
 
