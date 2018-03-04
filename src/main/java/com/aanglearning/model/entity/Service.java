@@ -13,6 +13,7 @@ public class Service {
 	private boolean isTimetable;
 	private boolean isReport;
 	private boolean isSpeak;
+	private boolean isGallery;
 	
 	public long getId() {
 		return id;
@@ -85,5 +86,11 @@ public class Service {
 	}
 	public void setIsSpeak(boolean isSpeak) {
 		this.isSpeak = isSpeak;
+	}
+	public boolean getIsGallery() {
+		return isGallery;
+	}
+	public void setIsGallery(boolean isGallery) {
+		this.isGallery = isGallery;
 	}
 }

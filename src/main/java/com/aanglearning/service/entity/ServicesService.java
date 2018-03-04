@@ -60,6 +60,7 @@ public class ServicesService {
 				service.setIsHomeworkSms(rs.getBoolean("IsHomeworkSms"));
 				service.setIsTimetable(rs.getBoolean("IsTimetable"));
 				service.setIsReport(rs.getBoolean("IsReport"));
+				service.setIsGallery(rs.getBoolean("IsGallery"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,6 +94,7 @@ public class ServicesService {
 					+ ", IsHomeworkSms = " + service.getIsHomeworkSms()
 					+ ", IsTimetable = " + service.getIsTimetable()
 					+ ", IsReport = " + service.getIsReport()
+					+ ", IsGallery = " + service.getIsGallery()
 					+ " where Id = " + service.getId();
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
