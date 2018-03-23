@@ -40,6 +40,7 @@ public class TeacherLoginService {
 					saveToken(credentials.getUsername(), token);
 				}
 				teacherCredentials = new TeacherCredentials();
+				teacherCredentials.setMobileNo(credentials.getUsername());
 				teacherCredentials.setAuthToken(token);
 				Teacher teacher = teacherService.getTeacher(credentials.getUsername());
 				teacherCredentials.setTeacher(teacher);
@@ -66,6 +67,7 @@ public class TeacherLoginService {
 					saveToken(credentials.getUsername(), token);
 				}
 				teacherCredentials = new TeacherCredentials();
+				teacherCredentials.setMobileNo(credentials.getUsername());
 				teacherCredentials.setAuthToken(token);
 				Teacher teacher = teacherService.getTeacher(credentials.getUsername());
 				authorize(teacher.getId(), appName);
@@ -93,6 +95,7 @@ public class TeacherLoginService {
 					saveToken(credentials.getUsername(), token);
 				}
 				teacherCredentials = new TeacherCredentials();
+				teacherCredentials.setMobileNo(credentials.getUsername());
 				teacherCredentials.setAuthToken(token);
 				Teacher teacher = teacherService.getTeacher(credentials.getUsername());
 				teacherCredentials.setTeacher(teacher);
